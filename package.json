@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json -w",
-    "start": "node build/index.js",
+    "start": "nodemon build/index.js",
     "lint": "npx eslint src/**/*.ts",
     "prettier": "npx prettier src/**/*.ts -w"
   },
@@ -23,6 +23,7 @@
     "@types/node": "^16.4.7",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
-    "eslint": "^7.31.0"
+    "eslint": "^7.31.0",
+    "nodemon": "^2.0.12"
   }
 }
