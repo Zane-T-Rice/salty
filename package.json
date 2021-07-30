@@ -9,7 +9,7 @@
     "start": "nodemon build/index.js",
     "lint": "npx eslint src/**/*.ts",
     "prettier": "npx prettier src/**/*.ts -w",
-    "test": "jest src/**/*.test.ts"
+    "test": "npx yarn build && jest build/ --coverage"
   },
   "author": "Zane Rice",
   "dependencies": {
@@ -32,5 +32,15 @@
     "git-hooks": "^1.1.10",
     "jest": "^27.0.6",
     "nodemon": "^2.0.12"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   }
 }
