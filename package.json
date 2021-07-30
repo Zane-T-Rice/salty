@@ -24,6 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
     "eslint": "^7.31.0",
+    "git-hooks": "^1.1.10",
     "nodemon": "^2.0.12"
   }
 }
