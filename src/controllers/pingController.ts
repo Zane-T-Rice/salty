@@ -1,9 +1,10 @@
 import { CommandController } from "./commandController";
-import { PingValidator } from "../validators";
+import { PingAuthorizer } from "../authorizers";
 import { PingService } from "../services";
+import { PingValidator } from "../validators";
 
 export class PingController extends CommandController {
   constructor() {
-    super(new PingValidator(), new PingService());
+    super(new PingAuthorizer(), new PingValidator(), new PingService());
   }
 }
