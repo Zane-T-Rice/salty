@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import { CommandService } from "./commandService";
 
 export class PingService extends CommandService {
-  handleMessage(args: string[], message: Message): void {
+  async handleMessage(_args: string[], message: Message): Promise<void> {
     message.reply("pong");
   }
 }

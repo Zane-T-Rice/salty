@@ -11,9 +11,9 @@ beforeEach(() => {
 
 describe("router", () => {
   describe("routeMessage", () => {
-    it("should route ping messages", () => {
+    it("should route ping messages", async () => {
       const content = "!ping";
-      routeMessage({ content } as Message);
+      await routeMessage({ content } as Message);
 
       expect(pingControllerInstance.handleMessage).toHaveBeenCalledWith(
         [content],
@@ -21,9 +21,17 @@ describe("router", () => {
       );
     });
 
-    it("should handle messages that are not commands", () => {
+    it("should handle messages that are not commands", async () => {
       const content = "!notacommand";
-      routeMessage({ content } as Message);
+      await routeMessage({ content } as Message);
+
+      expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
+    });
+
+    it("should ignore bot messages", async () => {
+      const content = "!ping";
+      const author = { bot: true };
+      await routeMessage({ content, author } as Message);
 
       expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
     });

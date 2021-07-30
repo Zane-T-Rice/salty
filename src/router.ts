@@ -1,11 +1,13 @@
 import { Message } from "discord.js";
-import { PingController } from "./controllers";
+import { PingController, StartThreadController } from "./controllers";
 
 const commandsToControllers = {
   "!ping": new PingController(),
+  "!t": new StartThreadController(),
 };
 
-export const routeMessage = (message: Message): void => {
+export async function routeMessage(message: Message) {
+  if (message.author?.bot) return;
   const args = message.content.trim().split(" ");
-  commandsToControllers[args[0]]?.handleMessage(args, message);
-};
+  await commandsToControllers[args[0]]?.handleMessage(args, message);
+}
