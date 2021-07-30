@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
-import { CommandService } from '../services';
-import { CommandValidator } from '../validators';
+import { CommandService } from "../services";
+import { CommandValidator } from "../validators";
 
 export abstract class CommandController {
   private validator: CommandValidator;
@@ -11,8 +11,8 @@ export abstract class CommandController {
     this.service = service;
   }
 
-  public handleMessage(args: string[], message: Message) : void {
-    if(!this.validator.validate(args, message)) return;
+  public handleMessage(args: string[], message: Message): void {
+    if (!this.validator.validate(args, message)) return;
     this.service.handleMessage(args, message);
   }
 }

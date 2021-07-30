@@ -1,2 +1,2 @@
-export * from './commandValidator';
-export * from './pingValidator';
+export * from "./commandValidator";
+export * from "./pingValidator";

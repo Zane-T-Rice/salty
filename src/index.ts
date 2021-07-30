@@ -1,2 +1,2 @@
-import { Bot } from './bot';
-(new Bot).listen();
+import { Bot } from "./bot";
+new Bot().listen();

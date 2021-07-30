@@ -1,1 +1,1 @@
-export * from './pingController';
+export * from "./pingController";
