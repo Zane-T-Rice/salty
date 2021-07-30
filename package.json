@@ -4,6 +4,7 @@
   "description": "A Discord Bot For My Personal Enjoyment",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "start": "node build/index.js",
     "watch": "tsc -p tsconfig.json -w"
   },
@@ -11,10 +12,14 @@
   "dependencies": {
     "discord.js": "^11.6.4",
     "dotenv": "^8.6.0",
+    "prettier": "^2.3.2",
     "reflect-metadata": "^0.1.13",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
-    "@types/node": "^16.4.7"
+    "@types/node": "^16.4.7",
+    "@typescript-eslint/eslint-plugin": "^4.28.5",
+    "@typescript-eslint/parser": "^4.28.5",
+    "eslint": "^7.31.0"
   }
 }

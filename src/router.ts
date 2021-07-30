@@ -1,11 +1,11 @@
-import { PingController } from './controllers';
+import { Message } from "discord.js";
+import { PingController } from "./controllers";
 
 const commandsToControllers = {
-  '!ping': new PingController()
+  "!ping": new PingController(),
 };
 
-export const routeMessage = (message: any) => {
-  const args = message?.content?.trim()?.split(' ');
-  const command = args ?? args[0];
-  if (commandsToControllers[command]) commandsToControllers[command].handleMessage(args, message);
+export const routeMessage = (message: Message): void => {
+  const args = message.content.trim().split(" ");
+  commandsToControllers[args[0]]?.handleMessage(args, message);
 };

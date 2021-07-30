@@ -1,7 +1,7 @@
-import { CommandValidator } from './commandValidator';
+import { CommandValidator } from "./commandValidator";
 
 export class PingValidator extends CommandValidator {
-  validate(args: string[], message: any) : boolean {
+  validate(): boolean {
     return true;
-  };
-};
+  }
+}

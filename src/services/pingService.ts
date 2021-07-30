@@ -1,7 +1,8 @@
-import { CommandService } from './commandService';
+import { Message } from "discord.js";
+import { CommandService } from "./commandService";
 
 export class PingService extends CommandService {
-  handleMessage(args: string[], message: any) {
-    message.reply('pong');
-  };
-};
+  handleMessage(args: string[], message: Message): void {
+    message.reply("pong");
+  }
+}
