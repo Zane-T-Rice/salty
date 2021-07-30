@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w",
     "start": "node build/index.js",
-    "watch": "tsc -p tsconfig.json -w"
+    "lint": "npx eslint src/**/*.ts",
+    "prettier": "npx prettier src/**/*.ts -w"
   },
   "author": "Zane Rice",
   "dependencies": {
