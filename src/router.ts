@@ -8,6 +8,8 @@ const commandsToControllers = {
 
 export async function routeMessage(message: Message) {
   if (message.author?.bot) return;
-  const args = message.content.trim().split(" ");
+  let args = message.content.trim().split(" ");
+  // Strip out any mentions in the message
+  args = args.filter((arg) => !arg.match(/<@![0-9]+>/));
   await commandsToControllers[args[0]]?.handleMessage(args, message);
 }
