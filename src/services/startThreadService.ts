@@ -19,6 +19,7 @@ export class StartThreadService extends CommandService {
     if (args.length > 1) {
       threadName = args.slice(1).join(" ");
     }
+    threadName = threadName.slice(0, 100);
 
     if (message.mentions?.users?.size) {
       const userToReplyTo = message.mentions.users.first();
