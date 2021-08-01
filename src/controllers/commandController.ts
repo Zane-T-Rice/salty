@@ -1,7 +1,7 @@
-import { Message } from "discord.js";
 import { CommandAuthorizer } from "../authorizers";
 import { CommandService } from "../services";
 import { CommandValidator } from "../validators";
+import { Message } from "discord.js";
 
 export abstract class CommandController {
   private authorizer: CommandAuthorizer;

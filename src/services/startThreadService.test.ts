@@ -1,6 +1,6 @@
 import { Collection, Message, User } from "discord.js";
-import { StartThreadService } from "./startThreadService";
 import { Messages, Threads } from "../apis";
+import { StartThreadService } from "./startThreadService";
 
 describe("startThreadService", () => {
   describe("constructor", () => {

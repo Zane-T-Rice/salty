@@ -1,4 +1,4 @@
-import { Collection, Message, Snowflake, Role } from "discord.js";
+import { Collection, Message, Role, Snowflake } from "discord.js";
 import { StartThreadAuthorizer } from "./startThreadAuthorizer";
 
 describe("StartThreadAuthorizer", () => {

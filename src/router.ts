@@ -7,7 +7,7 @@ const commandsToControllers = {
   "!t": new StartThreadController(),
 };
 
-export async function routeMessage(message: Message) {
+export async function routeMessage(message: Message): Promise<void> {
   if (message.author?.bot) return;
   let args = message.content.trim().split(" ");
   if (isMention(args[0])) args = ["!t"].concat(args);

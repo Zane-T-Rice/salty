@@ -1,5 +1,5 @@
-import { Message } from "discord.js";
 import { CommandController } from "./commandController";
+import { Message } from "discord.js";
 
 const authorizer = { authorize: jest.fn() };
 const validator = { validate: jest.fn() };

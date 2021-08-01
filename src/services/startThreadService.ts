@@ -1,7 +1,7 @@
-import { Message } from "discord.js";
-import { CommandService } from "./commandService";
-import { randomBytes } from "crypto";
 import { Messages, Threads } from "../apis";
+import { CommandService } from "./commandService";
+import { Message } from "discord.js";
+import { randomBytes } from "crypto";
 
 export class StartThreadService extends CommandService {
   private messages: Messages;
