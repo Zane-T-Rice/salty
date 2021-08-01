@@ -1,4 +1,4 @@
-import { Guild, Message, TextChannel, ThreadChannel } from "discord.js";
+import { Message, TextChannel, ThreadChannel } from "discord.js";
 import { StartThreadValidator } from "./startThreadValidator";
 
 describe("StartThreadValidator", () => {

@@ -7,7 +7,7 @@
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json -w",
     "start": "nodemon build/index.js",
-    "lint": "npx eslint --fix src/**/*.ts",
+    "lint": "npx eslint --fix --max-warnings=0 src/**/*.ts",
     "prettier": "npx prettier src/**/*.ts -w",
     "test": "rm -rf build && npx yarn build && jest build/ --coverage"
   },
