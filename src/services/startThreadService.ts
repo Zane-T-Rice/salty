@@ -15,11 +15,7 @@ export class StartThreadService extends CommandService {
 
   async handleMessage(args: string[], message: Message): Promise<void> {
     let messageId = message.id;
-    let threadName = randomBytes(5).toString("hex");
-    if (args.length > 1) {
-      threadName = args.slice(1).join(" ");
-    }
-    threadName = threadName.slice(0, 100);
+    const threadName = randomBytes(5).toString("hex");
 
     if (message.mentions?.users?.size) {
       const userToReplyTo = message.mentions.users.first();
@@ -32,10 +28,15 @@ export class StartThreadService extends CommandService {
       messageId = messageToStartThreadWith.id;
     }
 
-    await this.threads.startThreadWithMessage(
+    const threadChannel = await this.threads.startThreadWithMessage(
       message.channel.id,
       messageId,
       threadName
     );
+
+    const threadMessage = args.slice(1).join(" ").slice(0, 2000);
+    if (threadMessage) {
+      await this.messages.sendMessageToChannel(threadChannel.id, threadMessage);
+    }
   }
 }

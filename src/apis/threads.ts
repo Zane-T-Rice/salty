@@ -1,3 +1,4 @@
+import { Channel } from "discord.js";
 import { DiscordApis } from "./discordApis";
 
 export class Threads extends DiscordApis {
@@ -5,9 +6,12 @@ export class Threads extends DiscordApis {
     channelId: string,
     messageId: string,
     name: string
-  ): Promise<void> {
-    await this.post(`/channels/${channelId}/messages/${messageId}/threads`, {
-      name,
-    });
+  ): Promise<Channel> {
+    return (await this.post(
+      `/channels/${channelId}/messages/${messageId}/threads`,
+      {
+        name,
+      }
+    )) as Channel;
   }
 }

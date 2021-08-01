@@ -11,6 +11,7 @@ class DiscordApisImpl extends DiscordApis {
 describe("DiscordApis", () => {
   describe("post", () => {
     it("should call axios.post", async () => {
+      jest.spyOn(axios, "post").mockResolvedValue({ data: {} });
       const discordApis = new DiscordApisImpl();
       discordApis.post("/test", { test: "test" });
       expect(axios.post).toBeCalledWith(

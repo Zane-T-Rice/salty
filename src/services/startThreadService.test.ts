@@ -1,4 +1,4 @@
-import { Collection, Message, User } from "discord.js";
+import { Channel, Collection, Message, User } from "discord.js";
 import { Messages, Threads } from "../apis";
 import { StartThreadService } from "./startThreadService";
 
@@ -14,16 +14,24 @@ describe("startThreadService", () => {
   });
 
   describe("handleMessage", () => {
+    const messages = new Messages();
+    const threads = new Threads();
+
+    beforeEach(() => {
+      jest.resetAllMocks();
+      jest.spyOn(messages, "getMessagesFromChannel").mockResolvedValueOnce([]);
+      jest
+        .spyOn(messages, "sendMessageToChannel")
+        .mockResolvedValueOnce({} as Message);
+      jest
+        .spyOn(threads, "startThreadWithMessage")
+        .mockResolvedValueOnce({ id: "threadChannelId" } as Channel);
+    });
     it("should call startThreadWithMessage", async () => {
       const message = {
         id: "testMessageId",
         channel: { id: "testChannelId" },
       } as Message;
-      const messages = new Messages();
-      const threads = new Threads();
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(undefined);
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage([], message);
       expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
@@ -33,38 +41,11 @@ describe("startThreadService", () => {
       );
     });
 
-    it("should call startThreadWithMessage with the given thread name", async () => {
-      const message = {
-        id: "testMessageId",
-        channel: { id: "testChannelId" },
-      } as Message;
-      const messages = new Messages();
-      const threads = new Threads();
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(undefined);
-      const startThreadService = new StartThreadService(messages, threads);
-
-      await startThreadService.handleMessage(
-        ["!t", "thread", "name", "test"],
-        message
-      );
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
-        message.channel.id,
-        message.id,
-        "thread name test"
-      );
-    });
-
     it("should call getMessagesFromChannel and use the correct message id from that call to startThreadWithMessage", async () => {
-      const messages = new Messages();
-      const threads = new Threads();
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(undefined);
       const startThreadService = new StartThreadService(messages, threads);
       jest
         .spyOn(messages, "getMessagesFromChannel")
+        .mockReset()
         .mockResolvedValueOnce([
           { id: "notThisone", author: { id: "nope" } } as Message,
           { id: "replyToMe", author: { id: "replyToMeUser" } } as Message,
@@ -89,13 +70,7 @@ describe("startThreadService", () => {
     });
 
     it("handles getMessagesFromChannel returning no matches", async () => {
-      const messages = new Messages();
-      const threads = new Threads();
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(undefined);
       const startThreadService = new StartThreadService(messages, threads);
-      jest.spyOn(messages, "getMessagesFromChannel").mockResolvedValueOnce([]);
       const message = {
         id: "testMessageId",
         channel: { id: "testChannelId" },
@@ -111,13 +86,7 @@ describe("startThreadService", () => {
     });
 
     it("handles no mentions", async () => {
-      const messages = new Messages();
-      const threads = new Threads();
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(undefined);
       const startThreadService = new StartThreadService(messages, threads);
-      jest.spyOn(messages, "getMessagesFromChannel").mockResolvedValueOnce([]);
       const message = {
         id: "testMessageId",
         channel: { id: "testChannelId" },
@@ -130,6 +99,24 @@ describe("startThreadService", () => {
         message.channel.id,
         message.id,
         expect.any(String)
+      );
+    });
+
+    it("should call sendMessageToChannel if the user entered a message", async () => {
+      const message = {
+        id: "testMessageId",
+        channel: { id: "testChannelId" },
+      } as Message;
+      const startThreadService = new StartThreadService(messages, threads);
+      await startThreadService.handleMessage(["!t", "hello", "world"], message);
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
+        message.channel.id,
+        message.id,
+        expect.any(String)
+      );
+      expect(messages.sendMessageToChannel).toHaveBeenCalledWith(
+        "threadChannelId",
+        "hello world"
       );
     });
   });

@@ -9,8 +9,11 @@ export abstract class DiscordApis {
     return result.data;
   }
 
-  public async post(endpoint: string, payload: unknown): Promise<void> {
+  public async post(endpoint: string, payload: unknown): Promise<unknown> {
     const headers = { Authorization: `Bot ${process.env.TOKEN}` };
-    await axios.post(this.baseUrl + endpoint, payload, { headers });
+    const result = await axios.post(this.baseUrl + endpoint, payload, {
+      headers,
+    });
+    return result.data;
   }
 }
