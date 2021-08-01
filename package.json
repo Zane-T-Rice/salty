@@ -9,7 +9,7 @@
     "start": "nodemon build/index.js",
     "lint": "npx eslint src/**/*.ts",
     "prettier": "npx prettier src/**/*.ts -w",
-    "test": "npx yarn build && jest build/ --coverage"
+    "test": "rm -rf build && npx yarn build && jest build/ --coverage"
   },
   "author": "Zane Rice",
   "dependencies": {
