@@ -14,4 +14,8 @@ export class Threads extends DiscordApis {
       }
     )) as Channel;
   }
+
+  async addThreadMember(channelId: string, userId: string): Promise<void> {
+    await this.put(`/channels/${channelId}/thread-members/${userId}`, {});
+  }
 }

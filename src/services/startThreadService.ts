@@ -34,6 +34,8 @@ export class StartThreadService extends CommandService {
       threadName
     );
 
+    await this.threads.addThreadMember(threadChannel.id, message.author.id);
+
     const threadMessage = args.slice(1).join(" ").slice(0, 2000);
     if (threadMessage) {
       await this.messages.sendMessageToChannel(threadChannel.id, threadMessage);

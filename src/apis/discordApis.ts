@@ -16,4 +16,12 @@ export abstract class DiscordApis {
     });
     return result.data;
   }
+
+  public async put(endpoint: string, payload: unknown): Promise<unknown> {
+    const headers = { Authorization: `Bot ${process.env.TOKEN}` };
+    const result = await axios.put(this.baseUrl + endpoint, payload, {
+      headers,
+    });
+    return result.data;
+  }
 }

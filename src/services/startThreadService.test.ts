@@ -26,11 +26,13 @@ describe("startThreadService", () => {
       jest
         .spyOn(threads, "startThreadWithMessage")
         .mockResolvedValueOnce({ id: "threadChannelId" } as Channel);
+      jest.spyOn(threads, "addThreadMember").mockResolvedValueOnce(undefined);
     });
     it("should call startThreadWithMessage", async () => {
       const message = {
         id: "testMessageId",
         channel: { id: "testChannelId" },
+        author: { id: "testAuthorId" },
       } as Message;
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage([], message);
@@ -38,6 +40,10 @@ describe("startThreadService", () => {
         message.channel.id,
         message.id,
         expect.any(String)
+      );
+      expect(threads.addThreadMember).toHaveBeenCalledWith(
+        "threadChannelId",
+        message.author.id
       );
     });
 
@@ -106,6 +112,7 @@ describe("startThreadService", () => {
       const message = {
         id: "testMessageId",
         channel: { id: "testChannelId" },
+        author: { id: "testAuthorId" },
       } as Message;
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage(["!t", "hello", "world"], message);

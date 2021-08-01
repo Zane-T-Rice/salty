@@ -31,4 +31,16 @@ describe("DiscordApis", () => {
       });
     });
   });
+  describe("put", () => {
+    it("should call axios.put", async () => {
+      jest.spyOn(axios, "put").mockResolvedValue({ data: {} });
+      const discordApis = new DiscordApisImpl();
+      discordApis.put("/test", { test: "test" });
+      expect(axios.put).toBeCalledWith(
+        "https://discordapp.com/api/test",
+        { test: "test" },
+        { headers: { Authorization: "Bot undefined" } }
+      );
+    });
+  });
 });
