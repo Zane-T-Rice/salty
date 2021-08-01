@@ -1,9 +1,11 @@
 import * as dotenv from "dotenv";
-import { Client, Message } from "discord.js";
+import { Client, Intents, Message } from "discord.js";
 import { routeMessage } from "./router";
 
-const client = new Client();
-client.on("message", async (message: Message) => {
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+});
+client.on("messageCreate", async (message: Message) => {
   await routeMessage(message);
 });
 dotenv.config();

@@ -8,10 +8,12 @@ describe("StartThreadAuthorizer", () => {
     it("should return true if member has Threader role", () => {
       const message = {
         member: {
-          roles: new Collection<Snowflake, Role>(),
+          roles: {
+            cache: new Collection<Snowflake, Role>(),
+          },
         },
       } as Message;
-      message.member.roles.set("Threader", { name: "Threader" } as Role);
+      message.member.roles.cache.set("Threader", { name: "Threader" } as Role);
       const result = startThreadAuthorizer.authorize(undefined, message);
       expect(result).toBe(true);
     });
@@ -19,10 +21,14 @@ describe("StartThreadAuthorizer", () => {
     it("should return false if member does not have the Threader role", () => {
       const message = {
         member: {
-          roles: new Collection<Snowflake, Role>(),
+          roles: {
+            cache: new Collection<Snowflake, Role>(),
+          },
         },
       } as Message;
-      message.member.roles.find = jest.fn().mockReturnValueOnce(undefined);
+      message.member.roles.cache.find = jest
+        .fn()
+        .mockReturnValueOnce(undefined);
       const result = startThreadAuthorizer.authorize(undefined, message);
       expect(result).toBe(false);
     });
