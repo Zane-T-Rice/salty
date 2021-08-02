@@ -23,9 +23,19 @@ describe("DiscordApis", () => {
   });
   describe("get", () => {
     it("should call axios.get", async () => {
-      jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
+      jest.spyOn(axios, "get").mockResolvedValue({ data: {} });
       const discordApis = new DiscordApisImpl();
       discordApis.get("/test");
+      expect(axios.get).toBeCalledWith("https://discordapp.com/api/test", {
+        headers: { Authorization: "Bot undefined" },
+      });
+    });
+  });
+  describe("gets", () => {
+    it("should call axios.get", async () => {
+      jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
+      const discordApis = new DiscordApisImpl();
+      discordApis.gets("/test");
       expect(axios.get).toBeCalledWith("https://discordapp.com/api/test", {
         headers: { Authorization: "Bot undefined" },
       });
@@ -36,6 +46,18 @@ describe("DiscordApis", () => {
       jest.spyOn(axios, "put").mockResolvedValue({ data: {} });
       const discordApis = new DiscordApisImpl();
       discordApis.put("/test", { test: "test" });
+      expect(axios.put).toBeCalledWith(
+        "https://discordapp.com/api/test",
+        { test: "test" },
+        { headers: { Authorization: "Bot undefined" } }
+      );
+    });
+  });
+  describe("patch", () => {
+    it("should call axios.patch", async () => {
+      jest.spyOn(axios, "patch").mockResolvedValue({ data: {} });
+      const discordApis = new DiscordApisImpl();
+      discordApis.patch("/test", { test: "test" });
       expect(axios.put).toBeCalledWith(
         "https://discordapp.com/api/test",
         { test: "test" },

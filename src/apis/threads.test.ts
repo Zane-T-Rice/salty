@@ -3,7 +3,7 @@ import { Threads } from "./threads";
 
 const threads = new Threads();
 
-describe("threads apis", () => {
+describe("Threads", () => {
   describe("startThreadWithMessage", () => {
     it("should call axios.post", async () => {
       jest.spyOn(threads, "post").mockResolvedValueOnce(undefined);
@@ -35,6 +35,26 @@ describe("threads apis", () => {
         `/channels/${message.channel.id}/thread-members/${message.author.id}`,
         {}
       );
+    });
+  });
+  describe("archiveThread", () => {
+    it("should call axios.patch", async () => {
+      jest.spyOn(threads, "patch").mockResolvedValueOnce(undefined);
+      const channelId = "testMessageId";
+      await threads.archiveThread(channelId);
+      expect(threads.patch).toBeCalledWith(`/channels/${channelId}`, {
+        archived: true,
+      });
+    });
+  });
+  describe("unarchiveThread", () => {
+    it("should call axios.patch", async () => {
+      jest.spyOn(threads, "patch").mockResolvedValueOnce(undefined);
+      const channelId = "testMessageId";
+      await threads.unarchiveThread(channelId);
+      expect(threads.patch).toBeCalledWith(`/channels/${channelId}`, {
+        archived: false,
+      });
     });
   });
 });
