@@ -1,18 +1,18 @@
-import { Channel } from "discord.js";
 import { DiscordApis } from "./discordApis";
+import { ThreadChannel } from "discord.js";
 
 export class Threads extends DiscordApis {
   async startThreadWithMessage(
     channelId: string,
     messageId: string,
     name: string
-  ): Promise<Channel> {
+  ): Promise<ThreadChannel> {
     return (await this.post(
       `/channels/${channelId}/messages/${messageId}/threads`,
       {
         name,
       }
-    )) as Channel;
+    )) as ThreadChannel;
   }
 
   async addThreadMember(channelId: string, userId: string): Promise<void> {

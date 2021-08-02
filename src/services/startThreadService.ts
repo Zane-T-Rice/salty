@@ -1,15 +1,13 @@
-import { Messages, Threads } from "../apis";
+import { Message, MessagePayload } from "discord.js";
 import { CommandService } from "./commandService";
-import { Message } from "discord.js";
 import { randomBytes } from "crypto";
+import { Threads } from "../apis";
 
 export class StartThreadService extends CommandService {
-  private messages: Messages;
   private threads: Threads;
 
-  constructor(messages: Messages, threads: Threads) {
+  constructor(threads: Threads) {
     super();
-    this.messages = messages;
     this.threads = threads;
   }
 
@@ -19,11 +17,9 @@ export class StartThreadService extends CommandService {
 
     if (message.mentions?.users?.size) {
       const userToReplyTo = message.mentions.users.first();
-      const recentMessagesInChannel =
-        await this.messages.getMessagesFromChannel(message.channel.id);
-      const messageToStartThreadWith = recentMessagesInChannel.find(
-        (message) => message.author.id === userToReplyTo.id
-      );
+      const messageToStartThreadWith = message.channel.messages.cache
+        .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
+        .find((message) => message.author.id === userToReplyTo.id);
       if (!messageToStartThreadWith) return;
       messageId = messageToStartThreadWith.id;
     }
@@ -38,7 +34,10 @@ export class StartThreadService extends CommandService {
 
     const threadMessage = args.slice(1).join(" ").slice(0, 2000);
     if (threadMessage) {
-      await this.messages.sendMessageToChannel(threadChannel.id, threadMessage);
+      const messagePayload = new MessagePayload(threadChannel, {
+        content: threadMessage,
+      });
+      threadChannel.send(messagePayload);
     }
   }
 }

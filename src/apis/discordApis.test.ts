@@ -1,5 +1,5 @@
-import { DiscordApis } from "./discordApis";
 import axios from "axios";
+import { DiscordApis } from "./discordApis";
 jest.mock("axios");
 
 class DiscordApisImpl extends DiscordApis {
