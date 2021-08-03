@@ -1,30 +1,39 @@
+import * as utils from "./utils";
 import {
   ArchiveThreadButtonInteractionController,
   PingController,
   StartThreadController,
 } from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
-import { routeButtonInteraction, routeMessage } from "./router";
-import * as utils from "./utils";
+import { Router } from "./router";
 
 jest.mock("./utils");
-jest.mock("./controllers");
-const pingControllerInstance = (PingController as any).mock.instances[0];
-const startThreadControllerInstance = (StartThreadController as any).mock
-  .instances[0];
-const archiveThreadButtonInteractionController = (
-  ArchiveThreadButtonInteractionController as any
-).mock.instances[0];
+const pingControllerInstance = new PingController();
+const startThreadControllerInstance = new StartThreadController();
+const archiveThreadButtonInteractionController =
+  new ArchiveThreadButtonInteractionController();
+const router = new Router(
+  pingControllerInstance,
+  archiveThreadButtonInteractionController,
+  startThreadControllerInstance
+);
 
 beforeEach(() => {
-  pingControllerInstance.handleMessage.mockClear();
+  jest.resetAllMocks();
+  jest.spyOn(pingControllerInstance, "handleMessage").mockResolvedValueOnce();
+  jest
+    .spyOn(startThreadControllerInstance, "handleMessage")
+    .mockResolvedValueOnce();
+  jest
+    .spyOn(archiveThreadButtonInteractionController, "handleInteraction")
+    .mockResolvedValueOnce();
 });
 
 describe("router", () => {
   describe("routeMessage", () => {
     it("should route ping messages", async () => {
       const content = "!ping";
-      await routeMessage({ content } as Message);
+      await router.routeMessage({ content } as Message);
 
       expect(pingControllerInstance.handleMessage).toHaveBeenCalledWith(
         [content],
@@ -34,7 +43,7 @@ describe("router", () => {
 
     it("should handle messages that are not commands", async () => {
       const content = "!notacommand";
-      await routeMessage({ content } as Message);
+      await router.routeMessage({ content } as Message);
 
       expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
     });
@@ -42,7 +51,7 @@ describe("router", () => {
     it("should ignore bot messages", async () => {
       const content = "!ping";
       const author = { bot: true };
-      await routeMessage({ content, author } as Message);
+      await router.routeMessage({ content, author } as Message);
 
       expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
     });
@@ -50,7 +59,7 @@ describe("router", () => {
     it("should route messages beginning with mentions as !t command", async () => {
       jest.spyOn(utils, "isMention").mockReturnValueOnce(true);
       const content = "";
-      await routeMessage({ content } as Message);
+      await router.routeMessage({ content } as Message);
 
       expect(startThreadControllerInstance.handleMessage).toHaveBeenCalledWith(
         ["!t", content],
@@ -64,7 +73,7 @@ describe("router", () => {
       const buttonInteraction = {
         customId: "archiveThreadButton:threadChannelid",
       } as ButtonInteraction;
-      await routeButtonInteraction(buttonInteraction);
+      await router.routeButtonInteraction(buttonInteraction);
       expect(
         archiveThreadButtonInteractionController.handleInteraction
       ).toHaveBeenCalledWith(buttonInteraction);
