@@ -51,5 +51,12 @@ describe("router", () => {
       await router.routeButtonInteraction(buttonInteraction);
       expect(archiveThreadButtonInteractionController.handleInteraction).toHaveBeenCalledWith(buttonInteraction);
     });
+    it("should handle interactions that are not recognized", async () => {
+      const buttonInteraction = {
+        customId: "notRecognizedInteraction:threadChannelid",
+      } as ButtonInteraction;
+      await router.routeButtonInteraction(buttonInteraction);
+      expect(archiveThreadButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
+    });
   });
 });

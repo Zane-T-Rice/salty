@@ -12,8 +12,12 @@ export class Router {
   private pingController: PingController;
   private archiveThreadButtonInteractionController: ArchiveThreadButtonInteractionController;
   private startThreadController: StartThreadController;
-  private commandsToControllers: Map<string, CommandController>;
-  private buttonInteractionsToControllers: Map<string, InteractionController>;
+  private commandsToControllers: {
+    [key: string]: CommandController;
+  };
+  private buttonInteractionsToControllers: {
+    [key: string]: InteractionController;
+  };
 
   constructor(
     pingController: PingController,
@@ -24,23 +28,25 @@ export class Router {
     this.archiveThreadButtonInteractionController = archiveThreadButtonInteractionController;
     this.startThreadController = startThreadController;
 
-    this.commandsToControllers = new Map<string, CommandController>();
-    this.commandsToControllers.set("!ping", this.pingController);
-    this.commandsToControllers.set("!t", this.startThreadController);
+    this.commandsToControllers = {
+      "!ping": this.pingController,
+      "!t": this.startThreadController,
+    };
 
-    this.buttonInteractionsToControllers = new Map<string, InteractionController>();
-    this.buttonInteractionsToControllers.set("archiveThreadButton", this.archiveThreadButtonInteractionController);
+    this.buttonInteractionsToControllers = {
+      archiveThreadButton: this.archiveThreadButtonInteractionController,
+    };
   }
 
   async routeMessage(message: Message): Promise<void> {
     if (message.author?.bot) return;
     let args = message.content.trim().split(" ");
     args = args.filter((arg) => !isMention(arg));
-    await this.commandsToControllers.get(args[0])?.handleMessage(args, message);
+    await this.commandsToControllers[args[0]]?.handleMessage(args, message);
   }
 
   async routeButtonInteraction(interaction: ButtonInteraction): Promise<void> {
     const buttonType = interaction.customId.split(":")[0];
-    await this.buttonInteractionsToControllers.get(buttonType).handleInteraction(interaction);
+    await this.buttonInteractionsToControllers[buttonType]?.handleInteraction(interaction);
   }
 }
