@@ -50,8 +50,8 @@ export class Router {
 
   async routeButtonInteraction(interaction: ButtonInteraction): Promise<void> {
     const buttonType = interaction.customId.split(":")[0];
-    await this.buttonInteractionsToControllers.get(buttonType).handleInteraction(
-      interaction
-    );
+    await this.buttonInteractionsToControllers
+      .get(buttonType)
+      .handleInteraction(interaction);
   }
 }

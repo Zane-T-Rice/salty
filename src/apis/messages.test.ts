@@ -14,17 +14,16 @@ describe("threads apis", () => {
       );
     });
   });
-  
+
   describe("sendMessageToChannel", () => {
     it("should call axios.post", async () => {
       jest.spyOn(messages, "post").mockResolvedValueOnce({});
-      const channelId = 'testChannelId';
-      const content = 'testContent';
+      const channelId = "testChannelId";
+      const content = "testContent";
       await messages.sendMessageToChannel(channelId, content);
-      expect(messages.post).toBeCalledWith(
-        `/channels/${channelId}/messages`,
-        { content }
-      );
+      expect(messages.post).toBeCalledWith(`/channels/${channelId}/messages`, {
+        content,
+      });
     });
   });
 });
