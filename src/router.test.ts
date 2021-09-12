@@ -1,4 +1,3 @@
-import * as utils from "./utils";
 import {
   ArchiveThreadButtonInteractionController,
   PingController,
@@ -7,7 +6,6 @@ import {
 import { ButtonInteraction, Message } from "discord.js";
 import { Router } from "./router";
 
-jest.mock("./utils");
 const pingControllerInstance = new PingController();
 const startThreadControllerInstance = new StartThreadController();
 const archiveThreadButtonInteractionController =
@@ -54,17 +52,6 @@ describe("router", () => {
       await router.routeMessage({ content, author } as Message);
 
       expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
-    });
-
-    it("should route messages beginning with mentions as !t command", async () => {
-      jest.spyOn(utils, "isMention").mockReturnValueOnce(true);
-      const content = "";
-      await router.routeMessage({ content } as Message);
-
-      expect(startThreadControllerInstance.handleMessage).toHaveBeenCalledWith(
-        ["!t", content],
-        { content }
-      );
     });
   });
 

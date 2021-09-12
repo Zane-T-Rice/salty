@@ -42,9 +42,7 @@ export class Router {
   async routeMessage(message: Message): Promise<void> {
     if (message.author?.bot) return;
     let args = message.content.trim().split(" ");
-    const firstArgWasMention = isMention(args[0]);
     args = args.filter((arg) => !isMention(arg));
-    if (firstArgWasMention && args.length > 0) args = ["!t"].concat(args);
     await this.commandsToControllers.get(args[0])?.handleMessage(args, message);
   }
 
