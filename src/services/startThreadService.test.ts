@@ -35,7 +35,7 @@ describe("startThreadService", () => {
       expect(threads.addThreadMember).toHaveBeenCalledWith("threadChannelId", message.author.id);
     });
 
-    it("should call getMessagesFromChannel and use the correct message id from that call to startThreadWithMessage", async () => {
+    it("should call getMessagesFromChannel and use the correct message id from that call to call startThreadWithMessage with the correct message", async () => {
       const startThreadService = new StartThreadService(messages, threads);
       const message = {
         id: "testMessageId",
@@ -61,8 +61,12 @@ describe("startThreadService", () => {
         id: "alsoNotThisOne",
         author: { id: "also nope" },
       } as Message);
-      await startThreadService.handleMessage([], message);
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, "replyToMe", expect.any(String));
+      await startThreadService.handleMessage(["!t", "hello", "world"], message);
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
+        message.channel.id,
+        message.channel.messages.cache.get("test2").id,
+        expect.any(String)
+      );
     });
 
     it("handles getMessagesFromChannel returning no matches", async () => {
@@ -100,7 +104,7 @@ describe("startThreadService", () => {
       expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, message.id, expect.any(String));
     });
 
-    it("should call messages.sendMessageToChannel if the user entered a message", async () => {
+    it("should not call messages.sendMessageToChannel if the user entered a message, but the thread is spawned from the same message", async () => {
       const message = {
         id: "testMessageId",
         channel: {
@@ -115,7 +119,7 @@ describe("startThreadService", () => {
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage(["!t", "hello", "world"], message);
       expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, message.id, expect.any(String));
-      expect(messages.sendMessageToChannel).toHaveBeenCalledWith(threadChannel.id, "hello world");
+      expect(messages.sendMessageToChannel).not.toHaveBeenCalled();
     });
   });
 });

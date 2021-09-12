@@ -9,7 +9,7 @@
     "start": "nodemon build/index.js",
     "lint": "npx eslint --fix --max-warnings=0 src/*.ts src/**/*.ts",
     "prettier": "npx prettier src/*.ts src/**/*.ts -w",
-    "test": "rm -rf build && npx yarn build && jest build/ --coverage"
+    "test": "rm -rf build && npx yarn build && jest build/ --coverage --verbose"
   },
   "author": "Zane Rice",
   "dependencies": {
