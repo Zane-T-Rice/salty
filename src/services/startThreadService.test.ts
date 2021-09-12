@@ -5,10 +5,7 @@ import { StartThreadService } from "./startThreadService";
 describe("startThreadService", () => {
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const startThreadService = new StartThreadService(
-        new Messages(),
-        new Threads()
-      );
+      const startThreadService = new StartThreadService(new Messages(), new Threads());
       expect(startThreadService).not.toBe(undefined);
     });
   });
@@ -22,12 +19,8 @@ describe("startThreadService", () => {
 
     beforeEach(() => {
       jest.resetAllMocks();
-      jest
-        .spyOn(messages, "sendMessageToChannel")
-        .mockResolvedValueOnce({} as Message);
-      jest
-        .spyOn(threads, "startThreadWithMessage")
-        .mockResolvedValueOnce(threadChannel);
+      jest.spyOn(messages, "sendMessageToChannel").mockResolvedValueOnce({} as Message);
+      jest.spyOn(threads, "startThreadWithMessage").mockResolvedValueOnce(threadChannel);
       jest.spyOn(threads, "addThreadMember").mockResolvedValueOnce(undefined);
     });
     it("should call startThreadWithMessage", async () => {
@@ -38,15 +31,8 @@ describe("startThreadService", () => {
       } as Message;
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage([], message);
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
-        message.channel.id,
-        message.id,
-        expect.any(String)
-      );
-      expect(threads.addThreadMember).toHaveBeenCalledWith(
-        "threadChannelId",
-        message.author.id
-      );
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, message.id, expect.any(String));
+      expect(threads.addThreadMember).toHaveBeenCalledWith("threadChannelId", message.author.id);
     });
 
     it("should call getMessagesFromChannel and use the correct message id from that call to startThreadWithMessage", async () => {
@@ -76,11 +62,7 @@ describe("startThreadService", () => {
         author: { id: "also nope" },
       } as Message);
       await startThreadService.handleMessage([], message);
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
-        message.channel.id,
-        "replyToMe",
-        expect.any(String)
-      );
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, "replyToMe", expect.any(String));
     });
 
     it("handles getMessagesFromChannel returning no matches", async () => {
@@ -115,11 +97,7 @@ describe("startThreadService", () => {
         author: { id: "tryingToReplyToSomeone" },
       } as Message;
       await startThreadService.handleMessage([], message);
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
-        message.channel.id,
-        message.id,
-        expect.any(String)
-      );
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, message.id, expect.any(String));
     });
 
     it("should call messages.sendMessageToChannel if the user entered a message", async () => {
@@ -136,15 +114,8 @@ describe("startThreadService", () => {
       } as Message;
       const startThreadService = new StartThreadService(messages, threads);
       await startThreadService.handleMessage(["!t", "hello", "world"], message);
-      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(
-        message.channel.id,
-        message.id,
-        expect.any(String)
-      );
-      expect(messages.sendMessageToChannel).toHaveBeenCalledWith(
-        threadChannel.id,
-        "hello world"
-      );
+      expect(threads.startThreadWithMessage).toHaveBeenCalledWith(message.channel.id, message.id, expect.any(String));
+      expect(messages.sendMessageToChannel).toHaveBeenCalledWith(threadChannel.id, "hello world");
     });
   });
 });

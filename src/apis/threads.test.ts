@@ -11,15 +11,10 @@ describe("Threads", () => {
         id: "testMessageId",
         channel: { id: "testChannelId" },
       } as Message;
-      await threads.startThreadWithMessage(
-        message.channel.id,
-        message.id,
-        "test"
-      );
-      expect(threads.post).toBeCalledWith(
-        `/channels/${message.channel.id}/messages/${message.id}/threads`,
-        { name: "test" }
-      );
+      await threads.startThreadWithMessage(message.channel.id, message.id, "test");
+      expect(threads.post).toBeCalledWith(`/channels/${message.channel.id}/messages/${message.id}/threads`, {
+        name: "test",
+      });
     });
   });
   describe("addThreadMember", () => {
@@ -31,10 +26,7 @@ describe("Threads", () => {
         author: { id: "testAuthorId" },
       } as Message;
       await threads.addThreadMember(message.channel.id, message.author.id);
-      expect(threads.put).toBeCalledWith(
-        `/channels/${message.channel.id}/thread-members/${message.author.id}`,
-        {}
-      );
+      expect(threads.put).toBeCalledWith(`/channels/${message.channel.id}/thread-members/${message.author.id}`, {});
     });
   });
   describe("archiveThread", () => {

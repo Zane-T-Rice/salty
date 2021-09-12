@@ -1,8 +1,7 @@
 import { ArchiveThreadButtonInteractionValidator } from "./archiveThreadButtonInteractionValidator";
 
 describe("ArchiveThreadButtonInteractionValidator", () => {
-  const archiveThreadButtonInteractionValidator =
-    new ArchiveThreadButtonInteractionValidator();
+  const archiveThreadButtonInteractionValidator = new ArchiveThreadButtonInteractionValidator();
 
   describe("validate", () => {
     it("should return true", () => {

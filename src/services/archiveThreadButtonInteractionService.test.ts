@@ -5,11 +5,10 @@ import { ArchiveThreadButtonInteractionService } from "./archiveThreadButtonInte
 describe("archiveThreadButtonInteractionService", () => {
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const archiveThreadButtonInteractionService =
-        new ArchiveThreadButtonInteractionService(
-          new Channels(),
-          new Threads()
-        );
+      const archiveThreadButtonInteractionService = new ArchiveThreadButtonInteractionService(
+        new Channels(),
+        new Threads()
+      );
       expect(archiveThreadButtonInteractionService).not.toBe(undefined);
     });
   });
@@ -30,9 +29,7 @@ describe("archiveThreadButtonInteractionService", () => {
     beforeEach(() => {
       jest.resetAllMocks();
       jest.spyOn(threads, "archiveThread").mockResolvedValueOnce(threadChannel);
-      jest
-        .spyOn(threads, "unarchiveThread")
-        .mockResolvedValueOnce(threadChannel);
+      jest.spyOn(threads, "unarchiveThread").mockResolvedValueOnce(threadChannel);
       jest.spyOn(channels, "getChannel").mockResolvedValueOnce(channelResponse);
     });
 
@@ -42,11 +39,8 @@ describe("archiveThreadButtonInteractionService", () => {
         customId: `archiveThreadButton:${channelId}`,
       } as ButtonInteraction;
       buttonInteraction.update = jest.fn();
-      const archiveThreadButtonInteractionService =
-        new ArchiveThreadButtonInteractionService(channels, threads);
-      await archiveThreadButtonInteractionService.handleInteraction(
-        buttonInteraction
-      );
+      const archiveThreadButtonInteractionService = new ArchiveThreadButtonInteractionService(channels, threads);
+      await archiveThreadButtonInteractionService.handleInteraction(buttonInteraction);
       expect(channels.getChannel).toHaveBeenCalledWith(channelId);
       expect(buttonInteraction.update).toHaveBeenCalledTimes(1);
       expect(threads.archiveThread).toHaveBeenCalledWith(channelId);
@@ -64,11 +58,8 @@ describe("archiveThreadButtonInteractionService", () => {
         customId: `archiveThreadButton:${channelId}`,
       } as ButtonInteraction;
       buttonInteraction.update = jest.fn();
-      const archiveThreadButtonInteractionService =
-        new ArchiveThreadButtonInteractionService(channels, threads);
-      await archiveThreadButtonInteractionService.handleInteraction(
-        buttonInteraction
-      );
+      const archiveThreadButtonInteractionService = new ArchiveThreadButtonInteractionService(channels, threads);
+      await archiveThreadButtonInteractionService.handleInteraction(buttonInteraction);
       expect(channels.getChannel).toHaveBeenCalledWith(channelId);
       expect(threads.unarchiveThread).toHaveBeenCalledWith(channelId);
       expect(buttonInteraction.update).toHaveBeenCalledTimes(1);
@@ -84,11 +75,8 @@ describe("archiveThreadButtonInteractionService", () => {
         customId: `archiveThreadButton:${channelId}`,
       } as ButtonInteraction;
       buttonInteraction.update = jest.fn();
-      const archiveThreadButtonInteractionService =
-        new ArchiveThreadButtonInteractionService(channels, threads);
-      await archiveThreadButtonInteractionService.handleInteraction(
-        buttonInteraction
-      );
+      const archiveThreadButtonInteractionService = new ArchiveThreadButtonInteractionService(channels, threads);
+      await archiveThreadButtonInteractionService.handleInteraction(buttonInteraction);
       expect(channels.getChannel).toHaveBeenCalledWith(channelId);
       expect(threads.unarchiveThread).not.toHaveBeenCalled();
       expect(buttonInteraction.update).not.toHaveBeenCalled();

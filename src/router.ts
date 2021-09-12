@@ -21,22 +21,15 @@ export class Router {
     startThreadController: StartThreadController
   ) {
     this.pingController = pingController;
-    this.archiveThreadButtonInteractionController =
-      archiveThreadButtonInteractionController;
+    this.archiveThreadButtonInteractionController = archiveThreadButtonInteractionController;
     this.startThreadController = startThreadController;
 
     this.commandsToControllers = new Map<string, CommandController>();
     this.commandsToControllers.set("!ping", this.pingController);
     this.commandsToControllers.set("!t", this.startThreadController);
 
-    this.buttonInteractionsToControllers = new Map<
-      string,
-      InteractionController
-    >();
-    this.buttonInteractionsToControllers.set(
-      "archiveThreadButton",
-      this.archiveThreadButtonInteractionController
-    );
+    this.buttonInteractionsToControllers = new Map<string, InteractionController>();
+    this.buttonInteractionsToControllers.set("archiveThreadButton", this.archiveThreadButtonInteractionController);
   }
 
   async routeMessage(message: Message): Promise<void> {
@@ -48,8 +41,6 @@ export class Router {
 
   async routeButtonInteraction(interaction: ButtonInteraction): Promise<void> {
     const buttonType = interaction.customId.split(":")[0];
-    await this.buttonInteractionsToControllers
-      .get(buttonType)
-      .handleInteraction(interaction);
+    await this.buttonInteractionsToControllers.get(buttonType).handleInteraction(interaction);
   }
 }

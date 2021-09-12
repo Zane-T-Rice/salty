@@ -7,10 +7,7 @@ export class Messages extends DiscordApis {
     return result as Message[];
   }
 
-  async sendMessageToChannel(
-    channelId: string,
-    message: string
-  ): Promise<Message> {
+  async sendMessageToChannel(channelId: string, message: string): Promise<Message> {
     const result = await this.post(`/channels/${channelId}/messages`, {
       content: message,
     });

@@ -1,15 +1,10 @@
-import {
-  ArchiveThreadButtonInteractionController,
-  PingController,
-  StartThreadController,
-} from "./controllers";
+import { ArchiveThreadButtonInteractionController, PingController, StartThreadController } from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
 import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
 const startThreadControllerInstance = new StartThreadController();
-const archiveThreadButtonInteractionController =
-  new ArchiveThreadButtonInteractionController();
+const archiveThreadButtonInteractionController = new ArchiveThreadButtonInteractionController();
 const router = new Router(
   pingControllerInstance,
   archiveThreadButtonInteractionController,
@@ -19,12 +14,8 @@ const router = new Router(
 beforeEach(() => {
   jest.resetAllMocks();
   jest.spyOn(pingControllerInstance, "handleMessage").mockResolvedValueOnce();
-  jest
-    .spyOn(startThreadControllerInstance, "handleMessage")
-    .mockResolvedValueOnce();
-  jest
-    .spyOn(archiveThreadButtonInteractionController, "handleInteraction")
-    .mockResolvedValueOnce();
+  jest.spyOn(startThreadControllerInstance, "handleMessage").mockResolvedValueOnce();
+  jest.spyOn(archiveThreadButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
 });
 
 describe("router", () => {
@@ -33,10 +24,7 @@ describe("router", () => {
       const content = "!ping";
       await router.routeMessage({ content } as Message);
 
-      expect(pingControllerInstance.handleMessage).toHaveBeenCalledWith(
-        [content],
-        { content }
-      );
+      expect(pingControllerInstance.handleMessage).toHaveBeenCalledWith([content], { content });
     });
 
     it("should handle messages that are not commands", async () => {
@@ -61,9 +49,7 @@ describe("router", () => {
         customId: "archiveThreadButton:threadChannelid",
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
-      expect(
-        archiveThreadButtonInteractionController.handleInteraction
-      ).toHaveBeenCalledWith(buttonInteraction);
+      expect(archiveThreadButtonInteractionController.handleInteraction).toHaveBeenCalledWith(buttonInteraction);
     });
   });
 });

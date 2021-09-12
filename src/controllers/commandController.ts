@@ -8,11 +8,7 @@ export abstract class CommandController {
   private service: CommandService;
   private validator: CommandValidator;
 
-  constructor(
-    authorizer: CommandAuthorizer,
-    validator: CommandValidator,
-    service: CommandService
-  ) {
+  constructor(authorizer: CommandAuthorizer, validator: CommandValidator, service: CommandService) {
     this.authorizer = authorizer;
     this.service = service;
     this.validator = validator;

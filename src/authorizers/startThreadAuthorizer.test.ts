@@ -26,9 +26,7 @@ describe("StartThreadAuthorizer", () => {
           },
         },
       } as Message;
-      message.member.roles.cache.find = jest
-        .fn()
-        .mockReturnValueOnce(undefined);
+      message.member.roles.cache.find = jest.fn().mockReturnValueOnce(undefined);
       const result = startThreadAuthorizer.authorize(undefined, message);
       expect(result).toBe(false);
     });

@@ -2,8 +2,7 @@ import { Channel, Message } from "discord.js";
 import { CreateStartThreadButtonValidator } from "./createStartThreadButtonValidator";
 
 describe("CreateStartThreadButtonValidator", () => {
-  const createStartThreadButtonValidator =
-    new CreateStartThreadButtonValidator();
+  const createStartThreadButtonValidator = new CreateStartThreadButtonValidator();
 
   describe("validate", () => {
     it("should return true for text channels", () => {

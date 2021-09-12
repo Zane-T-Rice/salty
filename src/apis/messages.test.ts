@@ -9,9 +9,7 @@ describe("threads apis", () => {
       jest.spyOn(messages, "get").mockResolvedValueOnce([]);
       const message = { channel: { id: "testChannelId" } } as Message;
       await messages.getMessagesFromChannel(message.channel.id);
-      expect(messages.get).toBeCalledWith(
-        `/channels/${message.channel.id}/messages`
-      );
+      expect(messages.get).toBeCalledWith(`/channels/${message.channel.id}/messages`);
     });
   });
 

@@ -3,8 +3,7 @@ import { ArchiveThreadButtonInteractionController } from "./archiveThreadButtonI
 describe("archiveThreadButtonInteractionController", () => {
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const archiveThreadButtonInteractionController =
-        new ArchiveThreadButtonInteractionController();
+      const archiveThreadButtonInteractionController = new ArchiveThreadButtonInteractionController();
       expect(archiveThreadButtonInteractionController).not.toBe(undefined);
     });
   });

@@ -8,11 +8,7 @@ export abstract class InteractionController {
   private service: InteractionService;
   private validator: InteractionValidator;
 
-  constructor(
-    authorizer: InteractionAuthorizer,
-    validator: InteractionValidator,
-    service: InteractionService
-  ) {
+  constructor(authorizer: InteractionAuthorizer, validator: InteractionValidator, service: InteractionService) {
     this.authorizer = authorizer;
     this.service = service;
     this.validator = validator;

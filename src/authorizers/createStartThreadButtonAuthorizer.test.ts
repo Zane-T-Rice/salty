@@ -2,8 +2,7 @@ import { Collection, Message, Role, Snowflake } from "discord.js";
 import { CreateStartThreadButtonAuthorizer } from "./createStartThreadButtonAuthorizer";
 
 describe("CreateStartThreadButtonAuthorizer", () => {
-  const createStartThreadButtonAuthorizer =
-    new CreateStartThreadButtonAuthorizer();
+  const createStartThreadButtonAuthorizer = new CreateStartThreadButtonAuthorizer();
 
   describe("authorize", () => {
     it("should return true if member has ThreaderButtons role", () => {
@@ -17,10 +16,7 @@ describe("CreateStartThreadButtonAuthorizer", () => {
       message.member.roles.cache.set("ThreaderButtons", {
         name: "ThreaderButtons",
       } as Role);
-      const result = createStartThreadButtonAuthorizer.authorize(
-        undefined,
-        message
-      );
+      const result = createStartThreadButtonAuthorizer.authorize(undefined, message);
       expect(result).toBe(true);
     });
 
@@ -32,31 +28,20 @@ describe("CreateStartThreadButtonAuthorizer", () => {
           },
         },
       } as Message;
-      message.member.roles.cache.find = jest
-        .fn()
-        .mockReturnValueOnce(undefined);
-      const result = createStartThreadButtonAuthorizer.authorize(
-        undefined,
-        message
-      );
+      message.member.roles.cache.find = jest.fn().mockReturnValueOnce(undefined);
+      const result = createStartThreadButtonAuthorizer.authorize(undefined, message);
       expect(result).toBe(false);
     });
 
     it("should handle undefined member", () => {
       const message = {} as Message;
-      const result = createStartThreadButtonAuthorizer.authorize(
-        undefined,
-        message
-      );
+      const result = createStartThreadButtonAuthorizer.authorize(undefined, message);
       expect(result).toBe(false);
     });
 
     it("should handle undefined roles", () => {
       const message = { member: {} } as Message;
-      const result = createStartThreadButtonAuthorizer.authorize(
-        undefined,
-        message
-      );
+      const result = createStartThreadButtonAuthorizer.authorize(undefined, message);
       expect(result).toBe(false);
     });
   });

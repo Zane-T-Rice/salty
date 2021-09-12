@@ -1,15 +1,8 @@
-import {
-  ButtonInteraction,
-  Collection,
-  GuildMemberRoleManager,
-  Role,
-  Snowflake,
-} from "discord.js";
+import { ButtonInteraction, Collection, GuildMemberRoleManager, Role, Snowflake } from "discord.js";
 import { ArchiveThreadButtonInteractionAuthorizer } from "./archiveThreadButtonInteractionAuthorizer";
 
 describe("ArchiveThreadButtonAuthorizer", () => {
-  const archiveThreadButtonInteractionAuthorizer =
-    new ArchiveThreadButtonInteractionAuthorizer();
+  const archiveThreadButtonInteractionAuthorizer = new ArchiveThreadButtonInteractionAuthorizer();
 
   describe("authorize", () => {
     it("should return true if member has Threader role", () => {
@@ -20,12 +13,8 @@ describe("ArchiveThreadButtonAuthorizer", () => {
           },
         },
       } as ButtonInteraction;
-      (buttonInteraction.member.roles as GuildMemberRoleManager).cache.set(
-        "Threader",
-        { name: "Threader" } as Role
-      );
-      const result =
-        archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
+      (buttonInteraction.member.roles as GuildMemberRoleManager).cache.set("Threader", { name: "Threader" } as Role);
+      const result = archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
       expect(result).toBe(true);
     });
 
@@ -37,22 +26,19 @@ describe("ArchiveThreadButtonAuthorizer", () => {
           },
         },
       } as ButtonInteraction;
-      const result =
-        archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
+      const result = archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
       expect(result).toBe(false);
     });
 
     it("should handle undefined member", () => {
       const buttonInteraction = {} as ButtonInteraction;
-      const result =
-        archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
+      const result = archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
       expect(result).toBe(false);
     });
 
     it("should handle undefined roles", () => {
       const buttonInteraction = { member: {} } as ButtonInteraction;
-      const result =
-        archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
+      const result = archiveThreadButtonInteractionAuthorizer.authorize(buttonInteraction);
       expect(result).toBe(false);
     });
   });

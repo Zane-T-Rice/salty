@@ -1,9 +1,5 @@
 import * as dotenv from "dotenv";
-import {
-  ArchiveThreadButtonInteractionController,
-  PingController,
-  StartThreadController,
-} from "./controllers";
+import { ArchiveThreadButtonInteractionController, PingController, StartThreadController } from "./controllers";
 import { Client, Intents, Interaction, Message } from "discord.js";
 import { Router } from "./router";
 

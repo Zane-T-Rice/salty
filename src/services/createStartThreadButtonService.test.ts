@@ -4,8 +4,7 @@ import { Message } from "discord.js";
 describe("createStartThreadButtonService", () => {
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const createStartThreadButtonService =
-        new CreateStartThreadButtonService();
+      const createStartThreadButtonService = new CreateStartThreadButtonService();
       expect(createStartThreadButtonService).not.toBe(undefined);
     });
   });
@@ -19,8 +18,7 @@ describe("createStartThreadButtonService", () => {
         },
         edit: jest.fn(),
       } as unknown as Message;
-      const createStartThreadButtonService =
-        new CreateStartThreadButtonService();
+      const createStartThreadButtonService = new CreateStartThreadButtonService();
       createStartThreadButtonService.handleMessage([], message);
       expect(message.edit).toHaveBeenCalledWith(
         expect.objectContaining({
