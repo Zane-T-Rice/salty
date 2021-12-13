@@ -1,4 +1,4 @@
-import { ButtonInteraction, InteractionUpdateOptions, MessageActionRowComponent } from "discord.js";
+import { ButtonInteraction, InteractionUpdateOptions, MessageActionRowComponent, MessageButton } from "discord.js";
 import { InteractionService } from "./interactionService";
 
 export class VoteButtonInteractionService extends InteractionService {
@@ -6,7 +6,7 @@ export class VoteButtonInteractionService extends InteractionService {
   async handleInteraction(interaction: ButtonInteraction): Promise<void> {
     const components = interaction.message.components[0].components as MessageActionRowComponent[];
     const messageComponents = components.map((component) => {
-      const [name, buttonIndex, messageId, label, voteCount] = component.customId.split(":");
+      const [name, buttonIndex, messageId, label, emoji, voteCount] = component.customId.split(":");
       let newVoteCount = voteCount;
       if (component.customId === interaction.customId) {
         const memberInteractionMapKey = `${interaction.member.user.id}:${name}:${buttonIndex}:${messageId}:${label}`;
@@ -18,12 +18,12 @@ export class VoteButtonInteractionService extends InteractionService {
           this.memberInteractionMap[memberInteractionMapKey] = 1;
         }
       }
-      return {
-        customId: `${name}:${buttonIndex}:${messageId}:${label}:${newVoteCount}`,
-        label: `${label} ${newVoteCount}`,
-        style: 1,
-        type: 2,
-      };
+      const button = new MessageButton()
+        .setCustomId(`${name}:${buttonIndex}:${messageId}:${label}:${emoji}:${newVoteCount}`)
+        .setLabel(`${label} ${newVoteCount}`)
+        .setStyle("PRIMARY");
+      if (emoji) button.setEmoji(emoji);
+      return button;
     });
 
     const interactionUpdateOptions = {

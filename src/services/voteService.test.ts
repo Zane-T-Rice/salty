@@ -10,22 +10,65 @@ describe("voteService", () => {
   });
 
   describe("handleMessage", () => {
-    it("should reply with pong", () => {
+    it("should reply with updated interaction", () => {
       const message = { reply: jest.fn(), id: "messageId" } as unknown as Message;
       const voteService = new VoteService();
-      voteService.handleMessage(["!vote", "one", "two"], message);
-      expect(message.reply).toHaveBeenCalledWith({
-        components: [
-          {
-            components: [
-              { customId: "vote:0:messageId:one:0", label: "one 0", style: 1, type: 2 },
-              { customId: "vote:1:messageId:two:0", label: "two 0", style: 1, type: 2 },
+      voteService.handleMessage(["!vote", "one", "two", "<:emoji:12345>"], message);
+      expect(message.reply).toMatchInlineSnapshot(`
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "components": Array [
+          Object {
+            "components": Array [
+              Object {
+                "custom_id": "vote:0:messageId:one::0",
+                "disabled": false,
+                "emoji": null,
+                "label": "one 0",
+                "style": 1,
+                "type": 2,
+                "url": null,
+              },
+              Object {
+                "custom_id": "vote:1:messageId:two::0",
+                "disabled": false,
+                "emoji": null,
+                "label": "two 0",
+                "style": 1,
+                "type": 2,
+                "url": null,
+              },
+              Object {
+                "custom_id": "vote:2:messageId::12345:0",
+                "disabled": false,
+                "emoji": Object {
+                  "animated": false,
+                  "id": null,
+                  "name": "12345",
+                },
+                "label": " 0",
+                "style": 1,
+                "type": 2,
+                "url": null,
+              },
             ],
-            type: 1,
+            "type": 1,
           },
         ],
-        content: "Vote",
-      });
+        "content": "Vote",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`);
     });
   });
 });
