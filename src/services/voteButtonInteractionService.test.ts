@@ -1,4 +1,4 @@
-import { ButtonInteraction, Message, MessageButton } from "discord.js";
+import { ButtonInteraction, Message } from "discord.js";
 import { VoteButtonInteractionService } from "./voteButtonInteractionService";
 
 describe("voteButtonInteractionService", () => {
