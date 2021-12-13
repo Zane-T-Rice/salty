@@ -1,4 +1,3 @@
-import { Messages, Threads } from "../apis";
 import { CommandController } from "./commandController";
 import { VoteAuthorizer } from "../authorizers";
 import { VoteService } from "../services";

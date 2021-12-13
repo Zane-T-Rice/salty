@@ -6,20 +6,21 @@ export class VoteButtonInteractionService extends InteractionService {
   async handleInteraction(interaction: ButtonInteraction): Promise<void> {
     const components = interaction.message.components[0].components as MessageActionRowComponent[];
     const messageComponents = components.map((component) => {
-      let [name, buttonIndex, messageId, label, voteCount] = component.customId.split(":");
+      const [name, buttonIndex, messageId, label, voteCount] = component.customId.split(":");
+      let newVoteCount = voteCount;
       if (component.customId === interaction.customId) {
         const memberInteractionMapKey = `${interaction.member.user.id}:${name}:${buttonIndex}:${messageId}:${label}`;
         if (this.memberInteractionMap[memberInteractionMapKey]) {
-          voteCount = (parseInt(voteCount) - 1).toString();
+          newVoteCount = (parseInt(voteCount) - 1).toString();
           delete this.memberInteractionMap[memberInteractionMapKey];
         } else {
-          voteCount = (parseInt(voteCount) + 1).toString();
+          newVoteCount = (parseInt(voteCount) + 1).toString();
           this.memberInteractionMap[memberInteractionMapKey] = 1;
         }
       }
       return {
-        customId: `${name}:${buttonIndex}:${messageId}:${label}:${voteCount}`,
-        label: `${label} ${voteCount}`,
+        customId: `${name}:${buttonIndex}:${messageId}:${label}:${newVoteCount}`,
+        label: `${label} ${newVoteCount}`,
         style: 1,
         type: 2,
       };

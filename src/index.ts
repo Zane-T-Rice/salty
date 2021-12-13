@@ -3,8 +3,8 @@ import {
   ArchiveThreadButtonInteractionController,
   PingController,
   StartThreadController,
-  VoteController,
   VoteButtonInteractionController,
+  VoteController,
 } from "./controllers";
 import { Client, Intents, Interaction, Message } from "discord.js";
 import { Router } from "./router";
