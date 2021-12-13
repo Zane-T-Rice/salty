@@ -1,12 +1,20 @@
 import * as dotenv from "dotenv";
-import { ArchiveThreadButtonInteractionController, PingController, StartThreadController } from "./controllers";
+import {
+  ArchiveThreadButtonInteractionController,
+  PingController,
+  StartThreadController,
+  VoteController,
+  VoteButtonInteractionController,
+} from "./controllers";
 import { Client, Intents, Interaction, Message } from "discord.js";
 import { Router } from "./router";
 
 const router = new Router(
   new PingController(),
   new ArchiveThreadButtonInteractionController(),
-  new StartThreadController()
+  new StartThreadController(),
+  new VoteController(),
+  new VoteButtonInteractionController()
 );
 
 const client = new Client({

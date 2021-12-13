@@ -1,14 +1,24 @@
-import { ArchiveThreadButtonInteractionController, PingController, StartThreadController } from "./controllers";
+import {
+  ArchiveThreadButtonInteractionController,
+  PingController,
+  StartThreadController,
+  VoteButtonInteractionController,
+  VoteController,
+} from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
 import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
 const startThreadControllerInstance = new StartThreadController();
 const archiveThreadButtonInteractionController = new ArchiveThreadButtonInteractionController();
+const voteController = new VoteController();
+const voteButtonInteractionController = new VoteButtonInteractionController();
 const router = new Router(
   pingControllerInstance,
   archiveThreadButtonInteractionController,
-  startThreadControllerInstance
+  startThreadControllerInstance,
+  voteController,
+  voteButtonInteractionController
 );
 
 beforeEach(() => {
@@ -16,6 +26,7 @@ beforeEach(() => {
   jest.spyOn(pingControllerInstance, "handleMessage").mockResolvedValueOnce();
   jest.spyOn(startThreadControllerInstance, "handleMessage").mockResolvedValueOnce();
   jest.spyOn(archiveThreadButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
+  jest.spyOn(voteButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
 });
 
 describe("router", () => {
@@ -44,12 +55,12 @@ describe("router", () => {
   });
 
   describe("routeButtonInteraction", () => {
-    it("should route archiveThreadButton", async () => {
+    it("should route vote button", async () => {
       const buttonInteraction = {
-        customId: "archiveThreadButton:threadChannelid",
+        customId: "vote:",
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
-      expect(archiveThreadButtonInteractionController.handleInteraction).toHaveBeenCalledWith(buttonInteraction);
+      expect(voteButtonInteractionController.handleInteraction).toHaveBeenCalledWith(buttonInteraction);
     });
     it("should handle interactions that are not recognized", async () => {
       const buttonInteraction = {
@@ -57,6 +68,7 @@ describe("router", () => {
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
       expect(archiveThreadButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
+      expect(voteButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
     });
   });
 });

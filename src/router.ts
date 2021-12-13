@@ -4,6 +4,8 @@ import {
   InteractionController,
   PingController,
   StartThreadController,
+  VoteButtonInteractionController,
+  VoteController,
 } from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
 import { isMention } from "./utils";
@@ -12,6 +14,8 @@ export class Router {
   private pingController: PingController;
   private archiveThreadButtonInteractionController: ArchiveThreadButtonInteractionController;
   private startThreadController: StartThreadController;
+  private voteButtonInteractionController: VoteButtonInteractionController;
+  private voteController: VoteController;
   private commandsToControllers: {
     [key: string]: CommandController;
   };
@@ -22,19 +26,25 @@ export class Router {
   constructor(
     pingController: PingController,
     archiveThreadButtonInteractionController: ArchiveThreadButtonInteractionController,
-    startThreadController: StartThreadController
+    startThreadController: StartThreadController,
+    voteController: VoteController,
+    voteButtonInteractionController: VoteButtonInteractionController
   ) {
     this.pingController = pingController;
     this.archiveThreadButtonInteractionController = archiveThreadButtonInteractionController;
     this.startThreadController = startThreadController;
+    this.voteController = voteController;
+    this.voteButtonInteractionController = voteButtonInteractionController;
 
     this.commandsToControllers = {
       "!ping": this.pingController,
       "!t": this.startThreadController,
+      "!vote": this.voteController,
     };
 
     this.buttonInteractionsToControllers = {
       archiveThreadButton: this.archiveThreadButtonInteractionController,
+      vote: this.voteButtonInteractionController,
     };
   }
 
