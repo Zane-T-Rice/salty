@@ -4,8 +4,12 @@ describe("VoteValidator", () => {
   const voteValidator = new VoteValidator();
 
   describe("validate", () => {
-    it("should return true for 2 arguments", () => {
+    it("should return true for 2 arguments without pipe", () => {
       const result = voteValidator.validate(["one", "two"]);
+      expect(result).toBe(true);
+    });
+    it("should return true for 2 arguments", () => {
+      const result = voteValidator.validate(["one", "|", "two"]);
       expect(result).toBe(true);
     });
     it("should return false for 1 arguments", () => {
@@ -13,7 +17,21 @@ describe("VoteValidator", () => {
       expect(result).toBe(false);
     });
     it("should return false for 7 arguments", () => {
-      const result = voteValidator.validate(["one", "two", "three", "four", "five", "six", "seven"]);
+      const result = voteValidator.validate([
+        "one",
+        "|",
+        "two",
+        "|",
+        "three",
+        "|",
+        "four",
+        "|",
+        "five",
+        "|",
+        "six",
+        "|",
+        "seven",
+      ]);
       expect(result).toBe(false);
     });
   });

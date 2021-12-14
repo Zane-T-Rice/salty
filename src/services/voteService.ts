@@ -1,13 +1,13 @@
+import { isCustomEmoji, parseCustomEmojiId } from "../utils";
 import { Message, MessageButton, ReplyMessageOptions } from "discord.js";
 import { CommandService } from "./commandService";
 
 export class VoteService extends CommandService {
   async handleMessage(args: string[], message: Message): Promise<void> {
-    const components = args.slice(1).map((arg, index) => {
-      const emoji =
-        arg.includes(":") && arg.includes("<") && arg.includes(">")
-          ? arg.substring(arg.lastIndexOf(":") + 1, arg.length - 1)
-          : "";
+    const joined = args.slice(1).join(" ");
+    const pipeDelimited = joined.split("|").map((arg) => arg.trim());
+    const components = pipeDelimited.map((arg, index) => {
+      const emoji = isCustomEmoji(arg) ? parseCustomEmojiId(arg) : "";
       const label = emoji ? "" : arg.replace(/:/g, "");
       const button = new MessageButton()
         .setCustomId(`vote:${index}:${message.id}:${label}:${emoji}:0`)

@@ -56,16 +56,10 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "voteButtonInteractionService:1:messageId:two::0",
-                "disabled": false,
-                "emoji": null,
+                "customId": "voteButtonInteractionService:1:messageId:two::0",
                 "label": "two 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
               },
             ],
-            "type": 1,
           },
         ],
       },
@@ -124,16 +118,10 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "voteButtonInteractionService:1:messageId:two::0",
-                "disabled": false,
-                "emoji": null,
+                "customId": "voteButtonInteractionService:1:messageId:two::0",
                 "label": "two 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
               },
             ],
-            "type": 1,
           },
         ],
       },
@@ -192,16 +180,10 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "voteButtonInteractionService:1:messageId:two::0",
-                "disabled": false,
-                "emoji": null,
+                "customId": "voteButtonInteractionService:1:messageId:two::0",
                 "label": "two 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
               },
             ],
-            "type": 1,
           },
         ],
       },
@@ -217,7 +199,7 @@ describe("voteButtonInteractionService", () => {
 `);
     });
   });
-  it("should update work with emoji", () => {
+  it("update should work with emoji", () => {
     const voteButtonInteractionService = new VoteButtonInteractionService();
     const buttonInteraction: ButtonInteraction = {
       customId: "voteButtonInteractionService:0:messageId::12345:0",
@@ -267,20 +249,10 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "voteButtonInteractionService:1:messageId::1234556:0",
-                "disabled": false,
-                "emoji": Object {
-                  "animated": false,
-                  "id": null,
-                  "name": "1234556",
-                },
-                "label": " 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
+                "customId": "voteButtonInteractionService:1:messageId::1234556:0",
+                "label": "two 0",
               },
             ],
-            "type": 1,
           },
         ],
       },
