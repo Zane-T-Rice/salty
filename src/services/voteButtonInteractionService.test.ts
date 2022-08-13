@@ -13,7 +13,7 @@ describe("voteButtonInteractionService", () => {
     it("should update vote count", () => {
       const voteButtonInteractionService = new VoteButtonInteractionService();
       const buttonInteraction: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::0",
+        customId: "voteButtonInteractionService:0:messageId:one::0:0",
         update: jest.fn(),
         member: {
           user: {
@@ -25,11 +25,11 @@ describe("voteButtonInteractionService", () => {
             {
               components: [
                 {
-                  customId: "voteButtonInteractionService:0:messageId:one::0",
+                  customId: "voteButtonInteractionService:0:messageId:one::0:0",
                   label: "one 0",
                 },
                 {
-                  customId: "voteButtonInteractionService:1:messageId:two::0",
+                  customId: "voteButtonInteractionService:1:messageId:two::0:0",
                   label: "two 0",
                 },
               ],
@@ -47,7 +47,7 @@ describe("voteButtonInteractionService", () => {
           Object {
             "components": Array [
               Object {
-                "custom_id": "voteButtonInteractionService:0:messageId:one::1",
+                "custom_id": "voteButtonInteractionService:0:messageId:one::1:0",
                 "disabled": false,
                 "emoji": null,
                 "label": "one 1",
@@ -56,7 +56,7 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "customId": "voteButtonInteractionService:1:messageId:two::0",
+                "customId": "voteButtonInteractionService:1:messageId:two::0:0",
                 "label": "two 0",
               },
             ],
@@ -75,7 +75,7 @@ describe("voteButtonInteractionService", () => {
 `);
 
       const buttonInteractionTwo: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::1",
+        customId: "voteButtonInteractionService:0:messageId:one::1:0",
         update: jest.fn(),
         member: {
           user: {
@@ -87,11 +87,11 @@ describe("voteButtonInteractionService", () => {
             {
               components: [
                 {
-                  customId: "voteButtonInteractionService:0:messageId:one::1",
+                  customId: "voteButtonInteractionService:0:messageId:one::1:0",
                   label: "one 1",
                 },
                 {
-                  customId: "voteButtonInteractionService:1:messageId:two::0",
+                  customId: "voteButtonInteractionService:1:messageId:two::0:0",
                   label: "two 0",
                 },
               ],
@@ -109,7 +109,7 @@ describe("voteButtonInteractionService", () => {
           Object {
             "components": Array [
               Object {
-                "custom_id": "voteButtonInteractionService:0:messageId:one::0",
+                "custom_id": "voteButtonInteractionService:0:messageId:one::0:0",
                 "disabled": false,
                 "emoji": null,
                 "label": "one 0",
@@ -118,7 +118,7 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "customId": "voteButtonInteractionService:1:messageId:two::0",
+                "customId": "voteButtonInteractionService:1:messageId:two::0:0",
                 "label": "two 0",
               },
             ],
@@ -137,7 +137,7 @@ describe("voteButtonInteractionService", () => {
 `);
 
       const buttonInteractionThree: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::1",
+        customId: "voteButtonInteractionService:0:messageId:one::1:0",
         update: jest.fn(),
         member: {
           user: {
@@ -149,11 +149,11 @@ describe("voteButtonInteractionService", () => {
             {
               components: [
                 {
-                  customId: "voteButtonInteractionService:0:messageId:one::1",
+                  customId: "voteButtonInteractionService:0:messageId:one::1:0",
                   label: "one 1",
                 },
                 {
-                  customId: "voteButtonInteractionService:1:messageId:two::0",
+                  customId: "voteButtonInteractionService:1:messageId:two::0:0",
                   label: "two 0",
                 },
               ],
@@ -171,7 +171,7 @@ describe("voteButtonInteractionService", () => {
           Object {
             "components": Array [
               Object {
-                "custom_id": "voteButtonInteractionService:0:messageId:one::2",
+                "custom_id": "voteButtonInteractionService:0:messageId:one::2:0",
                 "disabled": false,
                 "emoji": null,
                 "label": "one 2",
@@ -180,7 +180,7 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "customId": "voteButtonInteractionService:1:messageId:two::0",
+                "customId": "voteButtonInteractionService:1:messageId:two::0:0",
                 "label": "two 0",
               },
             ],
@@ -202,7 +202,7 @@ describe("voteButtonInteractionService", () => {
   it("update should work with emoji", () => {
     const voteButtonInteractionService = new VoteButtonInteractionService();
     const buttonInteraction: ButtonInteraction = {
-      customId: "voteButtonInteractionService:0:messageId::12345:0",
+      customId: "voteButtonInteractionService:0:messageId::12345:0:0",
       update: jest.fn(),
       member: {
         user: {
@@ -214,11 +214,11 @@ describe("voteButtonInteractionService", () => {
           {
             components: [
               {
-                customId: "voteButtonInteractionService:0:messageId::12345:0",
+                customId: "voteButtonInteractionService:0:messageId::12345:0:0",
                 label: "one 0",
               },
               {
-                customId: "voteButtonInteractionService:1:messageId::1234556:0",
+                customId: "voteButtonInteractionService:1:messageId::1234556:0:0",
                 label: "two 0",
               },
             ],
@@ -236,7 +236,7 @@ describe("voteButtonInteractionService", () => {
           Object {
             "components": Array [
               Object {
-                "custom_id": "voteButtonInteractionService:0:messageId::12345:1",
+                "custom_id": "voteButtonInteractionService:0:messageId::12345:1:0",
                 "disabled": false,
                 "emoji": Object {
                   "animated": false,
@@ -249,7 +249,7 @@ describe("voteButtonInteractionService", () => {
                 "url": null,
               },
               Object {
-                "customId": "voteButtonInteractionService:1:messageId::1234556:0",
+                "customId": "voteButtonInteractionService:1:messageId::1234556:0:0",
                 "label": "two 0",
               },
             ],

@@ -23,7 +23,7 @@ describe("voteService", () => {
           Object {
             "components": Array [
               Object {
-                "custom_id": "vote:0:messageId:one::0",
+                "custom_id": "vote:0:messageId:one::0:0",
                 "disabled": false,
                 "emoji": null,
                 "label": "one 0",
@@ -32,7 +32,7 @@ describe("voteService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "vote:1:messageId:two::0",
+                "custom_id": "vote:1:messageId:two::0:0",
                 "disabled": false,
                 "emoji": null,
                 "label": "two 0",
@@ -41,7 +41,7 @@ describe("voteService", () => {
                 "url": null,
               },
               Object {
-                "custom_id": "vote:2:messageId::12345:0",
+                "custom_id": "vote:2:messageId::12345:0:0",
                 "disabled": false,
                 "emoji": Object {
                   "animated": false,

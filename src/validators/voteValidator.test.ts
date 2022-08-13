@@ -16,22 +16,12 @@ describe("VoteValidator", () => {
       const result = voteValidator.validate(["one"]);
       expect(result).toBe(false);
     });
-    it("should return false for 7 arguments", () => {
-      const result = voteValidator.validate([
-        "one",
-        "|",
-        "two",
-        "|",
-        "three",
-        "|",
-        "four",
-        "|",
-        "five",
-        "|",
-        "six",
-        "|",
-        "seven",
-      ]);
+    it("should return false for 26 arguments", () => {
+      const args: string[] = [];
+      for (let i = 0; i < 25; i++) {
+        args.push(...["arg", "|"]);
+      }
+      const result = voteValidator.validate(args);
       expect(result).toBe(false);
     });
   });
