@@ -1,31 +1,15 @@
-import {
-  ArchiveThreadButtonInteractionController,
-  PingController,
-  StartThreadController,
-  VoteButtonInteractionController,
-  VoteController,
-} from "./controllers";
+import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
 import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
-const startThreadControllerInstance = new StartThreadController();
-const archiveThreadButtonInteractionController = new ArchiveThreadButtonInteractionController();
 const voteController = new VoteController();
 const voteButtonInteractionController = new VoteButtonInteractionController();
-const router = new Router(
-  pingControllerInstance,
-  archiveThreadButtonInteractionController,
-  startThreadControllerInstance,
-  voteController,
-  voteButtonInteractionController
-);
+const router = new Router(pingControllerInstance, voteController, voteButtonInteractionController);
 
 beforeEach(() => {
   jest.resetAllMocks();
   jest.spyOn(pingControllerInstance, "handleMessage").mockResolvedValueOnce();
-  jest.spyOn(startThreadControllerInstance, "handleMessage").mockResolvedValueOnce();
-  jest.spyOn(archiveThreadButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
   jest.spyOn(voteButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
 });
 
@@ -67,7 +51,6 @@ describe("router", () => {
         customId: "notRecognizedInteraction:threadChannelid",
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
-      expect(archiveThreadButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
       expect(voteButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
     });
   });

@@ -22,15 +22,15 @@ pm2 --version
 ### How to Build
 
 ```sh
-npx yarn install
-npx yarn build
+npm install
+npm run build
 ```
 
 ### Start With PM2 (recommended)
 
 ```sh
-pm2 start "npx yarn build:watch"
-pm2 start "npx yarn start"
+pm2 start "npx npm run build:watch"
+pm2 start "npx npm start"
 ```
 
 Some helpful pm2 commands:
@@ -46,8 +46,8 @@ pm2 logs
 ### Start Without PM2
 
 ```sh
-npx yarn build:watch
-npx yarn start
+npm run build:watch
+npm start
 ```
 
 ### How To Add A New Command

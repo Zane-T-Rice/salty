@@ -1,9 +1,7 @@
 import {
-  ArchiveThreadButtonInteractionController,
   CommandController,
   InteractionController,
   PingController,
-  StartThreadController,
   VoteButtonInteractionController,
   VoteController,
 } from "./controllers";
@@ -12,8 +10,6 @@ import { isMention } from "./utils";
 
 export class Router {
   private pingController: PingController;
-  private archiveThreadButtonInteractionController: ArchiveThreadButtonInteractionController;
-  private startThreadController: StartThreadController;
   private voteButtonInteractionController: VoteButtonInteractionController;
   private voteController: VoteController;
   private commandsToControllers: {
@@ -25,25 +21,19 @@ export class Router {
 
   constructor(
     pingController: PingController,
-    archiveThreadButtonInteractionController: ArchiveThreadButtonInteractionController,
-    startThreadController: StartThreadController,
     voteController: VoteController,
     voteButtonInteractionController: VoteButtonInteractionController
   ) {
     this.pingController = pingController;
-    this.archiveThreadButtonInteractionController = archiveThreadButtonInteractionController;
-    this.startThreadController = startThreadController;
     this.voteController = voteController;
     this.voteButtonInteractionController = voteButtonInteractionController;
 
     this.commandsToControllers = {
       "!ping": this.pingController,
-      "!t": this.startThreadController,
       "!vote": this.voteController,
     };
 
     this.buttonInteractionsToControllers = {
-      archiveThreadButton: this.archiveThreadButtonInteractionController,
       vote: this.voteButtonInteractionController,
     };
   }
