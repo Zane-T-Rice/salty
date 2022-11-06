@@ -15,60 +15,54 @@ describe("voteService", () => {
       const voteService = new VoteService();
       voteService.handleMessage(["!vote", "one", "|", "two", "|", "<:emoji:12345>"], message);
       expect(message.reply).toMatchInlineSnapshot(`
-[MockFunction] {
-  "calls": Array [
-    Array [
-      Object {
-        "components": Array [
-          Object {
-            "components": Array [
+        [MockFunction] {
+          "calls": Array [
+            Array [
               Object {
-                "custom_id": "vote:0:messageId:one::0:0",
-                "disabled": false,
-                "emoji": null,
-                "label": "one 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
-              },
-              Object {
-                "custom_id": "vote:1:messageId:two::0:0",
-                "disabled": false,
-                "emoji": null,
-                "label": "two 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
-              },
-              Object {
-                "custom_id": "vote:2:messageId::12345:0:0",
-                "disabled": false,
-                "emoji": Object {
-                  "animated": false,
-                  "id": null,
-                  "name": "12345",
-                },
-                "label": " 0",
-                "style": 1,
-                "type": 2,
-                "url": null,
+                "components": Array [
+                  Object {
+                    "components": Array [
+                      Object {
+                        "custom_id": "vote:0:messageId:one::0:0",
+                        "emoji": undefined,
+                        "label": "one 0",
+                        "style": 1,
+                        "type": 2,
+                      },
+                      Object {
+                        "custom_id": "vote:1:messageId:two::0:0",
+                        "emoji": undefined,
+                        "label": "two 0",
+                        "style": 1,
+                        "type": 2,
+                      },
+                      Object {
+                        "custom_id": "vote:2:messageId::12345:0:0",
+                        "emoji": Object {
+                          "animated": false,
+                          "id": undefined,
+                          "name": "12345",
+                        },
+                        "label": " 0",
+                        "style": 1,
+                        "type": 2,
+                      },
+                    ],
+                    "type": 1,
+                  },
+                ],
+                "content": "Vote",
               },
             ],
-            "type": 1,
-          },
-        ],
-        "content": "Vote",
-      },
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
-`);
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        }
+      `);
     });
   });
 });
