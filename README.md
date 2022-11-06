@@ -29,8 +29,8 @@ npm run build
 ### Start With PM2 (recommended)
 
 ```sh
-pm2 start "npx npm run build:watch"
-pm2 start "npx npm start"
+pm2 start "npm run build:watch"
+pm2 start "npm start"
 ```
 
 Some helpful pm2 commands:
