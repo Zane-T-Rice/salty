@@ -1,3 +1,4 @@
+import { ButtonInteraction, Message } from "discord.js";
 import {
   CommandController,
   InteractionController,
@@ -5,7 +6,6 @@ import {
   VoteButtonInteractionController,
   VoteController,
 } from "./controllers";
-import { ButtonInteraction, Message } from "discord.js";
 import { isMention } from "./utils";
 
 export class Router {

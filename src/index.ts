@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
-import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { Client, GatewayIntentBits, Interaction, Message } from "discord.js";
+import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { Router } from "./router";
 
 const router = new Router(new PingController(), new VoteController(), new VoteButtonInteractionController());

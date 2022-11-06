@@ -1,5 +1,5 @@
-import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { ButtonInteraction, Message } from "discord.js";
+import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
