@@ -13,7 +13,7 @@ describe("voteService", () => {
     it("should reply with updated interaction", () => {
       const message = { reply: jest.fn(), id: "messageId" } as unknown as Message;
       const voteService = new VoteService();
-      voteService.handleMessage(["!vote", "one", "|", "two", "|", "<:emoji:12345>"], message);
+      voteService.handleMessage(["one", "|", "two", "|", "<:emoji:12345>"], message);
       expect(message.reply).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": Array [

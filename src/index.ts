@@ -10,6 +10,7 @@ const client = new Client({
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isButton()) router.routeButtonInteraction(interaction);
   router.routeInteraction(interaction);
 });
 

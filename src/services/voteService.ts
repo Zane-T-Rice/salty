@@ -16,7 +16,7 @@ export type ButtonRow = {
 
 export class VoteService extends CommandService {
   async handleMessage(args: string[], message: Message | ChatInputCommandInteraction<CacheType>): Promise<void> {
-    const joined = args.slice(1).join(" ");
+    const joined = args.join(" ");
     const pipeDelimited = joined.split("|").map((arg) => arg.trim());
     const components = pipeDelimited.map((arg, index) => {
       const emoji = isCustomEmoji(arg) ? parseCustomEmojiId(arg) : "";
