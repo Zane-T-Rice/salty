@@ -12,9 +12,9 @@ describe("VoteValidator", () => {
       const result = voteValidator.validate(["one", "|", "two"]);
       expect(result).toBe(true);
     });
-    it("should return false for 1 arguments", () => {
+    it("should return true for 1 arguments", () => {
       const result = voteValidator.validate(["one"]);
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
     it("should return false for 26 arguments", () => {
       const args: string[] = [];

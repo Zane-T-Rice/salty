@@ -22,7 +22,7 @@ export class VoteService extends CommandService {
       const emoji = isCustomEmoji(arg) ? parseCustomEmojiId(arg) : "";
       const label = emoji ? "" : arg.replace(/:/g, "");
       const button = new ButtonBuilder()
-        .setCustomId(`vote:${index % 5}:${message.id}:${label}:${emoji}:0:${Math.floor(index / 5.0)}`)
+        .setCustomId(`vote:${index % 5}:${message.id}:${label}:${emoji}:${Math.floor(index / 5.0)}`)
         .setLabel(`${label} 0`)
         .setStyle(ButtonStyle.Primary);
       if (emoji) button.setEmoji(emoji);

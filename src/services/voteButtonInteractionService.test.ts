@@ -10,10 +10,10 @@ describe("voteButtonInteractionService", () => {
   });
 
   describe("handleMessage", () => {
-    it("should update vote count", () => {
+    it("should update vote count", async () => {
       const voteButtonInteractionService = new VoteButtonInteractionService();
       const buttonInteraction: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::0:0",
+        customId: "voteButtonInteractionService:0:messageId:one::0",
         update: jest.fn(),
         member: {
           user: {
@@ -26,13 +26,13 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::0:0",
+                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
                   },
                   label: "one 0",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0:0",
+                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -41,7 +41,7 @@ describe("voteButtonInteractionService", () => {
           ],
         } as unknown as Message,
       } as unknown as ButtonInteraction;
-      voteButtonInteractionService.handleInteraction(buttonInteraction);
+      await voteButtonInteractionService.handleInteraction(buttonInteraction);
       expect(buttonInteraction.update).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": Array [
@@ -51,7 +51,7 @@ describe("voteButtonInteractionService", () => {
                   Object {
                     "components": Array [
                       Object {
-                        "custom_id": "voteButtonInteractionService:0:messageId:one::1:0",
+                        "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 1",
                         "style": 1,
@@ -59,7 +59,7 @@ describe("voteButtonInteractionService", () => {
                       },
                       Object {
                         "data": Object {
-                          "custom_id": "voteButtonInteractionService:1:messageId:two::0:0",
+                          "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
                       },
@@ -79,7 +79,7 @@ describe("voteButtonInteractionService", () => {
       `);
 
       const buttonInteractionTwo: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::1:0",
+        customId: "voteButtonInteractionService:0:messageId:one::0",
         update: jest.fn(),
         member: {
           user: {
@@ -92,13 +92,13 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::1:0",
+                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
                   },
                   label: "one 1",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0:0",
+                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -107,7 +107,7 @@ describe("voteButtonInteractionService", () => {
           ],
         } as unknown as Message,
       } as unknown as ButtonInteraction;
-      voteButtonInteractionService.handleInteraction(buttonInteractionTwo);
+      await voteButtonInteractionService.handleInteraction(buttonInteractionTwo);
       expect(buttonInteractionTwo.update).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": Array [
@@ -117,7 +117,7 @@ describe("voteButtonInteractionService", () => {
                   Object {
                     "components": Array [
                       Object {
-                        "custom_id": "voteButtonInteractionService:0:messageId:one::0:0",
+                        "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 0",
                         "style": 1,
@@ -125,7 +125,7 @@ describe("voteButtonInteractionService", () => {
                       },
                       Object {
                         "data": Object {
-                          "custom_id": "voteButtonInteractionService:1:messageId:two::0:0",
+                          "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
                       },
@@ -145,7 +145,7 @@ describe("voteButtonInteractionService", () => {
       `);
 
       const buttonInteractionThree: ButtonInteraction = {
-        customId: "voteButtonInteractionService:0:messageId:one::1:0",
+        customId: "voteButtonInteractionService:0:messageId:one::0",
         update: jest.fn(),
         member: {
           user: {
@@ -158,13 +158,13 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::1:0",
+                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
                   },
-                  label: "one 1",
+                  label: "one 0",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0:0",
+                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -173,7 +173,7 @@ describe("voteButtonInteractionService", () => {
           ],
         } as unknown as Message,
       } as unknown as ButtonInteraction;
-      voteButtonInteractionService.handleInteraction(buttonInteractionThree);
+      await voteButtonInteractionService.handleInteraction(buttonInteractionThree);
       expect(buttonInteractionThree.update).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": Array [
@@ -183,15 +183,15 @@ describe("voteButtonInteractionService", () => {
                   Object {
                     "components": Array [
                       Object {
-                        "custom_id": "voteButtonInteractionService:0:messageId:one::2:0",
+                        "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
-                        "label": "one 2",
+                        "label": "one 1",
                         "style": 1,
                         "type": 2,
                       },
                       Object {
                         "data": Object {
-                          "custom_id": "voteButtonInteractionService:1:messageId:two::0:0",
+                          "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
                       },
@@ -211,10 +211,10 @@ describe("voteButtonInteractionService", () => {
       `);
     });
   });
-  it("update should work with emoji", () => {
+  it("update should work with emoji", async () => {
     const voteButtonInteractionService = new VoteButtonInteractionService();
     const buttonInteraction: ButtonInteraction = {
-      customId: "voteButtonInteractionService:0:messageId::12345:0:0",
+      customId: "voteButtonInteractionService:0:messageId::12345:0",
       update: jest.fn(),
       member: {
         user: {
@@ -227,13 +227,13 @@ describe("voteButtonInteractionService", () => {
             components: [
               {
                 data: {
-                  custom_id: "voteButtonInteractionService:0:messageId::12345:0:0",
+                  custom_id: "voteButtonInteractionService:0:messageId::12345:0",
                 },
                 label: "one 0",
               },
               {
                 data: {
-                  custom_id: "voteButtonInteractionService:1:messageId::1234556:0:0",
+                  custom_id: "voteButtonInteractionService:1:messageId::1234556:0",
                 },
                 label: "two 0",
               },
@@ -242,7 +242,7 @@ describe("voteButtonInteractionService", () => {
         ],
       } as unknown as Message,
     } as unknown as ButtonInteraction;
-    voteButtonInteractionService.handleInteraction(buttonInteraction);
+    await voteButtonInteractionService.handleInteraction(buttonInteraction);
     expect(buttonInteraction.update).toMatchInlineSnapshot(`
       [MockFunction] {
         "calls": Array [
@@ -252,7 +252,7 @@ describe("voteButtonInteractionService", () => {
                 Object {
                   "components": Array [
                     Object {
-                      "custom_id": "voteButtonInteractionService:0:messageId::12345:1:0",
+                      "custom_id": "voteButtonInteractionService:0:messageId::12345:0",
                       "emoji": Object {
                         "animated": false,
                         "id": undefined,
@@ -264,7 +264,7 @@ describe("voteButtonInteractionService", () => {
                     },
                     Object {
                       "data": Object {
-                        "custom_id": "voteButtonInteractionService:1:messageId::1234556:0:0",
+                        "custom_id": "voteButtonInteractionService:1:messageId::1234556:0",
                       },
                       "label": "two 0",
                     },

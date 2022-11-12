@@ -2,8 +2,8 @@ import { CommandValidator } from "./commandValidator";
 
 export class VoteValidator extends CommandValidator {
   validate(args: string[]): boolean {
-    const joined = args.slice(1).join(" ");
+    const joined = args.join(" ");
     const pipeDelimited = joined.split("|");
-    return args.length > 1 && pipeDelimited.length <= 25;
+    return pipeDelimited.length >= 0 && pipeDelimited.length <= 25;
   }
 }
