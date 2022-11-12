@@ -7,8 +7,8 @@ import {
   InteractionUpdateOptions,
   MessageActionRowComponent,
 } from "discord.js";
-import { Mutex } from "async-mutex";
 import { InteractionService } from "./interactionService";
+import { Mutex } from "async-mutex";
 
 export class VoteButtonInteractionService extends InteractionService {
   private memberInteractionMap: { [key: string]: boolean } = {};
