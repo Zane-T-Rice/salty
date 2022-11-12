@@ -1,4 +1,4 @@
-import { ButtonInteraction, Message } from "discord.js";
+import { ButtonInteraction, CacheType, ChatInputCommandInteraction, Interaction, Message } from "discord.js";
 import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { Router } from "./router";
 
@@ -7,34 +7,47 @@ const voteController = new VoteController();
 const voteButtonInteractionController = new VoteButtonInteractionController();
 const router = new Router(pingControllerInstance, voteController, voteButtonInteractionController);
 
+let isChatInputCommand;
 beforeEach(() => {
   jest.resetAllMocks();
-  jest.spyOn(pingControllerInstance, "handleMessage").mockResolvedValueOnce();
+  jest.spyOn(pingControllerInstance, "handleInteraction").mockResolvedValueOnce();
   jest.spyOn(voteButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
+  isChatInputCommand = jest.fn().mockReturnValue(true);
 });
 
 describe("router", () => {
   describe("routeMessage", () => {
     it("should route ping messages", async () => {
-      const content = "!ping";
-      await router.routeMessage({ content } as Message);
+      const content = "ping";
+      await router.routeInteraction({
+        commandName: content,
+        isChatInputCommand,
+      } as unknown as ChatInputCommandInteraction<CacheType>);
 
-      expect(pingControllerInstance.handleMessage).toHaveBeenCalledWith([content], { content });
+      expect(pingControllerInstance.handleInteraction).toHaveBeenCalledWith(
+        expect.objectContaining({ commandName: content })
+      );
     });
 
-    it("should handle messages that are not commands", async () => {
-      const content = "!notacommand";
-      await router.routeMessage({ content } as Message);
+    it("should handle non chat commands", async () => {
+      isChatInputCommand.mockReturnValueOnce(false);
+      const content = "ping";
+      await router.routeInteraction({
+        commandName: content,
+        isChatInputCommand,
+      } as unknown as ChatInputCommandInteraction<CacheType>);
 
-      expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
+      expect(pingControllerInstance.handleInteraction).not.toHaveBeenCalledWith();
     });
 
-    it("should ignore bot messages", async () => {
-      const content = "!ping";
-      const author = { bot: true };
-      await router.routeMessage({ content, author } as Message);
+    it("should handle interactions that are not commands", async () => {
+      const content = "notacommand";
+      await router.routeInteraction({
+        commandName: content,
+        isChatInputCommand,
+      } as unknown as ChatInputCommandInteraction<CacheType>);
 
-      expect(pingControllerInstance.handleMessage).not.toHaveBeenCalled();
+      expect(pingControllerInstance.handleInteraction).not.toHaveBeenCalled();
     });
   });
 

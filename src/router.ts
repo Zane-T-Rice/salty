@@ -45,11 +45,6 @@ export class Router {
   async routeInteraction(interaction: Interaction<CacheType>) {
     if (!interaction.isChatInputCommand()) return;
 
-    try {
-      await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
-    }
+    await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
   }
 }

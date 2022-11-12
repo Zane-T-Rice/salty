@@ -1,5 +1,5 @@
 import { CommandController } from "./commandController";
-import { Message } from "discord.js";
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 
 const authorizer = { authorize: jest.fn() };
 const validator = { validate: jest.fn() };
@@ -25,31 +25,34 @@ describe("commandController", () => {
     });
   });
 
-  describe("handleMessage", () => {
-    it("should call handleMessage in the service if validate and authorize return true", () => {
+  describe("handleInteraction", () => {
+    const options = {
+      getString: jest.fn().mockReturnValueOnce(""),
+    };
+    it("should call handleInteraction in the service if validate and authorize return true", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockReturnValueOnce(true);
       const commandController = new CommandControllerImpl();
-      commandController.handleMessage([], {} as Message);
+      commandController.handleInteraction({ options } as unknown as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleMessage).toHaveBeenCalledTimes(1);
     });
 
-    it("should not call handleMessage in the service if validate returns false", () => {
+    it("should not call handleInteraction in the service if validate returns false", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockReturnValueOnce(false);
       const commandController = new CommandControllerImpl();
-      commandController.handleMessage([], {} as Message);
+      commandController.handleInteraction({ options } as unknown as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleMessage).toHaveBeenCalledTimes(0);
     });
 
-    it("should not call handleMessage in the service if authorize returns false", () => {
+    it("should not call handleInteraction in the service if authorize returns false", () => {
       authorizer.authorize.mockReturnValueOnce(false);
       const commandController = new CommandControllerImpl();
-      commandController.handleMessage([], {} as Message);
+      commandController.handleInteraction({ options } as unknown as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleMessage).toHaveBeenCalledTimes(0);
@@ -62,7 +65,7 @@ describe("commandController", () => {
       });
       console.error = jest.fn();
       const commandController = new CommandControllerImpl();
-      commandController.handleMessage([], {} as Message);
+      commandController.handleInteraction({ options } as unknown as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleMessage).toHaveBeenCalledTimes(0);

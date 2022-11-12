@@ -15,17 +15,6 @@ export abstract class CommandController {
     this.validator = validator;
   }
 
-  public async handleMessage(args: string[], message: Message): Promise<void> {
-    try {
-      if (!this.authorizer.authorize(args, message)) return;
-      if (!this.validator.validate(args, message)) return;
-      await this.service.handleMessage(args, message);
-    } catch (error) {
-      // Tag it and bag it, but mostly just try not to crash.
-      console.error(error);
-    }
-  }
-
   public async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     let args = interaction.options.getString("args")?.trim().split(" ") || [];
     args = args.filter((arg) => !isMention(arg));
