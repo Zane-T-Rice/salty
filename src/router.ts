@@ -42,7 +42,7 @@ export class Router {
     await this.buttonInteractionsToControllers[buttonType]?.handleInteraction(interaction);
   }
 
-  async routeInteraction(interaction: Interaction<CacheType>) {
+  async routeInteraction(interaction: Interaction<CacheType>): Promise<void> {
     if (!interaction.isChatInputCommand()) return;
 
     await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);

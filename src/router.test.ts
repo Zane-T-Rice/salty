@@ -1,4 +1,4 @@
-import { ButtonInteraction, CacheType, ChatInputCommandInteraction, Interaction, Message } from "discord.js";
+import { ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
 import { Router } from "./router";
 

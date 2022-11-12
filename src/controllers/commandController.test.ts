@@ -1,5 +1,5 @@
-import { CommandController } from "./commandController";
 import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CommandController } from "./commandController";
 
 const authorizer = { authorize: jest.fn() };
 const validator = { validate: jest.fn() };

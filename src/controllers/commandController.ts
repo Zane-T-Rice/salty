@@ -1,7 +1,7 @@
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { CommandAuthorizer } from "../authorizers";
 import { CommandService } from "../services";
 import { CommandValidator } from "../validators";
-import { CacheType, ChatInputCommandInteraction, Message } from "discord.js";
 import { isMention } from "../utils";
 
 export abstract class CommandController {
