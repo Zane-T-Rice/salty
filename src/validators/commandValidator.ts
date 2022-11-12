@@ -1,5 +1,5 @@
-import { Message } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, Message } from "discord.js";
 
 export abstract class CommandValidator {
-  abstract validate(args: string[], message: Message): boolean;
+  abstract validate(args: string[], message: Message | ChatInputCommandInteraction<CacheType>): boolean;
 }

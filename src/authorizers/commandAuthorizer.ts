@@ -1,5 +1,5 @@
-import { Message } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, Message } from "discord.js";
 
 export abstract class CommandAuthorizer {
-  abstract authorize(args: string[], message: Message): boolean;
+  abstract authorize(args: string[], message: Message | ChatInputCommandInteraction<CacheType>): boolean;
 }

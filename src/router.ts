@@ -1,4 +1,4 @@
-import { ButtonInteraction, Message } from "discord.js";
+import { ButtonInteraction, CacheType, Interaction } from "discord.js";
 import {
   CommandController,
   InteractionController,
@@ -6,7 +6,6 @@ import {
   VoteButtonInteractionController,
   VoteController,
 } from "./controllers";
-import { isMention } from "./utils";
 
 export class Router {
   private pingController: PingController;
@@ -29,8 +28,8 @@ export class Router {
     this.voteButtonInteractionController = voteButtonInteractionController;
 
     this.commandsToControllers = {
-      "!ping": this.pingController,
-      "!vote": this.voteController,
+      ping: this.pingController,
+      vote: this.voteController,
     };
 
     this.buttonInteractionsToControllers = {
@@ -38,15 +37,19 @@ export class Router {
     };
   }
 
-  async routeMessage(message: Message): Promise<void> {
-    if (message.author?.bot) return;
-    let args = message.content.trim().split(" ");
-    args = args.filter((arg) => !isMention(arg));
-    await this.commandsToControllers[args[0]]?.handleMessage(args, message);
-  }
-
   async routeButtonInteraction(interaction: ButtonInteraction): Promise<void> {
     const buttonType = interaction.customId.split(":")[0];
     await this.buttonInteractionsToControllers[buttonType]?.handleInteraction(interaction);
+  }
+
+  async routeInteraction(interaction: Interaction<CacheType>) {
+    if (!interaction.isChatInputCommand()) return;
+
+    try {
+      await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
+    }
   }
 }

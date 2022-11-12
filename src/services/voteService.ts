@@ -1,4 +1,11 @@
-import { BaseMessageOptions, ButtonBuilder, ButtonStyle, Message } from "discord.js";
+import {
+  BaseMessageOptions,
+  ButtonBuilder,
+  ButtonStyle,
+  CacheType,
+  ChatInputCommandInteraction,
+  Message,
+} from "discord.js";
 import { isCustomEmoji, parseCustomEmojiId } from "../utils";
 import { CommandService } from "./commandService";
 
@@ -8,7 +15,7 @@ export type ButtonRow = {
 };
 
 export class VoteService extends CommandService {
-  async handleMessage(args: string[], message: Message): Promise<void> {
+  async handleMessage(args: string[], message: Message | ChatInputCommandInteraction<CacheType>): Promise<void> {
     const joined = args.slice(1).join(" ");
     const pipeDelimited = joined.split("|").map((arg) => arg.trim());
     const components = pipeDelimited.map((arg, index) => {
