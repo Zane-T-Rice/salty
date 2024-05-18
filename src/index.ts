@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 import { Client, Events, GatewayIntentBits } from "discord.js";
-import { PingController, VoteButtonInteractionController, VoteController } from "./controllers";
+import { PingController, VoteButtonInteractionController, VoteController, YoutubeController } from "./controllers";
 import { Router } from "./router";
 
-const router = new Router(new PingController(), new VoteController(), new VoteButtonInteractionController());
+const router = new Router(new PingController(), new VoteController(), new VoteButtonInteractionController(), new YoutubeController);
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],

@@ -5,12 +5,14 @@ import {
   PingController,
   VoteButtonInteractionController,
   VoteController,
+  YoutubeController
 } from "./controllers";
 
 export class Router {
   private pingController: PingController;
   private voteButtonInteractionController: VoteButtonInteractionController;
   private voteController: VoteController;
+  private youtubeController: YoutubeController;
   private commandsToControllers: {
     [key: string]: CommandController;
   };
@@ -21,15 +23,18 @@ export class Router {
   constructor(
     pingController: PingController,
     voteController: VoteController,
-    voteButtonInteractionController: VoteButtonInteractionController
+    voteButtonInteractionController: VoteButtonInteractionController,
+    youtubeController: YoutubeController
   ) {
     this.pingController = pingController;
     this.voteController = voteController;
     this.voteButtonInteractionController = voteButtonInteractionController;
+    this.youtubeController = youtubeController;
 
     this.commandsToControllers = {
       ping: this.pingController,
       vote: this.voteController,
+      yt: this.youtubeController
     };
 
     this.buttonInteractionsToControllers = {
