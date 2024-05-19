@@ -4,3 +4,4 @@ export * from "./interactionController";
 export * from "./voteController";
 export * from "./voteButtonInteractionController";
 export * from "./youtubeController";
+export * from "./youtubeKeepController";

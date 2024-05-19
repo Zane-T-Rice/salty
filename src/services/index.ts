@@ -4,3 +4,4 @@ export * from "./interactionService";
 export * from "./voteService";
 export * from "./voteButtonInteractionService";
 export * from "./youtubeService";
+export * from "./youtubeKeepService";

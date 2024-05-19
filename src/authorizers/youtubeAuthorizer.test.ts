@@ -1,11 +1,11 @@
 import { YoutubeAuthorizer } from "./youtubeAuthorizer";
 
 describe("YoutubeAuthorizer", () => {
-  const pingAuthorizer = new YoutubeAuthorizer();
+  const youtubeAuthorizer = new YoutubeAuthorizer();
 
   describe("authorize", () => {
     it("should return true", () => {
-      const result = pingAuthorizer.authorize();
+      const result = youtubeAuthorizer.authorize();
       expect(result).toBe(true);
     });
   });
