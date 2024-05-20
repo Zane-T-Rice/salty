@@ -16,29 +16,29 @@ describe("voteService", () => {
       voteService.handleMessage(["one", "|", "two", "|", "<:emoji:12345>"], message);
       expect(message.reply).toMatchInlineSnapshot(`
         [MockFunction] {
-          "calls": Array [
-            Array [
-              Object {
-                "components": Array [
-                  Object {
-                    "components": Array [
-                      Object {
+          "calls": [
+            [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
                         "custom_id": "vote:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 0",
                         "style": 1,
                         "type": 2,
                       },
-                      Object {
+                      {
                         "custom_id": "vote:1:messageId:two::0",
                         "emoji": undefined,
                         "label": "two 0",
                         "style": 1,
                         "type": 2,
                       },
-                      Object {
+                      {
                         "custom_id": "vote:2:messageId::12345:0",
-                        "emoji": Object {
+                        "emoji": {
                           "animated": false,
                           "id": undefined,
                           "name": "12345",
@@ -55,8 +55,8 @@ describe("voteService", () => {
               },
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },

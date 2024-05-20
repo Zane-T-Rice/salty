@@ -44,21 +44,21 @@ describe("voteButtonInteractionService", () => {
       await voteButtonInteractionService.handleInteraction(buttonInteraction);
       expect(buttonInteraction.update).toMatchInlineSnapshot(`
         [MockFunction] {
-          "calls": Array [
-            Array [
-              Object {
-                "components": Array [
-                  Object {
-                    "components": Array [
-                      Object {
+          "calls": [
+            [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
                         "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 1",
                         "style": 1,
                         "type": 2,
                       },
-                      Object {
-                        "data": Object {
+                      {
+                        "data": {
                           "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
@@ -69,8 +69,8 @@ describe("voteButtonInteractionService", () => {
               },
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
@@ -110,21 +110,21 @@ describe("voteButtonInteractionService", () => {
       await voteButtonInteractionService.handleInteraction(buttonInteractionTwo);
       expect(buttonInteractionTwo.update).toMatchInlineSnapshot(`
         [MockFunction] {
-          "calls": Array [
-            Array [
-              Object {
-                "components": Array [
-                  Object {
-                    "components": Array [
-                      Object {
+          "calls": [
+            [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
                         "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 0",
                         "style": 1,
                         "type": 2,
                       },
-                      Object {
-                        "data": Object {
+                      {
+                        "data": {
                           "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
@@ -135,8 +135,8 @@ describe("voteButtonInteractionService", () => {
               },
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
@@ -176,21 +176,21 @@ describe("voteButtonInteractionService", () => {
       await voteButtonInteractionService.handleInteraction(buttonInteractionThree);
       expect(buttonInteractionThree.update).toMatchInlineSnapshot(`
         [MockFunction] {
-          "calls": Array [
-            Array [
-              Object {
-                "components": Array [
-                  Object {
-                    "components": Array [
-                      Object {
+          "calls": [
+            [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
                         "custom_id": "voteButtonInteractionService:0:messageId:one::0",
                         "emoji": undefined,
                         "label": "one 1",
                         "style": 1,
                         "type": 2,
                       },
-                      Object {
-                        "data": Object {
+                      {
+                        "data": {
                           "custom_id": "voteButtonInteractionService:1:messageId:two::0",
                         },
                         "label": "two 0",
@@ -201,8 +201,8 @@ describe("voteButtonInteractionService", () => {
               },
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
@@ -245,15 +245,15 @@ describe("voteButtonInteractionService", () => {
     await voteButtonInteractionService.handleInteraction(buttonInteraction);
     expect(buttonInteraction.update).toMatchInlineSnapshot(`
       [MockFunction] {
-        "calls": Array [
-          Array [
-            Object {
-              "components": Array [
-                Object {
-                  "components": Array [
-                    Object {
+        "calls": [
+          [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
                       "custom_id": "voteButtonInteractionService:0:messageId::12345:0",
-                      "emoji": Object {
+                      "emoji": {
                         "animated": false,
                         "id": undefined,
                         "name": "12345",
@@ -262,8 +262,8 @@ describe("voteButtonInteractionService", () => {
                       "style": 1,
                       "type": 2,
                     },
-                    Object {
-                      "data": Object {
+                    {
+                      "data": {
                         "custom_id": "voteButtonInteractionService:1:messageId::1234556:0",
                       },
                       "label": "two 0",
@@ -274,8 +274,8 @@ describe("voteButtonInteractionService", () => {
             },
           ],
         ],
-        "results": Array [
-          Object {
+        "results": [
+          {
             "type": "return",
             "value": undefined,
           },
