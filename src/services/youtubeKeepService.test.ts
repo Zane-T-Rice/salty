@@ -1,13 +1,13 @@
+import * as child_process from "child_process";
 import { Message } from "discord.js";
 import { YoutubeKeepService } from "./youtubeKeepService";
-const child_process = require("child_process");
 jest.mock("child_process");
 
 describe("youtubeKeepService", () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
-    child_process.exec.mockImplementation((command, callback) => {
+    (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
       callback(null, { stdout: "" });
     });
   });
@@ -33,13 +33,13 @@ describe("youtubeKeepService", () => {
 
   describe("handleMessage", () => {
     it("should report any failed downloads", async () => {
-      child_process.exec.mockImplementationOnce((command, callback) => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
-      child_process.exec.mockImplementationOnce((command, callback) => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
-      child_process.exec.mockImplementationOnce((command, callback) => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
 

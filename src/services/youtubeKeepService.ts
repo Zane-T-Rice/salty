@@ -1,7 +1,8 @@
-import { Message } from "discord.js";
 import { CommandService } from "./commandService";
+import { exec as exec2 } from "child_process";
+import { Message } from "discord.js";
 import { promisify } from "util";
-const exec = promisify(require("child_process").exec);
+const exec = promisify(exec2);
 
 export class YoutubeKeepService extends CommandService {
   async handleMessage(args: string[], message: Message): Promise<void> {
