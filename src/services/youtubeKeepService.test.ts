@@ -1,5 +1,5 @@
 import * as child_process from "child_process";
-import { Message } from "discord.js";
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { YoutubeKeepService } from "./youtubeKeepService";
 jest.mock("child_process");
 
@@ -21,11 +21,14 @@ describe("youtubeKeepService", () => {
 
   describe("handleMessage", () => {
     it("should try to download from all given urls", async () => {
-      const message = { reply: jest.fn() } as unknown as Message;
+      const message = {
+        deferReply: jest.fn(),
+        editReply: jest.fn(),
+      } as unknown as ChatInputCommandInteraction<CacheType>;
       const youtubeKeepService = new YoutubeKeepService();
       await youtubeKeepService.handleMessage(["url", "url2", "url3"], message);
       expect(child_process.exec).toHaveBeenCalledTimes(3);
-      expect(message.reply).toHaveBeenCalledWith(
+      expect(message.editReply).toHaveBeenCalledWith(
         `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
       );
     });
@@ -43,11 +46,14 @@ describe("youtubeKeepService", () => {
         throw 1;
       });
 
-      const message = { reply: jest.fn() } as unknown as Message;
+      const message = {
+        deferReply: jest.fn(),
+        editReply: jest.fn(),
+      } as unknown as ChatInputCommandInteraction<CacheType>;
       const youtubeKeepService = new YoutubeKeepService();
       await youtubeKeepService.handleMessage(["url", "url2", "url3"], message);
       expect(child_process.exec).toHaveBeenCalledTimes(3);
-      expect(message.reply).toHaveBeenCalledWith(
+      expect(message.editReply).toHaveBeenCalledWith(
         `Failed to download url.\nFailed to download url2.\nFailed to download url3.`
       );
     });

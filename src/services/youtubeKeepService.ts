@@ -1,11 +1,12 @@
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { CommandService } from "./commandService";
 import { exec as exec2 } from "child_process";
-import { Message } from "discord.js";
 import { promisify } from "util";
 const exec = promisify(exec2);
 
 export class YoutubeKeepService extends CommandService {
-  async handleMessage(args: string[], message: Message): Promise<void> {
+  async handleMessage(args: string[], message: ChatInputCommandInteraction<CacheType>): Promise<void> {
+    message.deferReply();
     const downloadPromises = args.map(async (arg) => {
       try {
         await exec(
@@ -18,6 +19,6 @@ export class YoutubeKeepService extends CommandService {
     });
 
     const downloadStatusMessages = await Promise.all(downloadPromises);
-    await message.reply(downloadStatusMessages.join("\n"));
+    await message.editReply(downloadStatusMessages.join("\n"));
   }
 }
