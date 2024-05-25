@@ -31,10 +31,15 @@ describe("youtubeService", () => {
       const interaction = createInteraction({ urls: "url url2 url3", folder: "" });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/%(title)s [%(id)s].%(ext)s\" 'url'",
+        expect.any(Function)
+      );
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        4,
+        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -46,7 +51,7 @@ describe("youtubeService", () => {
       const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         'mkdir "/home/zane/mount/Footage/Anime/YouTube/folder"',
@@ -55,6 +60,11 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
         "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/folder/%(title)s [%(id)s].%(ext)s\" 'url'",
+        expect.any(Function)
+      );
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        5,
+        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -66,10 +76,15 @@ describe("youtubeService", () => {
       const interaction = createInteraction({ urls: "url url2 url3", folder: "RabbitAndSteel" });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/RabbitAndSteel/%(title)s [%(id)s].%(ext)s\" 'url'",
+        expect.any(Function)
+      );
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        4,
+        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -105,7 +120,7 @@ describe("youtubeService", () => {
       expect(interaction.editReply).toHaveBeenCalledWith("");
     });
 
-    it("should hanlde any failure when creating the requested directory.", async () => {
+    it("should handle any failure when creating the requested directory.", async () => {
       (fs.readdirSync as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
@@ -113,7 +128,7 @@ describe("youtubeService", () => {
       const youtubeService = new YoutubeService();
       const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/%(title)s [%(id)s].%(ext)s\" 'url'",
@@ -121,6 +136,47 @@ describe("youtubeService", () => {
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
         `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+      );
+    });
+
+    it("should handle any failure when requesting a refresh of the YouTube library.", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: "" });
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: "" });
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: "" });
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: "" });
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
+        throw 1;
+      });
+
+      const youtubeService = new YoutubeService();
+      const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
+      await youtubeService.handleInteraction(interaction);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        1,
+        'mkdir "/home/zane/mount/Footage/Anime/YouTube/folder"',
+        expect.any(Function)
+      );
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        2,
+        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/folder/%(title)s [%(id)s].%(ext)s\" 'url'",
+        expect.any(Function)
+      );
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+        5,
+        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        expect.any(Function)
+      );
+      expect(interaction.editReply).toHaveBeenCalledWith(
+        `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
       );
     });
   });
