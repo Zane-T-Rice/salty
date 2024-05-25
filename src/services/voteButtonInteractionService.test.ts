@@ -9,7 +9,7 @@ describe("voteButtonInteractionService", () => {
     });
   });
 
-  describe("handleMessage", () => {
+  describe("handleInteraction", () => {
     it("should update vote count", async () => {
       const voteButtonInteractionService = new VoteButtonInteractionService();
       const buttonInteraction: ButtonInteraction = {

@@ -1,6 +1,6 @@
-import { CommandAuthorizer } from "./commandAuthorizer";
+import { InteractionAuthorizer } from "./interactionAuthorizer";
 
-export class YoutubeAuthorizer extends CommandAuthorizer {
+export class YoutubeAuthorizer extends InteractionAuthorizer {
   authorize(): boolean {
     return true;
   }

@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { createInteraction } from "../testUtils";
 import { PingService } from "./pingService";
 
 describe("pingService", () => {
@@ -9,12 +9,12 @@ describe("pingService", () => {
     });
   });
 
-  describe("handleMessage", () => {
+  describe("handleInteraction", () => {
     it("should reply with pong", () => {
-      const message = { reply: jest.fn() } as unknown as Message;
       const pingService = new PingService();
-      pingService.handleMessage([], message);
-      expect(message.reply).toHaveBeenCalledWith("pong");
+      const interaction = createInteraction({});
+      pingService.handleInteraction(interaction);
+      expect(interaction.reply).toHaveBeenCalledWith("pong");
     });
   });
 });

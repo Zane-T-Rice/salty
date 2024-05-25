@@ -1,6 +1,6 @@
-import { CommandAuthorizer } from "./commandAuthorizer";
+import { InteractionAuthorizer } from "./interactionAuthorizer";
 
-export class VoteAuthorizer extends CommandAuthorizer {
+export class VoteAuthorizer extends InteractionAuthorizer {
   authorize(): boolean {
     return true;
   }

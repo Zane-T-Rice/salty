@@ -1,6 +1,6 @@
-import { CommandAuthorizer } from "./commandAuthorizer";
+import { InteractionAuthorizer } from "./interactionAuthorizer";
 
-export class PingAuthorizer extends CommandAuthorizer {
+export class PingAuthorizer extends InteractionAuthorizer {
   authorize(): boolean {
     return true;
   }

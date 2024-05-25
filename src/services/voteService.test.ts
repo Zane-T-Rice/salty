@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { createInteraction } from "../testUtils";
 import { VoteService } from "./voteService";
 
 describe("voteService", () => {
@@ -9,12 +9,12 @@ describe("voteService", () => {
     });
   });
 
-  describe("handleMessage", () => {
+  describe("handleInteraction", () => {
     it("should reply with updated interaction", () => {
-      const message = { reply: jest.fn(), id: "messageId" } as unknown as Message;
       const voteService = new VoteService();
-      voteService.handleMessage(["one", "|", "two", "|", "<:emoji:12345>"], message);
-      expect(message.reply).toMatchInlineSnapshot(`
+      const interaction = createInteraction({ args: "one|two|<:emoji:12345>" }, { id: "messageId" });
+      voteService.handleInteraction(interaction);
+      expect(interaction.reply).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": [
             [

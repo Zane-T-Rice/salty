@@ -1,4 +1,4 @@
-import { Interaction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { InteractionController } from "./interactionController";
 
 const authorizer = { authorize: jest.fn() };
@@ -30,7 +30,7 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockReturnValueOnce(true);
       const interactionController = new interactionControllerImpl();
-      interactionController.handleInteraction({} as Interaction);
+      interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleInteraction).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockReturnValueOnce(false);
       const interactionController = new interactionControllerImpl();
-      interactionController.handleInteraction({} as Interaction);
+      interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
@@ -49,7 +49,7 @@ describe("interactionController", () => {
     it("should not call handleInteraction in the service if authorize returns false", () => {
       authorizer.authorize.mockReturnValueOnce(false);
       const interactionController = new interactionControllerImpl();
-      interactionController.handleInteraction({} as Interaction);
+      interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
@@ -62,7 +62,7 @@ describe("interactionController", () => {
       });
       console.error = jest.fn();
       const interactionController = new interactionControllerImpl();
-      interactionController.handleInteraction({} as Interaction);
+      interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);

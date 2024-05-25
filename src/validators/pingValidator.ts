@@ -1,6 +1,6 @@
-import { CommandValidator } from "./commandValidator";
+import { InteractionValidator } from "./interactionValidator";
 
-export class PingValidator extends CommandValidator {
+export class PingValidator extends InteractionValidator {
   validate(): boolean {
     return true;
   }
