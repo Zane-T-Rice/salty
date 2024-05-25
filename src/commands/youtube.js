@@ -16,12 +16,6 @@ module.exports = {
         .setName("folder")
         .setDescription("Blank uses the root YouTube folder. Must match /^[a-zA-Z0-9_ ]*$/.")
         .setAutocomplete(true)
-        // .setChoices(
-        //   fs
-        //     .readdirSync("/home/zane/mount/Footage/Anime/YouTube", { withFileTypes: true })
-        //     .filter((dirent) => dirent.isDirectory())
-        //     .map((dirent) => ({ name: dirent.name, value: dirent.name }))
-        // )
         .setRequired(false)
     ),
 };
