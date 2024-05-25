@@ -47,8 +47,9 @@ export class Router {
   }
 
   async routeInteraction(interaction: Interaction<CacheType>): Promise<void> {
-    if (!interaction.isChatInputCommand()) return;
-
-    await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
+    if (interaction.isChatInputCommand())
+      await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
+    if (interaction.isAutocomplete())
+      await this.commandsToControllers[interaction.commandName]?.handleAutocomplete?.(interaction);
   }
 }

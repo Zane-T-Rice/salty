@@ -1,9 +1,9 @@
-import { ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { InteractionAuthorizer } from "../authorizers";
 import { InteractionService } from "../services";
 import { InteractionValidator } from "../validators";
 
-export abstract class InteractionController {
+export class InteractionController {
   protected authorizer: InteractionAuthorizer;
   protected service: InteractionService;
   protected validator: InteractionValidator;
@@ -21,6 +21,15 @@ export abstract class InteractionController {
       if (!this.authorizer.authorize(interaction)) return;
       if (!this.validator.validate(interaction)) return;
       await this.service.handleInteraction(interaction);
+    } catch (error) {
+      // Tag it and bag it, but mostly just try not to crash.
+      console.error(error);
+    }
+  }
+
+  public async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
+    try {
+      await this.service.handleAutocomplete?.(interaction);
     } catch (error) {
       // Tag it and bag it, but mostly just try not to crash.
       console.error(error);

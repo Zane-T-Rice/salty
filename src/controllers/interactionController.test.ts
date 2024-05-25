@@ -1,9 +1,9 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { InteractionController } from "./interactionController";
 
 const authorizer = { authorize: jest.fn() };
 const validator = { validate: jest.fn() };
-const service = { handleInteraction: jest.fn() };
+const service = { handleInteraction: jest.fn(), handleAutocomplete: jest.fn() };
 
 class interactionControllerImpl extends InteractionController {
   constructor() {
@@ -13,9 +13,10 @@ class interactionControllerImpl extends InteractionController {
 
 describe("interactionController", () => {
   beforeEach(() => {
-    authorizer.authorize.mockClear();
-    validator.validate.mockClear();
-    service.handleInteraction.mockClear();
+    authorizer.authorize = jest.fn();
+    validator.validate = jest.fn();
+    service.handleInteraction = jest.fn();
+    service.handleAutocomplete = jest.fn();
   });
 
   describe("constructor", () => {
@@ -66,6 +67,36 @@ describe("interactionController", () => {
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
+      expect(console.error).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe("handleAutocomplete", () => {
+    it("should call handleAutocomplete in the service", () => {
+      authorizer.authorize.mockReturnValueOnce(true);
+      validator.validate.mockReturnValueOnce(true);
+      const interactionController = new interactionControllerImpl();
+      interactionController.handleAutocomplete({} as AutocompleteInteraction);
+      expect(service.handleAutocomplete).toHaveBeenCalledTimes(1);
+    });
+
+    it("should handle unimplemented handleAutocomplete in the service", () => {
+      delete service.handleAutocomplete;
+      authorizer.authorize.mockReturnValueOnce(true);
+      validator.validate.mockReturnValueOnce(true);
+      const interactionController = new interactionControllerImpl();
+      interactionController.handleAutocomplete({} as AutocompleteInteraction);
+    });
+
+    it("should handle errors gracefully", () => {
+      const error = new Error("mock error");
+      service.handleAutocomplete.mockImplementation(() => {
+        throw error;
+      });
+      console.error = jest.fn();
+      const interactionController = new interactionControllerImpl();
+      interactionController.handleAutocomplete({} as AutocompleteInteraction);
+      expect(service.handleAutocomplete).toHaveBeenCalledTimes(1);
       expect(console.error).toHaveBeenCalledWith(error);
     });
   });

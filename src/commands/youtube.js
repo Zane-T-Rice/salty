@@ -6,16 +6,22 @@ module.exports = {
     .setName("yt")
     .setDescription("Download a youtube to the jellyfin server under Zane's desk.")
     .addStringOption((option) =>
-      option.setName("urls").setDescription("Space delimited urls that yt-dlp should try to download.")
+      option
+        .setName("urls")
+        .setDescription("Space delimited urls that yt-dlp should try to download.")
+        .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("folder")
         .setDescription("Blank uses the root YouTube folder. Must match /^[a-zA-Z0-9_ ]*$/.")
-        .setChoices(
-          fs
-            .readdirSync("/home/zane/mount/Footage/Anime/Youtube", { withFileTypes: true })
-            .filter((dirent) => dirent.isDirectory())
-        )
+        .setAutocomplete(true)
+        // .setChoices(
+        //   fs
+        //     .readdirSync("/home/zane/mount/Footage/Anime/YouTube", { withFileTypes: true })
+        //     .filter((dirent) => dirent.isDirectory())
+        //     .map((dirent) => ({ name: dirent.name, value: dirent.name }))
+        // )
+        .setRequired(false)
     ),
 };

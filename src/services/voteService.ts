@@ -7,7 +7,7 @@ export type ButtonRow = {
   components: ButtonBuilder[];
 };
 
-export class VoteService extends InteractionService {
+export class VoteService implements InteractionService {
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     const joined = interaction.options.getString("args");
     const pipeDelimited = joined.split("|").map((arg) => arg.trim());

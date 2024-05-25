@@ -1,5 +1,6 @@
 import * as child_process from "child_process";
 import * as fs from "node:fs";
+import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
 import { YoutubeService } from "./youtubeService";
 jest.mock("child_process");
@@ -121,6 +122,62 @@ describe("youtubeService", () => {
       expect(interaction.editReply).toHaveBeenCalledWith(
         `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
       );
+    });
+  });
+
+  describe("handleAutocomplete", () => {
+    it("Should suggest possible existing folder names", async () => {
+      (fs.readdirSync as unknown as jest.Mock).mockImplementationOnce(() => [
+        { name: "RabbitAndSteel", isDirectory: () => true },
+        { name: "Decino", isDirectory: () => true },
+        { name: "YouTubeKeep", isDirectory: () => true },
+        { name: "Best of the Worst", isDirectory: () => false },
+      ]);
+
+      const interaction = createAutocompleteInteraction();
+      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      const youtubeService = new YoutubeService();
+      await youtubeService.handleAutocomplete(interaction);
+
+      expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
+      expect(interaction.respond).toHaveBeenCalledTimes(1);
+      expect(interaction.respond).toHaveBeenCalledWith([
+        {
+          name: "RabbitAndSteel",
+          value: "RabbitAndSteel",
+        },
+        {
+          name: "Decino",
+          value: "Decino",
+        },
+        {
+          name: "YouTubeKeep",
+          value: "YouTubeKeep",
+        },
+      ]);
+    });
+
+    it("Should suggest possible existing folder names based on current input", async () => {
+      (fs.readdirSync as unknown as jest.Mock).mockImplementationOnce(() => [
+        { name: "RabbitAndSteel", isDirectory: () => true },
+        { name: "Decino", isDirectory: () => true },
+        { name: "YouTubeKeep", isDirectory: () => true },
+        { name: "Best of the Worst", isDirectory: () => false },
+      ]);
+
+      const interaction = createAutocompleteInteraction();
+      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("D");
+      const youtubeService = new YoutubeService();
+      await youtubeService.handleAutocomplete(interaction);
+
+      expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
+      expect(interaction.respond).toHaveBeenCalledTimes(1);
+      expect(interaction.respond).toHaveBeenCalledWith([
+        {
+          name: "Decino",
+          value: "Decino",
+        },
+      ]);
     });
   });
 });

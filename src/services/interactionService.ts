@@ -1,5 +1,6 @@
-import { Interaction } from "discord.js";
+import { AutocompleteInteraction, Interaction } from "discord.js";
 
-export abstract class InteractionService {
-  abstract handleInteraction(interaction: Interaction): Promise<void>;
+export interface InteractionService {
+  handleInteraction(interaction: Interaction): Promise<void>;
+  handleAutocomplete?(interaction: AutocompleteInteraction): Promise<void>;
 }

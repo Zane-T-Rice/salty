@@ -1,12 +1,12 @@
 import * as fs from "node:fs";
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { exec as exec2 } from "child_process";
 import { InteractionService } from "./interactionService";
 import { isMention } from "../utils";
 import { promisify } from "util";
 const exec = promisify(exec2);
 
-export class YoutubeService extends InteractionService {
+export class YoutubeService implements InteractionService {
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     interaction.deferReply();
 
@@ -52,5 +52,15 @@ export class YoutubeService extends InteractionService {
 
     downloadStatusMessages.push(...(await Promise.all(downloadPromises)));
     await interaction.editReply(downloadStatusMessages.join("\n"));
+  }
+
+  async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
+    const focusedValue = interaction.options.getFocused();
+    const choices = fs
+      .readdirSync("/home/zane/mount/Footage/Anime/YouTube", { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+    const filtered = choices.filter((choice) => choice.startsWith(focusedValue)).slice(0, 25);
+    await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
   }
 }

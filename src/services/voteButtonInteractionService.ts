@@ -10,7 +10,7 @@ import {
 import { InteractionService } from "./interactionService";
 import { Mutex } from "async-mutex";
 
-export class VoteButtonInteractionService extends InteractionService {
+export class VoteButtonInteractionService implements InteractionService {
   private memberInteractionMap: { [key: string]: boolean } = {};
   private voteCountMap: { [key: string]: number } = {};
   private mutex: Mutex = new Mutex();
