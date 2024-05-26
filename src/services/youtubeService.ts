@@ -45,9 +45,9 @@ export class YoutubeService implements InteractionService {
         await exec(
           `yt-dlp -o "/home/zane/mount/Footage/Anime/YouTube${folder ? `/${folder}` : ""}/%(title)s [%(id)s].%(ext)s" '${url}'`
         );
-        return `Finished downloading ${url}.`;
+        return `Finished downloading <${url}>.`;
       } catch (e) {
-        return `Failed to download ${url}.`;
+        return `Failed to download <${url}>.`;
       }
     });
 

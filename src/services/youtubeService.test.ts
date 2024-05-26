@@ -43,7 +43,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
       );
     });
 
@@ -68,7 +68,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
       );
     });
 
@@ -88,7 +88,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
       );
     });
 
@@ -108,7 +108,7 @@ describe("youtubeService", () => {
       await youtubeService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Failed to download url.\nFailed to download url2.\nFailed to download url3.`
+        `Failed to download <url>.\nFailed to download <url2>.\nFailed to download <url3>.`
       );
     });
 
@@ -135,7 +135,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+        `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
       );
     });
 
@@ -176,7 +176,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading url.\nFinished downloading url2.\nFinished downloading url3.`
+        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
       );
     });
   });
