@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import * as fs from "node:fs";
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { exec as exec2 } from "child_process";
 import { InteractionService } from "./interactionService";
 import { isMention } from "../utils";
@@ -9,7 +9,7 @@ const exec = promisify(exec2);
 
 export class YoutubeService implements InteractionService {
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
-    interaction.deferReply();
+    interaction.deferReply({ ephemeral: true });
 
     let urls =
       interaction.options
@@ -65,7 +65,12 @@ export class YoutubeService implements InteractionService {
       }
     }
 
-    await interaction.editReply(downloadStatusMessages.join("\n"));
+    await interaction.editReply({
+      content: downloadStatusMessages.join("\n"),
+      options: {
+        flags: [MessageFlags.Ephemeral],
+      },
+    });
   }
 
   async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {

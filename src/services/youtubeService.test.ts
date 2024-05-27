@@ -2,9 +2,17 @@ import * as child_process from "child_process";
 import * as fs from "node:fs";
 import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
+import { MessageFlags } from "discord.js";
 import { YoutubeService } from "./youtubeService";
 jest.mock("child_process");
 jest.mock("node:fs");
+
+const createEditReply = (content: string) => ({
+  content,
+  options: {
+    flags: [MessageFlags.Ephemeral],
+  },
+});
 
 describe("youtubeService", () => {
   beforeEach(() => {
@@ -43,7 +51,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
       );
     });
 
@@ -68,7 +76,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
       );
     });
 
@@ -88,7 +96,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
       );
     });
 
@@ -108,7 +116,7 @@ describe("youtubeService", () => {
       await youtubeService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Failed to download <url>.\nFailed to download <url2>.\nFailed to download <url3>.`
+        createEditReply(`Failed to download <url>.\nFailed to download <url2>.\nFailed to download <url3>.`)
       );
     });
 
@@ -117,7 +125,7 @@ describe("youtubeService", () => {
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(0);
-      expect(interaction.editReply).toHaveBeenCalledWith("");
+      expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(""));
     });
 
     it("should handle any failure when creating the requested directory.", async () => {
@@ -135,7 +143,9 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        createEditReply(
+          `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        )
       );
     });
 
@@ -176,7 +186,7 @@ describe("youtubeService", () => {
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
+        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
       );
     });
   });
