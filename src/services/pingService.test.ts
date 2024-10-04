@@ -14,7 +14,7 @@ describe("pingService", () => {
       const pingService = new PingService();
       const interaction = createInteraction({});
       pingService.handleInteraction(interaction);
-      expect(interaction.reply).toHaveBeenCalledWith("pong");
+      expect(interaction.reply).toHaveBeenCalledWith({ content: "pong", ephemeral: true });
     });
   });
 });
