@@ -6,6 +6,7 @@ import { InteractionService } from "./interactionService";
 import { isMention } from "../utils";
 import { promisify } from "util";
 const exec = promisify(exec2);
+dotenv.config();
 
 export class YoutubeService implements InteractionService {
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
@@ -25,11 +26,11 @@ export class YoutubeService implements InteractionService {
       // Create the folder if it does not already exist.
       if (folder) {
         // List of directories and files in YouTube directory.
-        const dirents = fs.readdirSync("/home/zane/mount/Footage/Anime/YouTube", { withFileTypes: true });
+        const dirents = fs.readdirSync(process.env.YOUTUBE_DIRECTORY, { withFileTypes: true });
 
         // If there is no file or directory with the name already, then create the new directory.
         if (!dirents.some((dirent) => dirent.name === folder)) {
-          await exec(`mkdir "/home/zane/mount/Footage/Anime/YouTube/${folder}"`);
+          await exec(`mkdir "${process.env.YOUTUBE_DIRECTORY}/${folder}"`);
         }
       }
     } catch (e) {
@@ -43,7 +44,7 @@ export class YoutubeService implements InteractionService {
       try {
         // Now download the video into the requested folder.
         await exec(
-          `yt-dlp -o "/home/zane/mount/Footage/Anime/YouTube${folder ? `/${folder}` : ""}/%(title)s [%(id)s].%(ext)s" '${url}'`
+          `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}${folder ? `/${folder}` : ""}/%(title)s [%(id)s].%(ext)s" '${url}'`
         );
         return `Finished downloading <${url}>.`;
       } catch (e) {
@@ -55,10 +56,9 @@ export class YoutubeService implements InteractionService {
 
     // Only refresh the library if something was actually downloaded.
     if (downloadStatusMessages.some((message) => message.match(/^Finished downloading /)?.length > 0)) {
-      dotenv.config();
       try {
         await exec(`curl --request POST \
-             --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None' \
+             --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None' \
              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`);
       } catch (e) {
         // Do nothing. The user will just have to wait a bit for jellyfin to sense the file.
@@ -76,7 +76,7 @@ export class YoutubeService implements InteractionService {
   async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
     const focusedValue = interaction.options.getFocused();
     const choices = fs
-      .readdirSync("/home/zane/mount/Footage/Anime/YouTube", { withFileTypes: true })
+      .readdirSync(process.env.YOUTUBE_DIRECTORY, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
     const filtered = choices.filter((choice) => choice.startsWith(focusedValue)).slice(0, 25);

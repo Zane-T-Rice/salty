@@ -1,4 +1,5 @@
 import * as child_process from "child_process";
+import * as dotenv from "dotenv";
 import * as fs from "node:fs";
 import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
@@ -15,6 +16,10 @@ const createEditReply = (content: string) => ({
 });
 
 describe("youtubeService", () => {
+  beforeAll(() => {
+    dotenv.config();
+  });
+
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -42,12 +47,12 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/%(title)s [%(id)s].%(ext)s\" 'url'",
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title)s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         4,
-        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -62,17 +67,17 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        'mkdir "/home/zane/mount/Footage/Anime/YouTube/folder"',
+        `mkdir "${process.env.YOUTUBE_DIRECTORY}/folder"`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
-        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/folder/%(title)s [%(id)s].%(ext)s\" 'url'",
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title)s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         5,
-        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -87,12 +92,12 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/RabbitAndSteel/%(title)s [%(id)s].%(ext)s\" 'url'",
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/RabbitAndSteel/%(title)s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         4,
-        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -139,7 +144,7 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/%(title)s [%(id)s].%(ext)s\" 'url'",
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title)s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -172,17 +177,17 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        'mkdir "/home/zane/mount/Footage/Anime/YouTube/folder"',
+        `mkdir "${process.env.YOUTUBE_DIRECTORY}/folder"`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
-        "yt-dlp -o \"/home/zane/mount/Footage/Anime/YouTube/folder/%(title)s [%(id)s].%(ext)s\" 'url'",
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title)s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         5,
-        `curl --request POST              --url 'http://localhost:8096/Items/34f331a89ce405e2b877d68d5ee4d4a2/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
