@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import * as fs from "node:fs";
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { exec as exec2 } from "child_process";
 import { InteractionService } from "./interactionService";
 import { isMention } from "../utils";
@@ -58,7 +58,7 @@ export class YoutubeService implements InteractionService {
     if (downloadStatusMessages.some((message) => message.match(/^Finished downloading /)?.length > 0)) {
       try {
         await exec(`curl --request POST \
-             --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None' \
+             --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None' \
              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`);
       } catch (e) {
         // Do nothing. The user will just have to wait a bit for jellyfin to sense the file.
@@ -67,9 +67,6 @@ export class YoutubeService implements InteractionService {
 
     await interaction.editReply({
       content: downloadStatusMessages.join("\n"),
-      options: {
-        flags: [MessageFlags.Ephemeral],
-      },
     });
   }
 

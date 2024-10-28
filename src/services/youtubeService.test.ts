@@ -3,16 +3,12 @@ import * as dotenv from "dotenv";
 import * as fs from "node:fs";
 import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
-import { MessageFlags } from "discord.js";
 import { YoutubeService } from "./youtubeService";
 jest.mock("child_process");
 jest.mock("node:fs");
 
 const createEditReply = (content: string) => ({
   content,
-  options: {
-    flags: [MessageFlags.Ephemeral],
-  },
 });
 
 describe("youtubeService", () => {
@@ -52,7 +48,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         4,
-        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -77,7 +73,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         5,
-        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -97,7 +93,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         4,
-        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -187,7 +183,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         5,
-        `curl --request POST              --url 'http://localhost:8096/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
+        `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(

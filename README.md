@@ -22,6 +22,7 @@ CLIENT_ID=
 GUILD_ID=
 
 # Jellyfin API Key
+JELLYFIN_URL=
 API_KEY=
 
 # The directory where YouTube videos should be downloaded.

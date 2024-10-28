@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { exec as exec2 } from "child_process";
 import { InteractionService } from "./interactionService";
 import { promisify } from "util";
@@ -15,10 +15,12 @@ type Server = {
 };
 
 export class RestartServerService implements InteractionService {
+  serversCache: { servers?: Server[]; createdAt?: number } = {};
+
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     await interaction.deferReply({ ephemeral: true });
     const messages = [];
-    const serverId: string = interaction.options.getString("name")?.trim();
+    const serverId: string = interaction.options.getString("name").trim();
     try {
       // call restart server
       const server: Server = JSON.parse(
@@ -32,7 +34,7 @@ export class RestartServerService implements InteractionService {
       );
 
       // Tell user it has been done
-      if (server?.id) {
+      if (server.id) {
         messages.push(`The server ${server.applicationName}/${server.containerName} has been restarted.`);
       } else {
         messages.push(`Make sure you select an option rather than typing in the name directly.`);
@@ -55,13 +57,17 @@ export class RestartServerService implements InteractionService {
     const focusedValue = interaction.options.getFocused();
     const choices: { name: string; value: string }[] = [];
     try {
-      const servers: Server[] = JSON.parse(
-        (
-          await exec(
-            `curl --request GET --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers -H "Accept: application/json"`
-          )
-        ).stdout
-      );
+      if (!this.serversCache.createdAt || Date.now() - this.serversCache.createdAt > 5_000) {
+        // If cache is more than 5 seconds old, refresh it.
+        // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
+        const response = JSON.parse(
+          (await exec(`curl --request GET --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers`)).stdout
+        );
+        if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
+        this.serversCache.servers = response;
+        this.serversCache.createdAt = Date.now();
+      }
+      const servers: Server[] = this.serversCache.servers;
       choices.push(
         ...servers.map((server) => ({ name: `${server.applicationName}/${server.containerName}`, value: server.id }))
       );
