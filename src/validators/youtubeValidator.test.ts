@@ -52,8 +52,8 @@ describe("YoutubeValidator", () => {
         argUrls: null,
         argFolder: null,
       },
-    ])("should return $expectedResult if there $urls and $folder.", ({ expectedResult, argUrls, argFolder }) => {
-      const result = youtubeValidator.validate(createInteraction({ urls: argUrls, folder: argFolder }));
+    ])("should return $expectedResult if there $urls and $folder.", async ({ expectedResult, argUrls, argFolder }) => {
+      const result = await youtubeValidator.validate(createInteraction({ urls: argUrls, folder: argFolder }));
       expect(result).toBe(expectedResult);
     });
   });

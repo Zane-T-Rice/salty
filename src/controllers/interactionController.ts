@@ -19,7 +19,7 @@ export class InteractionController {
   ): Promise<void> {
     try {
       if (!this.authorizer.authorize(interaction)) return;
-      if (!this.validator.validate(interaction)) return;
+      if (!(await this.validator.validate(interaction))) return;
       await this.service.handleInteraction(interaction);
     } catch (error) {
       // Tag it and bag it, but mostly just try not to crash.

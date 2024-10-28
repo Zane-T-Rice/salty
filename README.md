@@ -27,6 +27,15 @@ API_KEY=
 # The directory where YouTube videos should be downloaded.
 YOUTUBE_DIRECTORY=
 YOUTUBE_DIRECTORY_JELLYFIN_ID=
+
+# The url to the server-manager-service, including port number
+SERVER_MANAGER_SERVICE_URL=
+```
+
+### Deploy Slash Commands To Server
+
+```sh
+(cd src/ && node deploy-commands.js)
 ```
 
 ### How to Build
@@ -39,6 +48,5 @@ npm run build
 ### How to Start
 
 ```sh
-npm run build:watch
 npm start
 ```

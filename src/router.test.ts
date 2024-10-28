@@ -1,12 +1,25 @@
 import { ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
-import { PingController, VoteButtonInteractionController, VoteController, YoutubeController } from "./controllers";
+import {
+  PingController,
+  RestartServerController,
+  VoteButtonInteractionController,
+  VoteController,
+  YoutubeController,
+} from "./controllers";
 import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
+const restartServerControllerInstance = new RestartServerController();
 const voteController = new VoteController();
 const voteButtonInteractionController = new VoteButtonInteractionController();
 const youtubeController = new YoutubeController();
-const router = new Router(pingControllerInstance, voteController, voteButtonInteractionController, youtubeController);
+const router = new Router(
+  pingControllerInstance,
+  restartServerControllerInstance,
+  voteController,
+  voteButtonInteractionController,
+  youtubeController
+);
 
 let isChatInputCommand;
 let isAutocomplete;

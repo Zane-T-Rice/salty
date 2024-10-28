@@ -3,7 +3,7 @@ import { InteractionValidator } from "./interactionValidator";
 import { isMention } from "../utils";
 
 export class YoutubeValidator extends InteractionValidator {
-  validate(interaction: ChatInputCommandInteraction<CacheType>): boolean {
+  async validate(interaction: ChatInputCommandInteraction<CacheType>): Promise<boolean> {
     let urls =
       interaction.options
         .getString("urls")
@@ -20,7 +20,11 @@ export class YoutubeValidator extends InteractionValidator {
     ]
       .filter((e) => !!e)
       .join(" ");
-    if (errorReply.length > 0) interaction.editReply(errorReply);
+    if (errorReply.length > 0)
+      interaction.reply({
+        content: errorReply,
+        ephemeral: true,
+      });
     return validUrls && validFolder;
   }
 }

@@ -1,7 +1,7 @@
 import { InteractionValidator } from "./interactionValidator";
 
 export class PingValidator extends InteractionValidator {
-  validate(): boolean {
+  async validate(): Promise<boolean> {
     return true;
   }
 }

@@ -1,7 +1,7 @@
 import { InteractionValidator } from "./interactionValidator";
 
 export class VoteButtonInteractionValidator extends InteractionValidator {
-  validate(): boolean {
+  async validate(): Promise<boolean> {
     return true;
   }
 }

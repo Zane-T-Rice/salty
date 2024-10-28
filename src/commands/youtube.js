@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("yt")
-    .setDescription("Download a youtube to the jellyfin server under Zane's desk.")
+    .setDescription("Download a youtube to the jellyfin server.")
     .addStringOption((option) =>
       option
         .setName("urls")

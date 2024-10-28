@@ -9,7 +9,7 @@
     "start": "node build/index.js",
     "lint": "eslint --fix --max-warnings=0 src/*.ts src/**/*.ts",
     "prettier": "prettier src/*.ts src/**/*.ts -w",
-    "test": "rm -rf build && npm run build && jest build/ --coverage --verbose"
+    "test": "rm -rf build && npm run build && jest --rootDir build --coverage --verbose"
   },
   "author": "Zane Rice",
   "dependencies": {
@@ -17,7 +17,8 @@
     "axios": "^1.7.0",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "uuid": "^11.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",

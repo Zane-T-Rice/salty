@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
 
 export abstract class InteractionValidator {
-  abstract validate(interaction: Interaction): boolean;
+  abstract validate(interaction: Interaction): Promise<boolean>;
 }

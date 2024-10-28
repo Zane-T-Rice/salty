@@ -2,6 +2,7 @@ import { ButtonInteraction, CacheType, Interaction } from "discord.js";
 import {
   InteractionController,
   PingController,
+  RestartServerController,
   VoteButtonInteractionController,
   VoteController,
   YoutubeController,
@@ -9,6 +10,7 @@ import {
 
 export class Router {
   private pingController: PingController;
+  private restartServerController: RestartServerController;
   private voteButtonInteractionController: VoteButtonInteractionController;
   private voteController: VoteController;
   private youtubeController: YoutubeController;
@@ -21,17 +23,20 @@ export class Router {
 
   constructor(
     pingController: PingController,
+    restartServerController: RestartServerController,
     voteController: VoteController,
     voteButtonInteractionController: VoteButtonInteractionController,
     youtubeController: YoutubeController
   ) {
     this.pingController = pingController;
+    this.restartServerController = restartServerController;
     this.voteController = voteController;
     this.voteButtonInteractionController = voteButtonInteractionController;
     this.youtubeController = youtubeController;
 
     this.commandsToControllers = {
       ping: this.pingController,
+      restartserver: this.restartServerController,
       vote: this.voteController,
       yt: this.youtubeController,
     };
