@@ -3,6 +3,7 @@ import {
   InteractionController,
   PingController,
   RestartServerController,
+  UpdateServerController,
   VoteButtonInteractionController,
   VoteController,
   YoutubeController,
@@ -11,6 +12,7 @@ import {
 export class Router {
   private pingController: PingController;
   private restartServerController: RestartServerController;
+  private updateServerController: UpdateServerController;
   private voteButtonInteractionController: VoteButtonInteractionController;
   private voteController: VoteController;
   private youtubeController: YoutubeController;
@@ -24,12 +26,14 @@ export class Router {
   constructor(
     pingController: PingController,
     restartServerController: RestartServerController,
+    updateServerController: UpdateServerController,
     voteController: VoteController,
     voteButtonInteractionController: VoteButtonInteractionController,
     youtubeController: YoutubeController
   ) {
     this.pingController = pingController;
     this.restartServerController = restartServerController;
+    this.updateServerController = updateServerController;
     this.voteController = voteController;
     this.voteButtonInteractionController = voteButtonInteractionController;
     this.youtubeController = youtubeController;
@@ -37,6 +41,7 @@ export class Router {
     this.commandsToControllers = {
       ping: this.pingController,
       restartserver: this.restartServerController,
+      updateserver: this.updateServerController,
       vote: this.voteController,
       yt: this.youtubeController,
     };

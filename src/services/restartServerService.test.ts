@@ -73,9 +73,7 @@ describe("RestartServerService", () => {
       const interaction = createInteraction({ name: servers[0].id });
       await restartServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
-      expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`This feature is not available right now. Sorry.`)
-      );
+      expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
     });
     it("should handle error json when restarting server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
@@ -92,7 +90,7 @@ describe("RestartServerService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(
-          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be restartable or maybe it is taking a really long time to restart.\nThis feature may not be available right now. Sorry.`
+          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be restartable or maybe it is taking a really long time to restart.\nThis feature may not be available right now.`
         )
       );
     });
@@ -224,8 +222,8 @@ describe("RestartServerService", () => {
       expect(interaction.respond).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledWith([
         {
-          name: "This feature is not available right now. Sorry.",
-          value: "This feature is not available right now. Sorry.",
+          name: "This feature is not available right now.",
+          value: "This feature is not available right now.",
         },
       ]);
     });

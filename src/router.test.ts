@@ -2,6 +2,7 @@ import { ButtonInteraction, CacheType, ChatInputCommandInteraction } from "disco
 import {
   PingController,
   RestartServerController,
+  UpdateServerController,
   VoteButtonInteractionController,
   VoteController,
   YoutubeController,
@@ -10,12 +11,14 @@ import { Router } from "./router";
 
 const pingControllerInstance = new PingController();
 const restartServerControllerInstance = new RestartServerController();
+const updateServerControllerInstance = new UpdateServerController();
 const voteController = new VoteController();
 const voteButtonInteractionController = new VoteButtonInteractionController();
 const youtubeController = new YoutubeController();
 const router = new Router(
   pingControllerInstance,
   restartServerControllerInstance,
+  updateServerControllerInstance,
   voteController,
   voteButtonInteractionController,
   youtubeController

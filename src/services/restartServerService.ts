@@ -41,11 +41,11 @@ export class RestartServerService implements InteractionService {
         messages.push(
           `If you did that, then the server may not be restartable or maybe it is taking a really long time to restart.`
         );
-        messages.push("This feature may not be available right now. Sorry.");
+        messages.push("This feature may not be available right now.");
       }
     } catch (e) {
       // Probably server-manager-service is down. Not sure what to do.
-      messages.push("This feature is not available right now. Sorry.");
+      messages.push("This feature is not available right now.");
     }
 
     await interaction.editReply({
@@ -73,7 +73,7 @@ export class RestartServerService implements InteractionService {
       );
     } catch (e) {
       // Probably server-manager-service is down. Not sure what to do.
-      const message = "This feature is not available right now. Sorry.";
+      const message = "This feature is not available right now.";
       choices.push({ name: message, value: message });
     }
     const filtered = choices.filter((choice) => choice.name.startsWith(focusedValue)).slice(0, 25);
