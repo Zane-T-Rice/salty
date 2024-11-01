@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
 // import { MessageFlags } from "discord.js";
-import { RestartServerService } from "./restartServerService";
+import { UpdateServerService } from "./updateServerService";
 jest.mock("child_process");
 jest.mock("node:fs");
 
@@ -11,7 +11,7 @@ const createEditReply = (content: string) => ({
   content,
 });
 
-describe("RestartServerService", () => {
+describe("UpdateServerService", () => {
   const servers = [
     {
       id: "0192d295-ac96-73a3-a58c-275aab322238",
@@ -38,46 +38,46 @@ describe("RestartServerService", () => {
 
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const restartServerService = new RestartServerService();
-      expect(restartServerService).not.toBe(undefined);
+      const updateServerService = new UpdateServerService();
+      expect(updateServerService).not.toBe(undefined);
     });
   });
 
   describe("handleInteraction", () => {
-    it("should try to restart the server", async () => {
+    it("should try to update the server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, { stdout: JSON.stringify(servers[0]) });
       });
       const interaction = createInteraction({ name: servers[0].id });
-      const restartServerService = new RestartServerService();
-      await restartServerService.handleInteraction(interaction);
+      const updateServerService = new UpdateServerService();
+      await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         `curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/restart \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/update \
           --header 'Content-Type: application/json' \
           --data '{}'
         `,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`The server ${servers[0].applicationName}/${servers[0].containerName} has been restarted.`)
+        createEditReply(`The server ${servers[0].applicationName}/${servers[0].containerName} has been updated.`)
       );
     });
-    it("should handle error when restarting server", async () => {
+    it("should handle error when updateing server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
-      const restartServerService = new RestartServerService();
+      const updateServerService = new UpdateServerService();
       const interaction = createInteraction({ name: servers[0].id });
-      await restartServerService.handleInteraction(interaction);
+      await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(`This feature is not available right now. Sorry.`)
       );
     });
-    it("should handle error json when restarting server", async () => {
+    it("should handle error json when updateing server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, {
           stdout: JSON.stringify({
@@ -86,13 +86,13 @@ describe("RestartServerService", () => {
           }),
         });
       });
-      const restartServerService = new RestartServerService();
+      const updateServerService = new UpdateServerService();
       const interaction = createInteraction({ name: servers[0].id });
-      await restartServerService.handleInteraction(interaction);
+      await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(
-          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be restartable or maybe it is taking a really long time to restart.\nThis feature may not be available right now. Sorry.`
+          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be updateable or maybe it is taking a really long time to update.\nThis feature may not be available right now. Sorry.`
         )
       );
     });
@@ -106,8 +106,8 @@ describe("RestartServerService", () => {
 
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
-      const restartServerService = new RestartServerService();
-      await restartServerService.handleAutocomplete(interaction);
+      const updateServerService = new UpdateServerService();
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);
@@ -130,8 +130,8 @@ describe("RestartServerService", () => {
 
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      const restartServerService = new RestartServerService();
-      await restartServerService.handleAutocomplete(interaction);
+      const updateServerService = new UpdateServerService();
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);
@@ -158,8 +158,8 @@ describe("RestartServerService", () => {
       // This interaction will populate the serversCache
       let interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      const restartServerService = new RestartServerService();
-      await restartServerService.handleAutocomplete(interaction);
+      const updateServerService = new UpdateServerService();
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);
@@ -173,7 +173,7 @@ describe("RestartServerService", () => {
       // This interaction will use the serversCache
       interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      await restartServerService.handleAutocomplete(interaction);
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);
@@ -185,12 +185,12 @@ describe("RestartServerService", () => {
       ]);
 
       // Invalidate the serversCache
-      restartServerService.serversCache.createdAt = Date.now() - 10_000;
+      updateServerService.serversCache.createdAt = Date.now() - 10_000;
 
       // This interaction will repopulate the serversCache
       interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      await restartServerService.handleAutocomplete(interaction);
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);
@@ -217,8 +217,8 @@ describe("RestartServerService", () => {
 
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
-      const restartServerService = new RestartServerService();
-      await restartServerService.handleAutocomplete(interaction);
+      const updateServerService = new UpdateServerService();
+      await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledTimes(1);

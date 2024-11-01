@@ -10,11 +10,9 @@ type Server = {
   id: string;
   applicationName: string;
   containerName: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
-export class RestartServerService implements InteractionService {
+export class UpdateServerService implements InteractionService {
   serversCache: { servers?: Server[]; createdAt?: number } = {};
 
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
@@ -22,11 +20,11 @@ export class RestartServerService implements InteractionService {
     const messages = [];
     const serverId: string = interaction.options.getString("name").trim();
     try {
-      // call restart server
+      // call update server
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/update \
           --header 'Content-Type: application/json' \
           --data '{}'
         `)
@@ -35,11 +33,11 @@ export class RestartServerService implements InteractionService {
 
       // Tell user it has been done
       if (server.id) {
-        messages.push(`The server ${server.applicationName}/${server.containerName} has been restarted.`);
+        messages.push(`The server ${server.applicationName}/${server.containerName} has been updated.`);
       } else {
         messages.push(`Make sure you select an option rather than typing in the name directly.`);
         messages.push(
-          `If you did that, then the server may not be restartable or maybe it is taking a really long time to restart.`
+          `If you did that, then the server may not be updateable or maybe it is taking a really long time to update.`
         );
         messages.push("This feature may not be available right now. Sorry.");
       }
@@ -61,7 +59,8 @@ export class RestartServerService implements InteractionService {
         // If cache is more than 5 seconds old, refresh it.
         // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
         const response = JSON.parse(
-          (await exec(`curl --request GET --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers`)).stdout
+          (await exec(`curl --request GET --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers?isUpdatable=true`))
+            .stdout
         );
         if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
         this.serversCache.servers = response;
