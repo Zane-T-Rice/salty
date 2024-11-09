@@ -57,6 +57,8 @@ describe("RestartServerService", () => {
         `curl --request POST \
           --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/restart \
           --header 'Content-Type: application/json' \
+          --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
+          --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \
           --data '{}'
         `,
         expect.any(Function)

@@ -28,6 +28,8 @@ export class RestartServerService implements InteractionService {
           await exec(`curl --request POST \
           --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart \
           --header 'Content-Type: application/json' \
+          --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
+          --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \
           --data '{}'
         `)
         ).stdout
@@ -61,7 +63,13 @@ export class RestartServerService implements InteractionService {
         // If cache is more than 5 seconds old, refresh it.
         // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
         const response = JSON.parse(
-          (await exec(`curl --request GET --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers`)).stdout
+          (
+            await exec(`curl --request GET \
+            --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers \
+            --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
+            --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}'
+            `)
+          ).stdout
         );
         if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
         this.serversCache.servers = response;
