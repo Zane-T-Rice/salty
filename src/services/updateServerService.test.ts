@@ -55,7 +55,7 @@ describe("UpdateServerService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
         `curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/update \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/update/ \
           --header 'Content-Type: application/json' \
           --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
           --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \

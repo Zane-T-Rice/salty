@@ -24,7 +24,7 @@ export class UpdateServerService implements InteractionService {
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/update \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/update/ \
           --header 'Content-Type: application/json' \
           --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
           --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \

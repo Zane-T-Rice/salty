@@ -26,7 +26,7 @@ export class RestartServerService implements InteractionService {
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart/ \
           --header 'Content-Type: application/json' \
           --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
           --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \
@@ -65,7 +65,7 @@ export class RestartServerService implements InteractionService {
         const response = JSON.parse(
           (
             await exec(`curl --request GET \
-            --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers \
+            --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/ \
             --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
             --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}'
             `)
