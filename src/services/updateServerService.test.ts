@@ -11,6 +11,8 @@ const createEditReply = (content: string) => ({
   content,
 });
 
+const accessTokenObject = { access_token: "token" };
+
 describe("UpdateServerService", () => {
   const servers = [
     {
@@ -45,20 +47,22 @@ describe("UpdateServerService", () => {
 
   describe("handleInteraction", () => {
     it("should try to update the server", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, { stdout: JSON.stringify(servers[0]) });
       });
       const interaction = createInteraction({ name: servers[0].id });
       const updateServerService = new UpdateServerService();
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
-        1,
+        2,
         `curl --request POST \
           --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/update/ \
           --header 'Content-Type: application/json' \
-          --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
-          --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \
+          --header 'Authorization: Bearer ${accessTokenObject.access_token}' \
           --data '{}'
         `,
         expect.any(Function)
@@ -67,17 +71,36 @@ describe("UpdateServerService", () => {
         createEditReply(`The server ${servers[0].applicationName}/${servers[0].containerName} has been updated.`)
       );
     });
-    it("should handle error when updateing server", async () => {
+    it("should handle error when updating server", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
       const updateServerService = new UpdateServerService();
       const interaction = createInteraction({ name: servers[0].id });
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
     });
-    it("should handle error json when updateing server", async () => {
+    it("should handle auth error when updating server", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
+        throw 1;
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
+        throw 1;
+      });
+      const updateServerService = new UpdateServerService();
+      const interaction = createInteraction({ name: servers[0].id });
+      await updateServerService.handleInteraction(interaction);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
+    });
+    it("should handle error json when updating server", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, {
           stdout: JSON.stringify({
@@ -89,7 +112,7 @@ describe("UpdateServerService", () => {
       const updateServerService = new UpdateServerService();
       const interaction = createInteraction({ name: servers[0].id });
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(
           `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be updateable or maybe it is taking a really long time to update.\nThis feature may not be available right now.`
@@ -100,6 +123,9 @@ describe("UpdateServerService", () => {
 
   describe("handleAutocomplete", () => {
     it("Should suggest possible existing server names", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
         callback(null, { stdout: JSON.stringify(servers) });
       });
@@ -125,6 +151,9 @@ describe("UpdateServerService", () => {
 
     it("Should suggest possible existing server names based on current input", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
         callback(null, { stdout: JSON.stringify(servers) });
       });
 
@@ -146,7 +175,13 @@ describe("UpdateServerService", () => {
     it("Should use cached servers when available", async () => {
       (child_process.exec as unknown as jest.Mock)
         .mockImplementationOnce((_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
+        })
+        .mockImplementationOnce((_, callback) => {
           callback(null, { stdout: JSON.stringify(servers) });
+        })
+        .mockImplementationOnce((_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
         })
         .mockImplementationOnce((_, callback) => {
           callback(null, { stdout: JSON.stringify(servers) });
@@ -202,10 +237,13 @@ describe("UpdateServerService", () => {
       ]);
 
       // Twice the interaction does not use the cache, once the interaction does use the cache.
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
     });
 
     it("Should handle errors when getting servers", async () => {
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
+        callback(null, { stdout: JSON.stringify(accessTokenObject) });
+      });
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, {
           stdout: JSON.stringify({

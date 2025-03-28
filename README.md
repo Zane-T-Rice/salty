@@ -31,6 +31,11 @@ YOUTUBE_DIRECTORY_JELLYFIN_ID=
 
 # The url to the server-manager-service, including port number
 SERVER_MANAGER_SERVICE_URL=
+
+# OAuth2.0 Client Credentials
+CLIENT_ID=
+CLIENT_SECRET=
+AUDIENCE=
 ```
 
 ### Deploy Slash Commands To Server

@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
 import { exec as exec2 } from "child_process";
+import { getAccessToken } from "../utils";
 import { InteractionService } from "./interactionService";
 import { promisify } from "util";
 const exec = promisify(exec2);
@@ -23,13 +24,13 @@ export class RestartServerService implements InteractionService {
     const serverId: string = interaction.options.getString("name").trim();
     try {
       // call restart server
+      const accessToken = await getAccessToken();
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
           --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart/ \
           --header 'Content-Type: application/json' \
-          --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
-          --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}' \
+          --header 'Authorization: Bearer ${accessToken}' \
           --data '{}'
         `)
         ).stdout
@@ -62,15 +63,16 @@ export class RestartServerService implements InteractionService {
       if (!this.serversCache.createdAt || Date.now() - this.serversCache.createdAt > 5_000) {
         // If cache is more than 5 seconds old, refresh it.
         // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
+        const accessToken = await getAccessToken();
         const response = JSON.parse(
           (
             await exec(`curl --request GET \
             --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/ \
-            --header 'authorization-key: ${process.env.SERVER_MANAGER_SERVICE_AUTHORIZATION_KEY}' \
-            --header 'owner: ${process.env.SERVER_MANAGER_SERVICE_OWNER}'
+            --header 'Authorization: Bearer ${accessToken}' \
             `)
           ).stdout
         );
+
         if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
         this.serversCache.servers = response;
         this.serversCache.createdAt = Date.now();
