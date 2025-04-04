@@ -43,7 +43,7 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title)s [%(id)s].%(ext)s" 'url'`,
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title).64s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
@@ -68,7 +68,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
-        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title)s [%(id)s].%(ext)s" 'url'`,
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title).64s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
@@ -88,7 +88,7 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/RabbitAndSteel/%(title)s [%(id)s].%(ext)s" 'url'`,
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/RabbitAndSteel/%(title).64s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
@@ -140,7 +140,7 @@ describe("youtubeService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         1,
-        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title)s [%(id)s].%(ext)s" 'url'`,
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/%(title).64s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -178,7 +178,7 @@ describe("youtubeService", () => {
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
-        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title)s [%(id)s].%(ext)s" 'url'`,
+        `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}/folder/%(title).64s [%(id)s].%(ext)s" 'url'`,
         expect.any(Function)
       );
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
