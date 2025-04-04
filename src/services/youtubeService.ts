@@ -44,7 +44,7 @@ export class YoutubeService implements InteractionService {
       try {
         // Now download the video into the requested folder.
         await exec(
-          `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}${folder ? `/${folder}` : ""}/%(title)s [%(id)s].%(ext)s" '${url}'`
+          `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}${folder ? `/${folder}` : ""}/%(title).64s [%(id)s].%(ext)s" '${url}'`
         );
         return `Finished downloading <${url}>.`;
       } catch (e) {
