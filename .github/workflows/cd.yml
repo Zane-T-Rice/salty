@@ -1,0 +1,45 @@
+name: Continuous Deployment
+
+# Trigger the CD pipeline only when pushing to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Build and Test
+    uses: Zane-T-Rice/apps/.github/workflows/ci.yml@main
+  deploy:
+    needs:
+      - test
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Get Access Token
+      - id: get-access-token
+        name: Get Access Token
+        env:
+          ACCESS_TOKEN_URL: ${{ secrets.ACCESS_TOKEN_URL }}
+          AUTH_AUDIENCE: ${{ secrets.AUTH_AUDIENCE }}
+          AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
+          AUTH_CLIENT_SECRET: ${{ secrets.AUTH_CLIENT_SECRET }}
+        run: |
+          auth_token=$(curl --silent --request POST \
+          --url "$ACCESS_TOKEN_URL" \
+          --header 'content-type: application/json' \
+          --data "{\"client_id\":\"$AUTH_CLIENT_ID\",\"client_secret\":\"$AUTH_CLIENT_SECRET\",\"audience\":\"$AUTH_AUDIENCE\",\"grant_type\":\"client_credentials\"}" | jq --raw-output .access_token)
+          echo "::add-mask::$auth_token"
+          echo "auth-token=$auth_token" >> "$GITHUB_OUTPUT"
+      # Step 2: Deploy
+      - id: deploy
+        name: deploy
+        env:
+          SERVER_ID: ${{ secrets.SERVER_ID }}
+          SERVER_MANAGER_SERVICE_URL: ${{ secrets.SERVER_MANAGER_SERVICE_URL }}
+        run: |
+          curl --silent --request POST \
+          --url $SERVER_MANAGER_SERVICE_URL/servers/$SERVER_ID/update/ \
+          --header 'Content-Type: application/json' \
+          --header "Authorization: Bearer ${{ steps.get-access-token.outputs.auth-token }}" \
+          --data '{}'
