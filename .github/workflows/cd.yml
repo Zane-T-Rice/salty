@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Build and Test
-    uses: Zane-T-Rice/apps/.github/workflows/ci.yml@main
+    uses: Zane-T-Rice/salty/.github/workflows/ci.yml@main
   deploy:
     needs:
       - test
