@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import { Server, ServersCacheService } from "./serversCacheService";
 import { exec as exec2 } from "child_process";
 import { getAccessToken } from "../utils";
 import { InteractionService } from "./interactionService";
@@ -7,28 +8,26 @@ import { promisify } from "util";
 const exec = promisify(exec2);
 dotenv.config();
 
-type Server = {
-  id: string;
-  applicationName: string;
-  containerName: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export class RestartServerService implements InteractionService {
+export class RestartServerService extends ServersCacheService implements InteractionService {
   serversCache: { servers?: Server[]; createdAt?: number } = {};
 
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     await interaction.deferReply({ ephemeral: true });
     const messages = [];
-    const serverId: string = interaction.options.getString("name").trim();
+    const interactionValues = interaction.options
+      .getString("name")
+      .trim()
+      .split(" ")
+      .map((value) => value.trim());
+    const hostId: string = interactionValues[0];
+    const serverId: string = interactionValues[1];
     try {
       // call restart server
       const accessToken = await getAccessToken();
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${serverId}/restart/ \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/hosts/${hostId}/servers/${serverId}/restart/ \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer ${accessToken}' \
           --data '{}'
@@ -60,26 +59,12 @@ export class RestartServerService implements InteractionService {
     const focusedValue = interaction.options.getFocused();
     const choices: { name: string; value: string }[] = [];
     try {
-      if (!this.serversCache.createdAt || Date.now() - this.serversCache.createdAt > 5_000) {
-        // If cache is more than 5 seconds old, refresh it.
-        // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
-        const accessToken = await getAccessToken();
-        const response = JSON.parse(
-          (
-            await exec(`curl --request GET \
-            --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/ \
-            --header 'Authorization: Bearer ${accessToken}' \
-            `)
-          ).stdout
-        );
-
-        if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
-        this.serversCache.servers = response;
-        this.serversCache.createdAt = Date.now();
-      }
-      const servers: Server[] = this.serversCache.servers;
+      const servers: Server[] = await this.getServers();
       choices.push(
-        ...servers.map((server) => ({ name: `${server.applicationName}/${server.containerName}`, value: server.id }))
+        ...servers.map((server) => ({
+          name: `${server.applicationName}/${server.containerName}`,
+          value: `${server.hostId} ${server.id}`,
+        }))
       );
     } catch (e) {
       // Probably server-manager-service is down. Not sure what to do.

@@ -2,7 +2,6 @@ import * as child_process from "child_process";
 import * as dotenv from "dotenv";
 import { createAutocompleteInteraction } from "../testUtils/createAutocompleteInteraction";
 import { createInteraction } from "../testUtils";
-// import { MessageFlags } from "discord.js";
 import { UpdateServerService } from "./updateServerService";
 jest.mock("child_process");
 jest.mock("node:fs");
@@ -17,6 +16,7 @@ describe("UpdateServerService", () => {
   const servers = [
     {
       id: "0192d295-ac96-73a3-a58c-275aab322238",
+      hostId: "0192d295-ac96-73a3-a58c-275aab433349",
       applicationName: "valheim",
       containerName: "valheim_container",
       createdAt: "2024-10-27T09:14:01.900Z",
@@ -24,18 +24,25 @@ describe("UpdateServerService", () => {
     },
     {
       id: "0192d295-b022-708d-968a-68c794fc5f2e",
+      hostId: "0192d295-ac96-73a3-a58c-275aab444459",
       applicationName: "valheim2",
       containerName: "valheim2_container",
       createdAt: "2024-10-27T09:14:51.134Z",
       updatedAt: "2024-10-27T09:14:51.134Z",
     },
   ];
+  let updateServerService;
+  const mockGetServers = jest.fn();
+
   beforeAll(() => {
     dotenv.config();
   });
 
   beforeEach(() => {
     jest.resetAllMocks();
+    updateServerService = new UpdateServerService();
+    jest.spyOn(updateServerService, "getServers").mockImplementation(mockGetServers);
+    mockGetServers.mockReturnValueOnce(servers);
   });
 
   describe("constructor", () => {
@@ -46,6 +53,8 @@ describe("UpdateServerService", () => {
   });
 
   describe("handleInteraction", () => {
+    const interactionOptions = { name: `${servers[0].hostId} ${servers[0].id}` };
+
     it("should try to update the server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
         callback(null, { stdout: JSON.stringify(accessTokenObject) });
@@ -53,14 +62,13 @@ describe("UpdateServerService", () => {
       (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
         callback(null, { stdout: JSON.stringify(servers[0]) });
       });
-      const interaction = createInteraction({ name: servers[0].id });
-      const updateServerService = new UpdateServerService();
+      const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
         `curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/servers/${servers[0].id}/update/ \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/hosts/${servers[0].hostId}/servers/${servers[0].id}/update/ \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer ${accessTokenObject.access_token}' \
           --data '{}'
@@ -78,8 +86,7 @@ describe("UpdateServerService", () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
-      const updateServerService = new UpdateServerService();
-      const interaction = createInteraction({ name: servers[0].id });
+      const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
@@ -91,8 +98,7 @@ describe("UpdateServerService", () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
         throw 1;
       });
-      const updateServerService = new UpdateServerService();
-      const interaction = createInteraction({ name: servers[0].id });
+      const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
@@ -109,8 +115,7 @@ describe("UpdateServerService", () => {
           }),
         });
       });
-      const updateServerService = new UpdateServerService();
-      const interaction = createInteraction({ name: servers[0].id });
+      const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
       expect(interaction.editReply).toHaveBeenCalledWith(
@@ -123,16 +128,8 @@ describe("UpdateServerService", () => {
 
   describe("handleAutocomplete", () => {
     it("Should suggest possible existing server names", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(servers) });
-      });
-
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
-      const updateServerService = new UpdateServerService();
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
@@ -140,26 +137,18 @@ describe("UpdateServerService", () => {
       expect(interaction.respond).toHaveBeenCalledWith([
         {
           name: "valheim/valheim_container",
-          value: "0192d295-ac96-73a3-a58c-275aab322238",
+          value: `${servers[0].hostId} ${servers[0].id}`,
         },
         {
           name: "valheim2/valheim2_container",
-          value: "0192d295-b022-708d-968a-68c794fc5f2e",
+          value: `${servers[1].hostId} ${servers[1].id}`,
         },
       ]);
     });
 
     it("Should suggest possible existing server names based on current input", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(servers) });
-      });
-
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      const updateServerService = new UpdateServerService();
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
@@ -167,95 +156,16 @@ describe("UpdateServerService", () => {
       expect(interaction.respond).toHaveBeenCalledWith([
         {
           name: "valheim2/valheim2_container",
-          value: "0192d295-b022-708d-968a-68c794fc5f2e",
+          value: `${servers[1].hostId} ${servers[1].id}`,
         },
       ]);
-    });
-
-    it("Should use cached servers when available", async () => {
-      (child_process.exec as unknown as jest.Mock)
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { stdout: JSON.stringify(accessTokenObject) });
-        })
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { stdout: JSON.stringify(servers) });
-        })
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { stdout: JSON.stringify(accessTokenObject) });
-        })
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { stdout: JSON.stringify(servers) });
-        })
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { stdout: JSON.stringify(new Error()) }); // This should not happen in this test.
-        });
-
-      // This interaction will populate the serversCache
-      let interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      const updateServerService = new UpdateServerService();
-      await updateServerService.handleAutocomplete(interaction);
-
-      expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledWith([
-        {
-          name: "valheim2/valheim2_container",
-          value: "0192d295-b022-708d-968a-68c794fc5f2e",
-        },
-      ]);
-
-      // This interaction will use the serversCache
-      interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      await updateServerService.handleAutocomplete(interaction);
-
-      expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledWith([
-        {
-          name: "valheim2/valheim2_container",
-          value: "0192d295-b022-708d-968a-68c794fc5f2e",
-        },
-      ]);
-
-      // Invalidate the serversCache
-      updateServerService.serversCache.createdAt = Date.now() - 10_000;
-
-      // This interaction will repopulate the serversCache
-      interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
-      await updateServerService.handleAutocomplete(interaction);
-
-      expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledTimes(1);
-      expect(interaction.respond).toHaveBeenCalledWith([
-        {
-          name: "valheim2/valheim2_container",
-          value: "0192d295-b022-708d-968a-68c794fc5f2e",
-        },
-      ]);
-
-      // Twice the interaction does not use the cache, once the interaction does use the cache.
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
     });
 
     it("Should handle errors when getting servers", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
-        callback(null, {
-          stdout: JSON.stringify({
-            name: "NotFoundError",
-            message: `The server with id ${servers[0].id} was not found.`,
-          }),
-        });
-      });
+      mockGetServers.mockReset().mockRejectedValueOnce({});
 
       const interaction = createAutocompleteInteraction();
       (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
-      const updateServerService = new UpdateServerService();
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
