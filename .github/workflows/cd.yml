@@ -35,11 +35,12 @@ jobs:
       - id: deploy
         name: deploy
         env:
+          HOST_ID: ${{ secrets.HOST_ID }}
           SERVER_ID: ${{ secrets.SERVER_ID }}
           SERVER_MANAGER_SERVICE_URL: ${{ secrets.SERVER_MANAGER_SERVICE_URL }}
         run: |
           curl --silent --request POST \
-          --url $SERVER_MANAGER_SERVICE_URL/servers/$SERVER_ID/update/ \
+          --url $SERVER_MANAGER_SERVICE_URL/hosts/$HOST_ID/servers/$SERVER_ID/update/ \
           --header 'Content-Type: application/json' \
           --header "Authorization: Bearer ${{ steps.get-access-token.outputs.auth-token }}" \
           --data '{}'
