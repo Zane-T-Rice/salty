@@ -16,7 +16,6 @@ describe("RestartServerService", () => {
   const servers = [
     {
       id: "0192d295-ac96-73a3-a58c-275aab322238",
-      hostId: "0192d295-ac96-73a3-a58c-275aab433349",
       applicationName: "valheim",
       containerName: "valheim_container",
       createdAt: "2024-10-27T09:14:01.900Z",
@@ -24,7 +23,6 @@ describe("RestartServerService", () => {
     },
     {
       id: "0192d295-b022-708d-968a-68c794fc5f2e",
-      hostId: "0192d295-ac96-73a3-a58c-275aab444459",
       applicationName: "valheim2",
       containerName: "valheim2_container",
       createdAt: "2024-10-27T09:14:51.134Z",
@@ -53,7 +51,7 @@ describe("RestartServerService", () => {
   });
 
   describe("handleInteraction", () => {
-    const interactionOptions = { name: `${servers[0].hostId} ${servers[0].id}` };
+    const interactionOptions = { name: `${servers[0].id}` };
 
     it("should try to restart the server", async () => {
       (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
@@ -68,7 +66,7 @@ describe("RestartServerService", () => {
       expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
         2,
         `curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/hosts/${servers[0].hostId}/servers/${servers[0].id}/restart/ \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/users/servers/${servers[0].id}/restart/ \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer ${accessTokenObject.access_token}' \
           --data '{}'
@@ -137,11 +135,11 @@ describe("RestartServerService", () => {
       expect(interaction.respond).toHaveBeenCalledWith([
         {
           name: "valheim/valheim_container",
-          value: `${servers[0].hostId} ${servers[0].id}`,
+          value: `${servers[0].id}`,
         },
         {
           name: "valheim2/valheim2_container",
-          value: `${servers[1].hostId} ${servers[1].id}`,
+          value: `${servers[1].id}`,
         },
       ]);
     });
@@ -156,7 +154,7 @@ describe("RestartServerService", () => {
       expect(interaction.respond).toHaveBeenCalledWith([
         {
           name: "valheim2/valheim2_container",
-          value: `${servers[1].hostId} ${servers[1].id}`,
+          value: `${servers[1].id}`,
         },
       ]);
     });

@@ -14,20 +14,14 @@ export class UpdateServerService extends ServersCacheService implements Interact
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
     await interaction.deferReply({ ephemeral: true });
     const messages = [];
-    const interactionValues = interaction.options
-      .getString("name")
-      .trim()
-      .split(" ")
-      .map((value) => value.trim());
-    const hostId: string = interactionValues[0];
-    const serverId: string = interactionValues[1];
+    const serverId = interaction.options.getString("name").trim();
     try {
       // call update server
       const accessToken = await getAccessToken();
       const server: Server = JSON.parse(
         (
           await exec(`curl --request POST \
-          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/hosts/${hostId}/servers/${serverId}/update/ \
+          --url ${process.env.SERVER_MANAGER_SERVICE_URL}/users/servers/${serverId}/update/ \
           --header 'Content-Type: application/json' \
           --header 'Authorization: Bearer ${accessToken}' \
           --data '{}'
@@ -63,7 +57,7 @@ export class UpdateServerService extends ServersCacheService implements Interact
       choices.push(
         ...servers.map((server) => ({
           name: `${server.applicationName}/${server.containerName}`,
-          value: `${server.hostId} ${server.id}`,
+          value: `${server.id}`,
         }))
       );
     } catch (e) {
