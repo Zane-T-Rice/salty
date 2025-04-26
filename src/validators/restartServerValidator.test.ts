@@ -7,7 +7,7 @@ describe("RestartServerValidator", () => {
   describe("validate", () => {
     it.each([
       // True cases
-      { expectedResult: true, name: "0192d27c-0869-749a-9616-61cecea2ad47 0192d27c-0869-749a-9616-61cecea2bc36" },
+      { expectedResult: true, name: "0192d27c-0869-749a-9616-61cecea2bc36" },
 
       // False cases
       { expectedResult: false, name: "not a uuid" },
