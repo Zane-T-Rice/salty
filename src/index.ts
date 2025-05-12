@@ -2,7 +2,6 @@ import * as dotenv from "dotenv";
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import {
   PingController,
-  RestartServerController,
   UpdateServerController,
   VoteButtonInteractionController,
   VoteController,
@@ -12,7 +11,6 @@ import { Router } from "./router";
 
 const router = new Router(
   new PingController(),
-  new RestartServerController(),
   new UpdateServerController(),
   new VoteController(),
   new VoteButtonInteractionController(),
