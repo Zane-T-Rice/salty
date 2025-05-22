@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 import { validate } from "uuid";
 
@@ -14,7 +14,7 @@ export class UpdateServerValidator extends InteractionValidator {
     if (errorReply.length > 0)
       await interaction.reply({
         content: errorReply,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     return validName;
   }

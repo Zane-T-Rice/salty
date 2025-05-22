@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 
 export class VoteValidator extends InteractionValidator {
@@ -13,7 +13,7 @@ export class VoteValidator extends InteractionValidator {
     if (!isValid)
       interaction.reply({
         content: "The number of arguments must be [1,25].",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     return isValid;
   }

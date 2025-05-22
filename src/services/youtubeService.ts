@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import * as fs from "node:fs";
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { exec as exec2 } from "child_process";
 import { InteractionService } from "./interactionService";
 import { isMention } from "../utils";
@@ -10,7 +10,7 @@ dotenv.config();
 
 export class YoutubeService implements InteractionService {
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
-    interaction.deferReply({ ephemeral: true });
+    interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     let urls =
       interaction.options
@@ -48,6 +48,7 @@ export class YoutubeService implements InteractionService {
         );
         return `Finished downloading <${url}>.`;
       } catch (e) {
+        console.error(e);
         return `Failed to download <${url}>.`;
       }
     });

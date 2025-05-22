@@ -1,3 +1,4 @@
+import { MessageFlags } from "discord.js";
 import { createInteraction } from "../testUtils";
 import { PingService } from "./pingService";
 
@@ -14,7 +15,7 @@ describe("pingService", () => {
       const pingService = new PingService();
       const interaction = createInteraction({});
       pingService.handleInteraction(interaction);
-      expect(interaction.reply).toHaveBeenCalledWith({ content: "pong", ephemeral: true });
+      expect(interaction.reply).toHaveBeenCalledWith({ content: "pong", flags: MessageFlags.Ephemeral });
     });
   });
 });

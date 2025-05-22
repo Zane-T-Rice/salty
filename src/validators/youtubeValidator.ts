@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 import { isMention } from "../utils";
 
@@ -23,7 +23,7 @@ export class YoutubeValidator extends InteractionValidator {
     if (errorReply.length > 0)
       interaction.reply({
         content: errorReply,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     return validUrls && validFolder;
   }

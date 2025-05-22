@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { Server, ServersCacheService } from "./serversCacheService";
 import { exec as exec2 } from "child_process";
 import { getAccessToken } from "../utils";
@@ -12,7 +12,7 @@ export class UpdateServerService extends ServersCacheService implements Interact
   serversCache: { servers?: Server[]; createdAt?: number } = {};
 
   async handleInteraction(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const messages = [];
     const serverId = interaction.options.getString("name").trim();
     try {
