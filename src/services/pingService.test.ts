@@ -1,6 +1,6 @@
+import { createInteraction } from "../testUtils";
 import { MessageFlags } from "discord.js";
 import { PingService } from "./pingService";
-import { createInteraction } from "../testUtils";
 
 describe("pingService", () => {
   describe("constructor", () => {
