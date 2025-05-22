@@ -44,7 +44,13 @@ export class YoutubeService implements InteractionService {
       try {
         // Now download the video into the requested folder.
         await exec(
-          `yt-dlp -o "${process.env.YOUTUBE_DIRECTORY}${folder ? `/${folder}` : ""}/%(title).64s [%(id)s].%(ext)s" '${url}'`
+          // Downloading directly into the final destination has caused
+          // some odd issues. Downloading into /tmp and then moving the
+          // completed file to the final destination has been more stable.
+          `yt-dlp \
+            -P "${process.env.YOUTUBE_DIRECTORY}${folder ? `/${folder}` : ""}" \
+            -P "temp:/tmp" \
+            -o "%(title).64s [%(id)s].%(ext)s" '${url}'`
         );
         return `Finished downloading <${url}>.`;
       } catch (e) {
