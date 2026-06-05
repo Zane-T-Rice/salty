@@ -14,7 +14,7 @@
   "author": "Zane Rice",
   "dependencies": {
     "async-mutex": "^0.5.0",
-    "axios": "^1.7.0",
+    "axios": "^1.16.0",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
     "typescript": "^5.4.5",
