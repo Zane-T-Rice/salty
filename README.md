@@ -6,10 +6,10 @@
 
 ```sh
 node --version
-v16.13.1
+v22.22.2
 
 npm --version
-6.14.14
+10.9.7
 ```
 
 ```sh
