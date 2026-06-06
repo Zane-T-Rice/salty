@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "build",
     "module": "commonjs",
-    "moduleResolution": "node",
     "target": "es2016",
     "lib": ["es6", "dom"],
     "sourceMap": true,
@@ -12,7 +11,9 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "strict": false
   },
   "exclude": ["node_modules"],
   "compileOnSave": true
