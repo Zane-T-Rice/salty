@@ -1,17 +1,10 @@
 module.exports = {
-  roots: ['<rootDir>/build'],
-  testMatch: ['**/*.test.js'],
-  transform: {
-    '^.+\\.(t|j)sx?$': 'babel-jest',
-  },
-  transformIgnorePatterns: [
-    // This overrides the default that was blocking uuid
-    '/node_modules/(?!(uuid)/)'
-  ],
-  moduleNameMapper: {
-    // Helps Jest find the entry point
-    '^uuid$': require.resolve('uuid'),
-  },
+ // Only look for tests in build directory.
+ roots: ['<rootDir>/build'],
+ transformIgnorePatterns: [
+   // Do transform uuid.
+   '<rootDir>/node_modules/(?!(uuid)/)'
+ ],
  "coverageThreshold": {
     "global": {
       "branches": 100,
