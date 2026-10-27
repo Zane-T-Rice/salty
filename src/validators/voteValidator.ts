@@ -1,8 +1,14 @@
-import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  MessageFlags,
+} from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 
 export class VoteValidator extends InteractionValidator {
-  async validate(interaction: ChatInputCommandInteraction<CacheType>): Promise<boolean> {
+  async validate(
+    interaction: ChatInputCommandInteraction<CacheType>,
+  ): Promise<boolean> {
     const args =
       interaction.options
         .getString("args")

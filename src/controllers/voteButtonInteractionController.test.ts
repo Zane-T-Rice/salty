@@ -3,7 +3,8 @@ import { VoteButtonInteractionController } from "./voteButtonInteractionControll
 describe("voteButtonInteractionController", () => {
   describe("constructor", () => {
     it("should construct successfully", () => {
-      const voteButtonInteractionController = new VoteButtonInteractionController();
+      const voteButtonInteractionController =
+        new VoteButtonInteractionController();
       expect(voteButtonInteractionController).not.toBe(undefined);
     });
   });

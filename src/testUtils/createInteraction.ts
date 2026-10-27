@@ -2,7 +2,7 @@ import { CacheType, ChatInputCommandInteraction } from "discord.js";
 
 export const createInteraction = (
   options: { [key: string]: string },
-  overrides?: { [key: string]: string }
+  overrides?: { [key: string]: string },
 ): ChatInputCommandInteraction<CacheType> => {
   return {
     deferReply: jest.fn(),

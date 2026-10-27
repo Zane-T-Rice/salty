@@ -17,9 +17,14 @@ describe("UpdateServerValidator", () => {
         expectedResult: false,
         name: null,
       },
-    ])("should return $expectedResult when name is $name.", async ({ expectedResult, name }) => {
-      const result = await updateValidator.validate(createInteraction({ name }));
-      expect(result).toBe(expectedResult);
-    });
+    ])(
+      "should return $expectedResult when name is $name.",
+      async ({ expectedResult, name }) => {
+        const result = await updateValidator.validate(
+          createInteraction({ name }),
+        );
+        expect(result).toBe(expectedResult);
+      },
+    );
   });
 });

@@ -1,13 +1,21 @@
-import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  MessageFlags,
+} from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 import { validate } from "uuid";
 
 export class UpdateServerValidator extends InteractionValidator {
-  async validate(interaction: ChatInputCommandInteraction<CacheType>): Promise<boolean> {
+  async validate(
+    interaction: ChatInputCommandInteraction<CacheType>,
+  ): Promise<boolean> {
     const name = interaction.options.getString("name")?.trim();
     const validName = validate(name);
     const errorReply = [
-      !validName ? "You must select an option from the list. (Or somehow type the uuid of the option manually)." : null,
+      !validName
+        ? "You must select an option from the list. (Or somehow type the uuid of the option manually)."
+        : null,
     ]
       .filter((e) => !!e)
       .join(" ");

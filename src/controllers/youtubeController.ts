@@ -5,6 +5,10 @@ import { YoutubeValidator } from "../validators";
 
 export class YoutubeController extends InteractionController {
   constructor() {
-    super(new YoutubeAuthorizer(), new YoutubeValidator(), new YoutubeService());
+    super(
+      new YoutubeAuthorizer(),
+      new YoutubeValidator(),
+      new YoutubeService(),
+    );
   }
 }

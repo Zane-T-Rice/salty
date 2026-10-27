@@ -1,9 +1,15 @@
-import { CacheType, ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  MessageFlags,
+} from "discord.js";
 import { InteractionValidator } from "./interactionValidator";
 import { isMention } from "../utils";
 
 export class YoutubeValidator extends InteractionValidator {
-  async validate(interaction: ChatInputCommandInteraction<CacheType>): Promise<boolean> {
+  async validate(
+    interaction: ChatInputCommandInteraction<CacheType>,
+  ): Promise<boolean> {
     let urls =
       interaction.options
         .getString("urls")
@@ -16,7 +22,9 @@ export class YoutubeValidator extends InteractionValidator {
     const validFolder = folder.match(/^[a-zA-Z0-9_ ]*$/)?.length > 0;
     const errorReply = [
       !validUrls ? "You must supply at least one string in urls." : null,
-      !validFolder ? "You must use a folder name matching /^[a-zA-Z0-9_ ]*$/" : null,
+      !validFolder
+        ? "You must use a folder name matching /^[a-zA-Z0-9_ ]*$/"
+        : null,
     ]
       .filter((e) => !!e)
       .join(" ");

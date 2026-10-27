@@ -39,7 +39,9 @@ describe("UpdateServerService", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     updateServerService = new UpdateServerService();
-    jest.spyOn(updateServerService, "getServers").mockImplementation(mockGetServers);
+    jest
+      .spyOn(updateServerService, "getServers")
+      .mockImplementation(mockGetServers);
     mockGetServers.mockReturnValueOnce(servers);
   });
 
@@ -54,16 +56,24 @@ describe("UpdateServerService", () => {
     const interactionOptions = { name: `${servers[0].id}` };
 
     it("should try to update the server", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
-        callback(null, { stdout: JSON.stringify(servers[0]) });
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementation(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(servers[0]) });
+        },
+      );
       const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        2,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         2,
         `curl --request POST \
           --url ${process.env.SERVER_MANAGER_SERVICE_URL}/users/servers/${servers[0].id}/update/ \
@@ -71,55 +81,79 @@ describe("UpdateServerService", () => {
           --header 'Authorization: Bearer ${accessTokenObject.access_token}' \
           --data '{}'
         `,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`The server ${servers[0].applicationName}/${servers[0].containerName} has been updated.`)
+        createEditReply(
+          `The server ${servers[0].applicationName}/${servers[0].containerName} has been updated.`,
+        ),
       );
     });
     it("should handle error when updating server", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
       const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
-      expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        2,
+      );
+      expect(interaction.editReply).toHaveBeenCalledWith(
+        createEditReply(`This feature is not available right now.`),
+      );
     });
     it("should handle auth error when updating server", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
       const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
-      expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(`This feature is not available right now.`));
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        2,
+      );
+      expect(interaction.editReply).toHaveBeenCalledWith(
+        createEditReply(`This feature is not available right now.`),
+      );
     });
     it("should handle error json when updating server", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
-        callback(null, {
-          stdout: JSON.stringify({
-            name: "NotFoundError",
-            message: `The server with id ${servers[0].id} was not found.`,
-          }),
-        });
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementation(
+        (_, callback) => {
+          callback(null, {
+            stdout: JSON.stringify({
+              name: "NotFoundError",
+              message: `The server with id ${servers[0].id} was not found.`,
+            }),
+          });
+        },
+      );
       const interaction = createInteraction(interactionOptions);
       await updateServerService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        2,
+      );
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(
-          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be updateable or maybe it is taking a really long time to update.\nThis feature may not be available right now.`
-        )
+          `Make sure you select an option rather than typing in the name directly.\nIf you did that, then the server may not be updateable or maybe it is taking a really long time to update.\nThis feature may not be available right now.`,
+        ),
       );
     });
   });
@@ -127,7 +161,9 @@ describe("UpdateServerService", () => {
   describe("handleAutocomplete", () => {
     it("Should suggest possible existing server names", async () => {
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("");
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
@@ -146,7 +182,9 @@ describe("UpdateServerService", () => {
 
     it("Should suggest possible existing server names based on current input", async () => {
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("valheim2");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("valheim2");
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);
@@ -160,10 +198,14 @@ describe("UpdateServerService", () => {
     });
 
     it("Should sort suggestions in ascending order", async () => {
-      mockGetServers.mockReset().mockResolvedValueOnce([servers[1], servers[0]]);
+      mockGetServers
+        .mockReset()
+        .mockResolvedValueOnce([servers[1], servers[0]]);
 
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("");
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.respond).toHaveBeenCalledWith([
@@ -182,7 +224,9 @@ describe("UpdateServerService", () => {
       mockGetServers.mockReset().mockRejectedValueOnce({});
 
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("");
       await updateServerService.handleAutocomplete(interaction);
 
       expect(interaction.options.getFocused).toHaveBeenCalledTimes(1);

@@ -12,7 +12,10 @@ describe("voteService", () => {
   describe("handleInteraction", () => {
     it("should reply with updated interaction", () => {
       const voteService = new VoteService();
-      const interaction = createInteraction({ args: "one|two|<:emoji:12345>" }, { id: "messageId" });
+      const interaction = createInteraction(
+        { args: "one|two|<:emoji:12345>" },
+        { id: "messageId" },
+      );
       voteService.handleInteraction(interaction);
       expect(interaction.reply).toMatchInlineSnapshot(`
         [MockFunction] {

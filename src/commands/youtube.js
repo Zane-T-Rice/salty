@@ -8,14 +8,18 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("urls")
-        .setDescription("Space delimited urls that yt-dlp should try to download.")
-        .setRequired(true)
+        .setDescription(
+          "Space delimited urls that yt-dlp should try to download.",
+        )
+        .setRequired(true),
     )
     .addStringOption((option) =>
       option
         .setName("folder")
-        .setDescription("Blank uses the root YouTube folder. Must match /^[a-zA-Z0-9_ ]*$/.")
+        .setDescription(
+          "Blank uses the root YouTube folder. Must match /^[a-zA-Z0-9_ ]*$/.",
+        )
         .setAutocomplete(true)
-        .setRequired(false)
+        .setRequired(false),
     ),
 };

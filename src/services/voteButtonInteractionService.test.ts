@@ -26,13 +26,15 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
+                    custom_id:
+                      "voteButtonInteractionService:0:messageId:one::0",
                   },
                   label: "one 0",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
+                    custom_id:
+                      "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -92,13 +94,15 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
+                    custom_id:
+                      "voteButtonInteractionService:0:messageId:one::0",
                   },
                   label: "one 1",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
+                    custom_id:
+                      "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -107,7 +111,9 @@ describe("voteButtonInteractionService", () => {
           ],
         } as unknown as Message,
       } as unknown as ButtonInteraction;
-      await voteButtonInteractionService.handleInteraction(buttonInteractionTwo);
+      await voteButtonInteractionService.handleInteraction(
+        buttonInteractionTwo,
+      );
       expect(buttonInteractionTwo.update).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": [
@@ -158,13 +164,15 @@ describe("voteButtonInteractionService", () => {
               components: [
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:0:messageId:one::0",
+                    custom_id:
+                      "voteButtonInteractionService:0:messageId:one::0",
                   },
                   label: "one 0",
                 },
                 {
                   data: {
-                    custom_id: "voteButtonInteractionService:1:messageId:two::0",
+                    custom_id:
+                      "voteButtonInteractionService:1:messageId:two::0",
                   },
                   label: "two 0",
                 },
@@ -173,7 +181,9 @@ describe("voteButtonInteractionService", () => {
           ],
         } as unknown as Message,
       } as unknown as ButtonInteraction;
-      await voteButtonInteractionService.handleInteraction(buttonInteractionThree);
+      await voteButtonInteractionService.handleInteraction(
+        buttonInteractionThree,
+      );
       expect(buttonInteractionThree.update).toMatchInlineSnapshot(`
         [MockFunction] {
           "calls": [
@@ -227,13 +237,15 @@ describe("voteButtonInteractionService", () => {
             components: [
               {
                 data: {
-                  custom_id: "voteButtonInteractionService:0:messageId::12345:0",
+                  custom_id:
+                    "voteButtonInteractionService:0:messageId::12345:0",
                 },
                 label: "one 0",
               },
               {
                 data: {
-                  custom_id: "voteButtonInteractionService:1:messageId::1234556:0",
+                  custom_id:
+                    "voteButtonInteractionService:1:messageId::1234556:0",
                 },
                 label: "two 0",
               },

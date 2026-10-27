@@ -26,7 +26,7 @@ export class Router {
     updateServerController: UpdateServerController,
     voteController: VoteController,
     voteButtonInteractionController: VoteButtonInteractionController,
-    youtubeController: YoutubeController
+    youtubeController: YoutubeController,
   ) {
     this.pingController = pingController;
     this.updateServerController = updateServerController;
@@ -48,13 +48,19 @@ export class Router {
 
   async routeButtonInteraction(interaction: ButtonInteraction): Promise<void> {
     const buttonType = interaction.customId.split(":")[0];
-    await this.buttonInteractionsToControllers[buttonType]?.handleInteraction(interaction);
+    await this.buttonInteractionsToControllers[buttonType]?.handleInteraction(
+      interaction,
+    );
   }
 
   async routeInteraction(interaction: Interaction<CacheType>): Promise<void> {
     if (interaction.isChatInputCommand())
-      await this.commandsToControllers[interaction.commandName]?.handleInteraction(interaction);
+      await this.commandsToControllers[
+        interaction.commandName
+      ]?.handleInteraction(interaction);
     if (interaction.isAutocomplete())
-      await this.commandsToControllers[interaction.commandName]?.handleAutocomplete?.(interaction);
+      await this.commandsToControllers[
+        interaction.commandName
+      ]?.handleAutocomplete?.(interaction);
   }
 }

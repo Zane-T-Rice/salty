@@ -1,4 +1,8 @@
-import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import {
+  AutocompleteInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+} from "discord.js";
 import { InteractionController } from "./interactionController";
 
 const authorizer = { authorize: jest.fn() };
@@ -31,7 +35,9 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockResolvedValueOnce(true);
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
+      await interactionController.handleInteraction(
+        {} as ChatInputCommandInteraction<CacheType>,
+      );
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleInteraction).toHaveBeenCalledTimes(1);
@@ -41,7 +47,9 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockResolvedValueOnce(false);
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
+      await interactionController.handleInteraction(
+        {} as ChatInputCommandInteraction<CacheType>,
+      );
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(1);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
@@ -50,7 +58,9 @@ describe("interactionController", () => {
     it("should not call handleInteraction in the service if authorize returns false", async () => {
       authorizer.authorize.mockReturnValueOnce(false);
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
+      await interactionController.handleInteraction(
+        {} as ChatInputCommandInteraction<CacheType>,
+      );
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
@@ -63,7 +73,9 @@ describe("interactionController", () => {
       });
       console.error = jest.fn();
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleInteraction({} as ChatInputCommandInteraction<CacheType>);
+      await interactionController.handleInteraction(
+        {} as ChatInputCommandInteraction<CacheType>,
+      );
       expect(authorizer.authorize).toHaveBeenCalledTimes(1);
       expect(validator.validate).toHaveBeenCalledTimes(0);
       expect(service.handleInteraction).toHaveBeenCalledTimes(0);
@@ -76,7 +88,9 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockResolvedValueOnce(true);
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleAutocomplete({} as AutocompleteInteraction);
+      await interactionController.handleAutocomplete(
+        {} as AutocompleteInteraction,
+      );
       expect(service.handleAutocomplete).toHaveBeenCalledTimes(1);
     });
 
@@ -85,7 +99,9 @@ describe("interactionController", () => {
       authorizer.authorize.mockReturnValueOnce(true);
       validator.validate.mockResolvedValueOnce(true);
       const interactionController = new interactionControllerImpl();
-      await interactionController.handleAutocomplete({} as AutocompleteInteraction);
+      await interactionController.handleAutocomplete(
+        {} as AutocompleteInteraction,
+      );
     });
 
     it("should handle errors gracefully", async () => {

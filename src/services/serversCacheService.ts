@@ -22,7 +22,10 @@ export class ServersCacheService {
   serversCache: { servers?: Server[]; createdAt?: number } = {};
 
   async getServers(): Promise<Server[]> {
-    if (!this.serversCache.createdAt || Date.now() - this.serversCache.createdAt > 60_000) {
+    if (
+      !this.serversCache.createdAt ||
+      Date.now() - this.serversCache.createdAt > 60_000
+    ) {
       // If cache is more than 60 seconds old, refresh it.
       // This is just to prevent a user interacting with the autocomplete from triggering a bunch of API calls.
       const accessToken = await getAccessToken();
@@ -33,7 +36,7 @@ export class ServersCacheService {
           await exec(`curl --request GET \
             --url ${process.env.SERVER_MANAGER_SERVICE_URL}/users/servers?isUpdatable=true \
             --header 'Authorization: Bearer ${accessToken}'`)
-        ).stdout
+        ).stdout,
       );
       if (!(response instanceof Array)) throw new Error(); // The server returned an error response instead of an array of servers.
       const servers: Server[] = response;

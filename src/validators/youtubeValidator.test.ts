@@ -7,7 +7,13 @@ describe("YoutubeValidator", () => {
   describe("validate", () => {
     it.each([
       // True cases
-      { expectedResult: true, urls: "is a url", folder: "a folder", argUrls: "url", argFolder: "folder" },
+      {
+        expectedResult: true,
+        urls: "is a url",
+        folder: "a folder",
+        argUrls: "url",
+        argFolder: "folder",
+      },
       {
         expectedResult: true,
         urls: "are multiple urls",
@@ -15,12 +21,36 @@ describe("YoutubeValidator", () => {
         argUrls: "url url url",
         argFolder: "folder",
       },
-      { expectedResult: true, urls: "is a url", folder: "no folder", argUrls: "url", argFolder: "" },
-      { expectedResult: true, urls: "are multiple urls", folder: "no folder", argUrls: "url url url", argFolder: "" },
-      { expectedResult: true, urls: "is a url", folder: "a null folder", argUrls: "url", argFolder: null },
+      {
+        expectedResult: true,
+        urls: "is a url",
+        folder: "no folder",
+        argUrls: "url",
+        argFolder: "",
+      },
+      {
+        expectedResult: true,
+        urls: "are multiple urls",
+        folder: "no folder",
+        argUrls: "url url url",
+        argFolder: "",
+      },
+      {
+        expectedResult: true,
+        urls: "is a url",
+        folder: "a null folder",
+        argUrls: "url",
+        argFolder: null,
+      },
 
       // False cases
-      { expectedResult: false, urls: "is a url", folder: "a bad folder name", argUrls: "url", argFolder: ".." },
+      {
+        expectedResult: false,
+        urls: "is a url",
+        folder: "a bad folder name",
+        argUrls: "url",
+        argFolder: "..",
+      },
       {
         expectedResult: false,
         urls: "are multiple urls",
@@ -28,7 +58,13 @@ describe("YoutubeValidator", () => {
         argUrls: "url url url",
         argFolder: "~",
       },
-      { expectedResult: false, urls: "is not a url", folder: "there is a folder", argUrls: "", argFolder: "folder" },
+      {
+        expectedResult: false,
+        urls: "is not a url",
+        folder: "there is a folder",
+        argUrls: "",
+        argFolder: "folder",
+      },
       {
         expectedResult: false,
         urls: "is not a url",
@@ -52,9 +88,14 @@ describe("YoutubeValidator", () => {
         argUrls: null,
         argFolder: null,
       },
-    ])("should return $expectedResult if there $urls and $folder.", async ({ expectedResult, argUrls, argFolder }) => {
-      const result = await youtubeValidator.validate(createInteraction({ urls: argUrls, folder: argFolder }));
-      expect(result).toBe(expectedResult);
-    });
+    ])(
+      "should return $expectedResult if there $urls and $folder.",
+      async ({ expectedResult, argUrls, argFolder }) => {
+        const result = await youtubeValidator.validate(
+          createInteraction({ urls: argUrls, folder: argFolder }),
+        );
+        expect(result).toBe(expectedResult);
+      },
+    );
   });
 });

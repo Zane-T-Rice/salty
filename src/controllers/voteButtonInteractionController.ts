@@ -8,7 +8,7 @@ export class VoteButtonInteractionController extends InteractionController {
     super(
       new VoteButtonInteractionAuthorizer(),
       new VoteButtonInteractionValidator(),
-      new VoteButtonInteractionService()
+      new VoteButtonInteractionService(),
     );
   }
 }

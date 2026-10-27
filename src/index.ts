@@ -14,7 +14,7 @@ const router = new Router(
   new UpdateServerController(),
   new VoteController(),
   new VoteButtonInteractionController(),
-  new YoutubeController()
+  new YoutubeController(),
 );
 
 const client = new Client({

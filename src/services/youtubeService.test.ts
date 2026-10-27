@@ -19,9 +19,11 @@ describe("youtubeService", () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
-    (child_process.exec as unknown as jest.Mock).mockImplementation((_, callback) => {
-      callback(null, { stdout: "" });
-    });
+    (child_process.exec as unknown as jest.Mock).mockImplementation(
+      (_, callback) => {
+        callback(null, { stdout: "" });
+      },
+    );
 
     (fs.readdirSync as unknown as jest.Mock).mockImplementation(() => {
       return [{ name: "YouTubeKeep" }, { name: "RabbitAndSteel" }];
@@ -37,96 +39,144 @@ describe("youtubeService", () => {
 
   describe("handleInteraction", () => {
     it("should try to download from all given urls", async () => {
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "",
+      });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        4,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         1,
         `yt-dlp \
             -P "${process.env.YOUTUBE_DIRECTORY}" \
             -P "temp:/tmp" \
             -o "%(title).64s [%(id)s].%(ext)s" 'url'`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         4,
         `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
+        createEditReply(
+          `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`,
+        ),
       );
     });
 
     it("should try to download from all given urls to the specified folder", async () => {
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "folder",
+      });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        5,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         1,
         `mkdir "${process.env.YOUTUBE_DIRECTORY}/folder"`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         2,
         `yt-dlp \
             -P "${process.env.YOUTUBE_DIRECTORY}/folder" \
             -P "temp:/tmp" \
             -o "%(title).64s [%(id)s].%(ext)s" 'url'`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         5,
         `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
+        createEditReply(
+          `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`,
+        ),
       );
     });
 
     it("should try to download from all given urls to the specified existing folder", async () => {
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "RabbitAndSteel" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "RabbitAndSteel",
+      });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        4,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         1,
         `yt-dlp \
             -P "${process.env.YOUTUBE_DIRECTORY}/RabbitAndSteel" \
             -P "temp:/tmp" \
             -o "%(title).64s [%(id)s].%(ext)s" 'url'`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         4,
         `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
+        createEditReply(
+          `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`,
+        ),
       );
     });
 
     it("should report any failed downloads", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
 
       const youtubeService = new YoutubeService();
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "",
+      });
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(3);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        3,
+      );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`Failed to download <url>.\nFailed to download <url2>.\nFailed to download <url3>.`)
+        createEditReply(
+          `Failed to download <url>.\nFailed to download <url2>.\nFailed to download <url3>.`,
+        ),
       );
     });
 
@@ -134,7 +184,9 @@ describe("youtubeService", () => {
       const interaction = createInteraction({ urls: null, folder: null });
       const youtubeService = new YoutubeService();
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(0);
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        0,
+      );
       expect(interaction.editReply).toHaveBeenCalledWith(createEditReply(""));
     });
 
@@ -144,65 +196,95 @@ describe("youtubeService", () => {
       });
 
       const youtubeService = new YoutubeService();
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "folder",
+      });
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(4);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        4,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         1,
         `yt-dlp \
             -P "${process.env.YOUTUBE_DIRECTORY}" \
             -P "temp:/tmp" \
             -o "%(title).64s [%(id)s].%(ext)s" 'url'`,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
         createEditReply(
-          `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`
-        )
+          `Failed to create the requested folder "folder". Continuing by using the root folder.\n\nFinished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`,
+        ),
       );
     });
 
     it("should handle any failure when requesting a refresh of the YouTube library.", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: "" });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: "" });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: "" });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: "" });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(() => {
-        throw 1;
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: "" });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: "" });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: "" });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: "" });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        () => {
+          throw 1;
+        },
+      );
 
       const youtubeService = new YoutubeService();
-      const interaction = createInteraction({ urls: "url url2 url3", folder: "folder" });
+      const interaction = createInteraction({
+        urls: "url url2 url3",
+        folder: "folder",
+      });
       await youtubeService.handleInteraction(interaction);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(5);
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(child_process.exec as unknown as jest.Mock).toHaveBeenCalledTimes(
+        5,
+      );
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         1,
         `mkdir "${process.env.YOUTUBE_DIRECTORY}/folder"`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         2,
         `yt-dlp \
             -P "${process.env.YOUTUBE_DIRECTORY}/folder" \
             -P "temp:/tmp" \
             -o "%(title).64s [%(id)s].%(ext)s" 'url'`,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(child_process.exec as unknown as jest.Mock).toHaveBeenNthCalledWith(
+      expect(
+        child_process.exec as unknown as jest.Mock,
+      ).toHaveBeenNthCalledWith(
         5,
         `curl --request POST              --url '${process.env.JELLYFIN_URL}/Items/${process.env.YOUTUBE_DIRECTORY_JELLYFIN_ID}/Refresh?metadataRefreshMode=ValidationOnly&imageRefreshMode=None'              --header 'Authorization: MediaBrowser Token="${process.env.API_KEY}"'`,
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(interaction.editReply).toHaveBeenCalledWith(
-        createEditReply(`Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`)
+        createEditReply(
+          `Finished downloading <url>.\nFinished downloading <url2>.\nFinished downloading <url3>.`,
+        ),
       );
     });
   });
@@ -217,7 +299,9 @@ describe("youtubeService", () => {
       ]);
 
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("");
       const youtubeService = new YoutubeService();
       await youtubeService.handleAutocomplete(interaction);
 
@@ -248,7 +332,9 @@ describe("youtubeService", () => {
       ]);
 
       const interaction = createAutocompleteInteraction();
-      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("D");
+      (
+        interaction.options.getFocused as unknown as jest.Mock
+      ).mockReturnValueOnce("D");
       const youtubeService = new YoutubeService();
       await youtubeService.handleAutocomplete(interaction);
 

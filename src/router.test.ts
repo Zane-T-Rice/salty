@@ -1,4 +1,8 @@
-import { ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import {
+  ButtonInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+} from "discord.js";
 import {
   PingController,
   UpdateServerController,
@@ -18,16 +22,22 @@ const router = new Router(
   updateServerControllerInstance,
   voteController,
   voteButtonInteractionController,
-  youtubeController
+  youtubeController,
 );
 
 let isChatInputCommand;
 let isAutocomplete;
 beforeEach(() => {
   jest.resetAllMocks();
-  jest.spyOn(pingControllerInstance, "handleInteraction").mockResolvedValueOnce();
-  jest.spyOn(pingControllerInstance, "handleAutocomplete").mockResolvedValueOnce();
-  jest.spyOn(voteButtonInteractionController, "handleInteraction").mockResolvedValueOnce();
+  jest
+    .spyOn(pingControllerInstance, "handleInteraction")
+    .mockResolvedValueOnce();
+  jest
+    .spyOn(pingControllerInstance, "handleAutocomplete")
+    .mockResolvedValueOnce();
+  jest
+    .spyOn(voteButtonInteractionController, "handleInteraction")
+    .mockResolvedValueOnce();
   isChatInputCommand = jest.fn().mockReturnValue(true);
   isAutocomplete = jest.fn().mockReturnValue(false);
 });
@@ -43,7 +53,7 @@ describe("router", () => {
       } as unknown as ChatInputCommandInteraction<CacheType>);
 
       expect(pingControllerInstance.handleInteraction).toHaveBeenCalledWith(
-        expect.objectContaining({ commandName: content })
+        expect.objectContaining({ commandName: content }),
       );
     });
 
@@ -58,7 +68,7 @@ describe("router", () => {
       } as unknown as ChatInputCommandInteraction<CacheType>);
 
       expect(pingControllerInstance.handleAutocomplete).toHaveBeenCalledWith(
-        expect.objectContaining({ commandName: content })
+        expect.objectContaining({ commandName: content }),
       );
     });
 
@@ -84,7 +94,9 @@ describe("router", () => {
         isAutocomplete,
       } as unknown as ChatInputCommandInteraction<CacheType>);
 
-      expect(pingControllerInstance.handleInteraction).not.toHaveBeenCalledWith();
+      expect(
+        pingControllerInstance.handleInteraction,
+      ).not.toHaveBeenCalledWith();
     });
 
     it("should handle interactions that are not commands", async () => {
@@ -105,14 +117,18 @@ describe("router", () => {
         customId: "vote:",
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
-      expect(voteButtonInteractionController.handleInteraction).toHaveBeenCalledWith(buttonInteraction);
+      expect(
+        voteButtonInteractionController.handleInteraction,
+      ).toHaveBeenCalledWith(buttonInteraction);
     });
     it("should handle interactions that are not recognized", async () => {
       const buttonInteraction = {
         customId: "notRecognizedInteraction:threadChannelid",
       } as ButtonInteraction;
       await router.routeButtonInteraction(buttonInteraction);
-      expect(voteButtonInteractionController.handleInteraction).not.toHaveBeenCalled();
+      expect(
+        voteButtonInteractionController.handleInteraction,
+      ).not.toHaveBeenCalled();
     });
   });
 });

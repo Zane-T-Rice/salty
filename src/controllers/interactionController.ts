@@ -1,4 +1,9 @@
-import { AutocompleteInteraction, ButtonInteraction, CacheType, ChatInputCommandInteraction } from "discord.js";
+import {
+  AutocompleteInteraction,
+  ButtonInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+} from "discord.js";
 import { InteractionAuthorizer } from "../authorizers";
 import { InteractionService } from "../services";
 import { InteractionValidator } from "../validators";
@@ -8,14 +13,18 @@ export class InteractionController {
   protected service: InteractionService;
   protected validator: InteractionValidator;
 
-  constructor(authorizer: InteractionAuthorizer, validator: InteractionValidator, service: InteractionService) {
+  constructor(
+    authorizer: InteractionAuthorizer,
+    validator: InteractionValidator,
+    service: InteractionService,
+  ) {
     this.authorizer = authorizer;
     this.service = service;
     this.validator = validator;
   }
 
   public async handleInteraction(
-    interaction: ChatInputCommandInteraction<CacheType> | ButtonInteraction
+    interaction: ChatInputCommandInteraction<CacheType> | ButtonInteraction,
   ): Promise<void> {
     try {
       if (!this.authorizer.authorize(interaction)) return;
@@ -27,7 +36,9 @@ export class InteractionController {
     }
   }
 
-  public async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
+  public async handleAutocomplete(
+    interaction: AutocompleteInteraction,
+  ): Promise<void> {
     try {
       await this.service.handleAutocomplete?.(interaction);
     } catch (error) {

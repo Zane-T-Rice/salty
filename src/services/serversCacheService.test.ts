@@ -42,12 +42,16 @@ describe("ServersCacheService", () => {
 
   describe("handleAutocomplete", () => {
     it("Should suggest possible existing server names", async () => {
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(accessTokenObject) });
-      });
-      (child_process.exec as unknown as jest.Mock).mockImplementationOnce((_, callback) => {
-        callback(null, { stdout: JSON.stringify(servers) });
-      });
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(accessTokenObject) });
+        },
+      );
+      (child_process.exec as unknown as jest.Mock).mockImplementationOnce(
+        (_, callback) => {
+          callback(null, { stdout: JSON.stringify(servers) });
+        },
+      );
 
       const serversCacheService = new ServersCacheService();
       const responseServers = await serversCacheService.getServers();
@@ -106,6 +110,8 @@ describe("ServersCacheService", () => {
       });
 
     const serversCacheService = new ServersCacheService();
-    await expect(async () => await serversCacheService.getServers()).rejects.toThrow();
+    await expect(
+      async () => await serversCacheService.getServers(),
+    ).rejects.toThrow();
   });
 });

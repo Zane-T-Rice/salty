@@ -12,7 +12,9 @@ export const getAccessToken = async (): Promise<string> => {
        --header 'content-type: application/json' \
        --data '{"client_id":"${process.env.AUTH_CLIENT_ID}","client_secret":"${process.env.AUTH_CLIENT_SECRET}","audience":"${process.env.AUTH_AUDIENCE}","grant_type":"client_credentials"}'`;
 
-    const accessToken: { access_token: string } = JSON.parse((await exec(curl)).stdout);
+    const accessToken: { access_token: string } = JSON.parse(
+      (await exec(curl)).stdout,
+    );
 
     return accessToken.access_token;
   } catch (e) {
