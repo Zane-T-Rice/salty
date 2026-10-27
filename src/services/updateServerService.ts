@@ -65,7 +65,10 @@ export class UpdateServerService extends ServersCacheService implements Interact
       const message = "This feature is not available right now.";
       choices.push({ name: message, value: message });
     }
-    const filtered = choices.filter((choice) => choice.name.startsWith(focusedValue)).slice(0, 25);
+    const filtered = choices
+      .filter((choice) => choice.name.startsWith(focusedValue))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .slice(0, 25);
     await interaction.respond(filtered);
   }
 }

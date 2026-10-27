@@ -83,7 +83,10 @@ export class YoutubeService implements InteractionService {
       .readdirSync(process.env.YOUTUBE_DIRECTORY, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
-    const filtered = choices.filter((choice) => choice.startsWith(focusedValue)).slice(0, 25);
+    const filtered = choices
+      .filter((choice) => choice.startsWith(focusedValue))
+      .sort((a, b) => a.localeCompare(b))
+      .slice(0, 25);
     await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
   }
 }

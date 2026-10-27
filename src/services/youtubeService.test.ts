@@ -225,12 +225,12 @@ describe("youtubeService", () => {
       expect(interaction.respond).toHaveBeenCalledTimes(1);
       expect(interaction.respond).toHaveBeenCalledWith([
         {
-          name: "RabbitAndSteel",
-          value: "RabbitAndSteel",
-        },
-        {
           name: "Decino",
           value: "Decino",
+        },
+        {
+          name: "RabbitAndSteel",
+          value: "RabbitAndSteel",
         },
         {
           name: "YouTubeKeep",

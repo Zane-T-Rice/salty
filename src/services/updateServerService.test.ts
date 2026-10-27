@@ -159,6 +159,25 @@ describe("UpdateServerService", () => {
       ]);
     });
 
+    it("Should sort suggestions in ascending order", async () => {
+      mockGetServers.mockReset().mockResolvedValueOnce([servers[1], servers[0]]);
+
+      const interaction = createAutocompleteInteraction();
+      (interaction.options.getFocused as unknown as jest.Mock).mockReturnValueOnce("");
+      await updateServerService.handleAutocomplete(interaction);
+
+      expect(interaction.respond).toHaveBeenCalledWith([
+        {
+          name: "valheim/valheim_container",
+          value: `${servers[0].id}`,
+        },
+        {
+          name: "valheim2/valheim2_container",
+          value: `${servers[1].id}`,
+        },
+      ]);
+    });
+
     it("Should handle errors when getting servers", async () => {
       mockGetServers.mockReset().mockRejectedValueOnce({});
 
